@@ -1,2 +1,2 @@
-this is a test line for reading
-	here goes nothing
+.name           "42"
+.comment        "Just a basic Winner Program"
