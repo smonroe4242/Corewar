@@ -1,2 +1,2 @@
-.name           "42"
+.name           "Steven"
 .comment        "Just a basic Winner Program"

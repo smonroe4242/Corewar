@@ -6,15 +6,13 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/26 03:37:03 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/26 16:04:36 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/26 23:59:05 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
-#include "libft/libft.h"
-#include <fcntl.h>
 
-void	asm_error(int n)
+void	asm_error(int n, char *s)
 {
 	if (n == 0)
 	{
@@ -23,6 +21,8 @@ void	asm_error(int n)
 	}
 	else if (n == 1)
 		ft_printf("File not readable. Please enter valid .s champion file.\n");
+	else if	(n == 2)
+		ft_printf("\e[31m\e[1mError:\e[0m Bad op \"\e[31m%s\e[0m\" found.\n", s);
 	exit(0);
 }
 
@@ -32,9 +32,9 @@ uint32_t	endian_swap(uint32_t n)
 			| ((n & 0xff00) << 8) | ((n & 0xff) << 24));
 }
 
-header_t	get_header(int fd)
+t_header	get_header(int fd)
 {
-	header_t	head;
+	t_header	head;
 	char		*line;
 	char		*dq;
 	int			i;
@@ -52,8 +52,6 @@ header_t	get_header(int fd)
 		head.comment[i - 1] = dq[i];
 	head.magic = COREWAR_EXEC_MAGIC;
 	head.prog_size = 42;
-	ft_printf("magic = %#x\nprog_name = %s\nprog_size = %u\ncomment = %s\n",
-				head.magic, head.prog_name, head.prog_size, head.comment);
 	head.magic = endian_swap(head.magic);
 	head.prog_size = endian_swap(head.prog_size);
 	return (head);
@@ -61,24 +59,23 @@ header_t	get_header(int fd)
 
 int		main(int ac, char **av)
 {
-	header_t	s;
+	t_header	s;
 	int			fds;
 	int			fdc;
 	char		*cor;
-	int			i;
 
 	if (ac != 2)
-		asm_error(0);
+		asm_error(0, NULL);
 	fds = open(av[1], O_RDONLY);
+	cor = NULL;
 	if (fds == -1 || (read(fds, cor, 0)) == -1)
-		asm_error(1);
+		asm_error(1, NULL);
 	cor = ft_strnew(ft_strlen(av[1]) + 2);
 	cor = ft_strcat(cor, av[1]);
 	ft_memmove(&cor[ft_strlen(cor) - 1], "cor", 3);
-	ft_printf("\nFile name: %s -> %s\n", av[1], cor);
-	fdc = open(cor, O_CREAT | O_APPEND | O_RDWR | O_TRUNC, 0777);
+	fdc = open(cor, O_CREAT | O_RDWR | O_TRUNC, 0777);
 	s = get_header(fds);
-	ft_printf("\n%p\n%p\n%p\n%p\n", &s.magic, &s.prog_name, &s.prog_size, &s.comment);
+//	bytecode(fdc, fds);
 	write(fdc, &s, HEADER_SIZE);
 	close(fds);
 	close(fdc);

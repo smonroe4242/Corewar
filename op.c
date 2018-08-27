@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/26 15:07:08 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/26 23:34:47 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,3 +57,37 @@ t_op    op_tab[17] =
 if first num == 0, whole command will be 3 bytes. 1 byte opcode, no ACB byte, 2 byte direct.
 if second num == 1, last arg will be 1 byte REG, except sti where IND or REG is interpreted as 2 byte IND.
 */
+
+void	bytecode(int fdc, int fds)
+{
+	char	*line;
+	char	*com;
+	char	**word;
+	char	**param;
+	int		i;
+
+	(void)fdc;
+	get_next_line(fds, &line);
+	if ((com = ft_strchr(line, COMMENT_CHAR)))
+		com = 0;
+	word = ft_strsplit(line, ' ');
+	i = 0;
+	while (word[i])
+		i++;
+	param = ft_strsplit(word[--i], ',');
+	i = -1;
+	while (word[++i])
+	{
+		ft_printf("W:%d : %s\n", i, word[i]);
+		free(word[i]);
+	}
+	i = -1;
+	while (param[++i])
+	{
+		ft_printf("P:%d : %s\n", i, param[i]);
+		free(param[i]);
+	}
+	free(word);
+	free(param);
+	free(line);
+}
