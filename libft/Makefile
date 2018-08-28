@@ -6,7 +6,7 @@
 #    By: smonroe <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/16 06:21:48 by smonroe           #+#    #+#              #
-#    Updated: 2018/08/25 17:31:13 by smonroe          ###   ########.fr        #
+#    Updated: 2018/08/27 19:39:49 by smonroe          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -30,7 +30,8 @@ SRC = ft_bzero.c ft_memset.c ft_memcpy.c ft_memccpy.c\
 	ft_strrev.c ft_isprime.c ft_strjoinfr.c ft_rand.c\
 	ft_frand.c get_next_line.c ft_intlen.c ft_itoa_base.c\
 	ft_strappfr.c ft_printf.c ft_printf_handle.c ft_print_util.c\
-	ft_printf_spare.c ft_strndup.c ft_strmrg.c
+	ft_printf_spare.c ft_strndup.c ft_strmrg.c ft_itoa_base_big.c\
+	ft_itoa_base_ubig.c ft_printf_parse.c ft_strsplitwsp.c
 
 OBJ = ft_bzero.o ft_memset.o ft_memcpy.o ft_memccpy.o\
 	ft_memmove.o ft_memchr.o ft_memcmp.o ft_strlen.o\
@@ -50,7 +51,8 @@ OBJ = ft_bzero.o ft_memset.o ft_memcpy.o ft_memccpy.o\
 	ft_strrev.o ft_isprime.o ft_strjoinfr.o ft_rand.o\
 	ft_frand.o get_next_line.o ft_intlen.o ft_itoa_base.o\
 	ft_strappfr.o ft_printf.o ft_printf_handle.o ft_print_util.o\
-	ft_printf_spare.o ft_strndup.o ft_strmrg.o
+	ft_printf_spare.o ft_strndup.o ft_strmrg.o ft_itoa_base_big.o\
+	ft_itoa_base_ubig.o ft_printf_parse.o ft_strsplitwsp.o
 
 all: $(NAME)
 

@@ -1,26 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                       :+:      :+:    :+:   */
+/*   ft_itoa_base_ubig.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/23 22:07:02 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/27 16:21:48 by smonroe          ###   ########.fr       */
+/*   Created: 2018/08/27 17:11:24 by smonroe           #+#    #+#             */
+/*   Updated: 2018/08/27 17:12:38 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strndup(char *s, int n)
+char	*ft_itoa_base_ubig(uint64_t nbr, unsigned int base, char b)
 {
-	char	*tmp;
-	int		i;
+	char		*s;
+	char		*c;
+	int			i;
+	uint64_t	n;
 
-	if (!(tmp = ft_strnew(n)))
-		return (NULL);
-	i = -1;
-	while (++i < n)
-		tmp[i] = s[i];
-	return (tmp);
+	if (nbr == 0)
+		return (ft_strdup("0"));
+	c = (b == 'u') ? "0123456789ABCDEF" : "0123456789abcdef";
+	n = nbr;
+	s = ft_strnew(64);
+	i = 0;
+	s[i++] = c[n % base];
+	while (n /= base)
+		s[i++] = c[n % base];
+	ft_strrev(s);
+	i = 0;
+	while (!s[i])
+		i++;
+	c = ft_strdup(&s[i]);
+	free(s);
+	return (c);
 }

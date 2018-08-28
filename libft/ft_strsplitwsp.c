@@ -1,54 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsplit.c                                      :+:      :+:    :+:   */
+/*   ft_strsplitwsp.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 20:13:34 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/27 17:06:30 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/27 19:43:25 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#define WSP(i) ((s[i] <= 9 && s[i] <= 13) || s[i] != ' ')
+#define PWSP ((*s >= 9 && *s <= 13) || *s == ' ')
 
-static char	ft_word_count(char const *s, char c)
+static char	ft_word_count(char const *s)
 {
 	int words;
 	int i;
 
 	i = 0;
 	words = 0;
-	while (s[i] && s[i] == c)
+	while (s[i] && WSP(i))
 		i++;
 	while (s[i])
 	{
-		if (s[i] != c)
+		if (!WSP(i))
 			words++;
-		while (s[i] != c && s[i])
+		while (!WSP(i) && s[i])
 			i++;
-		while (s[i] == c && s[i])
+		while (WSP(i) && s[i])
 			i++;
 	}
 	return (words);
 }
 
-static char	**ft_make_2d(char const *s, char **bloc, char c)
+static char	**ft_make_2d(char const *s, char **bloc)
 {
 	int	i;
 	int	w;
 	int	l;
 
-	if (!(bloc = (char **)malloc(sizeof(char *) * (ft_word_count(s, c) + 1))))
+	if (!(bloc = (char **)malloc(sizeof(char *) * (ft_word_count(s) + 1))))
 		return (NULL);
 	w = 0;
 	i = 0;
 	while (s[i])
 	{
 		l = 0;
-		while (s[i] == c && s[i])
+		while (WSP(i) && s[i])
 			i++;
-		while (s[i] != c && s[i])
+		while (!WSP(i) && s[i])
 		{
 			i++;
 			l++;
@@ -60,24 +62,24 @@ static char	**ft_make_2d(char const *s, char **bloc, char c)
 	return (bloc);
 }
 
-char		**ft_strsplit(char const *s, char c)
+char		**ft_strsplitwsp(char const *s)
 {
 	int		w;
 	int		l;
 	char	**bloc;
 
-	if (!(s && c))
+	if (!s)
 		return (NULL);
 	bloc = NULL;
-	if (!(bloc = ft_make_2d(s, bloc, c)))
+	if (!(bloc = ft_make_2d(s, bloc)))
 		return (NULL);
 	w = 0;
 	while (*s)
 	{
 		l = 0;
-		while (*s == c && *s)
+		while (PWSP && *s)
 			s += 1;
-		while (*s != c && *s)
+		while (!PWSP && *s)
 			bloc[w][l++] = *s++;
 		if (l)
 			bloc[w++][l] = '\0';

@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/27 00:10:56 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/27 18:50:55 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 #ifndef OP_H
 # define OP_H
-# include "libft.h"
+# include "libft/libft.h"
 # include <fcntl.h>
 
 # define IND_SIZE				2
@@ -93,6 +93,8 @@ typedef struct					s_line
 	char						*label;
 	int							op;
 	int							p[3];
+}								t_line;
+
 /*
 ** This struct for declaring op tab in op.c
 */

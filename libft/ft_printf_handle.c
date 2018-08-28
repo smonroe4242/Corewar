@@ -6,53 +6,13 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/05 18:40:28 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/26 03:52:56 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/27 17:17:33 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*printer_prec(t_var v)
-{
-	if (!positive(v) && v.base == 10 && v.prec >= (int)ft_strlen(v.str))
-		v.str[0] = '0';
-	while ((int)ft_strlen(v.str) < v.prec)
-		v.str = ft_strappfr("0", v.str);
-	if (!positive(v) && v.base == 10 && v.str[0] != '-')
-		v.str = ft_strappfr("-", v.str);
-	return (v.str);
-}
-
-char	*printer(t_var v)
-{
-	if (v.flag == 's')
-		return (string(v));
-	if (v.prec)
-		v.str = printer_prec(v);
-	if (v.plus && positive(v))
-	{
-		if (v.point == '0')
-			v.str[0] = '+';
-		else
-			v.str = ft_strappfr("+", v.str);
-	}
-	if (v.hash)
-		v.str = ft_strappfr(prefix(v), v.str);
-	if (v.spc && !v.plus && v.str[0] != '-')
-		v.str = ft_strappfr(" ", v.str);
-	if (v.pad)
-	{
-		if (v.neg)
-			while ((int)ft_strlen(v.str) < v.pad)
-				v.str = ft_strjoinfr(v.str, " ");
-		if (!v.neg)
-			while ((int)ft_strlen(v.str) < v.pad)
-				v.str = ft_strappfr(" ", v.str);
-	}
-	return (v.str);
-}
-
-t_uni	width(t_var v, va_list ap)
+static t_uni	width(t_var v, va_list ap)
 {
 	if (v.wide[1] == 'h')
 		v.uni.c = va_arg(ap, int);
@@ -81,33 +41,7 @@ t_uni	width(t_var v, va_list ap)
 	return (v.uni);
 }
 
-char	*type_field_wide(t_var v, va_list ap)
-{
-	v.uni = width(v, ap);
-	if (v.wide[0])
-	{
-		if (ft_strchr("XuUoOb", v.flag))
-			v.str = ft_itoa_base_ubig(v.uni.ul, v.base, 'u');
-		else if (ft_strchr("idD", v.flag))
-			v.str = ft_itoa_base_big(v.uni.l, v.base, 'l');
-		else if (v.flag == 'x')
-			v.str = ft_itoa_base_ubig(v.uni.ul, v.base, 'l');
-		else if (v.flag == 's')
-			v.str = ft_wider(v.uni.w);
-		else
-			v.str = ft_strdup("WATBOI");
-		return (printer(v));
-	}
-	if (v.flag == 'C')
-		v.str = ft_wide(v.uni.i);
-	else if (v.flag == 'S')
-		v.str = ft_wider(v.uni.w);
-	else
-		return (type_field_norm(v));
-	return (printer(v));
-}
-
-char	*type_field_norm(t_var v)
+static char		*type_field_norm(t_var v)
 {
 	if (ft_strchr("xobu", v.flag))
 		v.str = ft_itoa_base_ubig(v.uni.ui, v.base, 'l');
@@ -133,5 +67,31 @@ char	*type_field_norm(t_var v)
 	}
 	else if (v.flag == 's')
 		v.str = ft_strdup((v.uni.s) ? v.uni.s : "(null)");
+	return (printer(v));
+}
+
+char			*type_field_wide(t_var v, va_list ap)
+{
+	v.uni = width(v, ap);
+	if (v.wide[0])
+	{
+		if (ft_strchr("XuUoOb", v.flag))
+			v.str = ft_itoa_base_ubig(v.uni.ul, v.base, 'u');
+		else if (ft_strchr("idD", v.flag))
+			v.str = ft_itoa_base_big(v.uni.l, v.base, 'l');
+		else if (v.flag == 'x')
+			v.str = ft_itoa_base_ubig(v.uni.ul, v.base, 'l');
+		else if (v.flag == 's')
+			v.str = ft_wider(v.uni.w);
+		else
+			v.str = ft_strdup("WATBOI");
+		return (printer(v));
+	}
+	if (v.flag == 'C')
+		v.str = ft_wide(v.uni.i);
+	else if (v.flag == 'S')
+		v.str = ft_wider(v.uni.w);
+	else
+		return (type_field_norm(v));
 	return (printer(v));
 }

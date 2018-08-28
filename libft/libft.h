@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 06:44:19 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/26 03:53:18 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/27 19:40:24 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,20 +75,9 @@ char				*string(t_var v);
 
 char				*ft_itoa_base_big(int64_t nbr, unsigned int base, char b);
 char				*ft_itoa_base_ubig(uint64_t nbr, unsigned int base, char b);
-char				*append_j(char *s, int i, int j);
-int					positive(t_var v);
-char				*prefix(t_var v);
-
-char				*printer_prec(t_var v);
 char				*printer(t_var v);
-t_uni				width(t_var v, va_list ap);
 char				*type_field_wide(t_var c, va_list ap);
-char				*type_field_norm(t_var c);
-/*
-t_var				init_var(void);
-t_var				precision(t_var var, char *s, int *i);
-char				*decide(char *s, int *i, va_list ap);
-char				*parse(char *s, va_list ap);*/
+char				*parse(char *s, va_list ap);
 int					ft_printf(char *str, ...);
 
 /*
@@ -139,6 +128,7 @@ char				*ft_strappfr(char *s1, char *s2);
 char				*ft_strmrg(char *s1, char *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
+char				**ft_strsplitwsp(char const *s);
 void				ft_strrev(char *s);
 char				*ft_strstr(const char *haystack, const char *needle);
 char				*ft_strnstr(const char *haystack, const char *needle,

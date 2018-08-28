@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/26 03:37:03 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/26 23:59:05 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/27 18:53:00 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		main(int ac, char **av)
 	ft_memmove(&cor[ft_strlen(cor) - 1], "cor", 3);
 	fdc = open(cor, O_CREAT | O_RDWR | O_TRUNC, 0777);
 	s = get_header(fds);
-//	bytecode(fdc, fds);
+	bytecode(fdc, fds);
 	write(fdc, &s, HEADER_SIZE);
 	close(fds);
 	close(fdc);

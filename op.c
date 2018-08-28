@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/26 23:34:47 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/27 19:44:48 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_op    op_tab[17] =
 	{0, 		0,	{0}, 													0, 		0, 		0,						0, 0}
 };
 /*
-{1, 1} is only for index codes, always 3 args;
+{1, 1} is only for index commands, always 3 args;
 {1, 0} are simple codes, load store math and aff, 2 or 3 args;
 {0, 1} is forks and jump, only takes 1 direct arg;
 {0, 0} is live only, 1 direct arg but 4 bytes after op code;
@@ -61,33 +61,15 @@ if second num == 1, last arg will be 1 byte REG, except sti where IND or REG is 
 void	bytecode(int fdc, int fds)
 {
 	char	*line;
-	char	*com;
 	char	**word;
-	char	**param;
 	int		i;
 
 	(void)fdc;
 	get_next_line(fds, &line);
-	if ((com = ft_strchr(line, COMMENT_CHAR)))
-		com = 0;
-	word = ft_strsplit(line, ' ');
+	word = ft_strsplitwsp(line);
 	i = 0;
-	while (word[i])
-		i++;
-	param = ft_strsplit(word[--i], ',');
-	i = -1;
-	while (word[++i])
-	{
-		ft_printf("W:%d : %s\n", i, word[i]);
-		free(word[i]);
-	}
-	i = -1;
-	while (param[++i])
-	{
-		ft_printf("P:%d : %s\n", i, param[i]);
-		free(param[i]);
-	}
+	ft_printf("W:%d : %s\n", i, word[i]);
+	free(word[i++]);
 	free(word);
-	free(param);
 	free(line);
 }
