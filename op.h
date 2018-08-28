@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/27 18:50:55 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/28 01:59:38 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,26 @@
 # define DIR_CODE				2
 # define IND_CODE				3
 
-# define MAX_ARGS_NUMBER			4
-# define MAX_PLAYERS				4
+# define MAX_ARGS_NUMBER		4
+# define MAX_PLAYERS			4
 # define MEM_SIZE				(4 * 1024) //4096 bytes
-# define IDX_MOD					(MEM_SIZE / 8) //512 bytes
+# define IDX_MOD				(MEM_SIZE / 8) //512 bytes
 # define CHAMP_MAX_SIZE			(MEM_SIZE / 6) //682 bytes
 
 # define COMMENT_CHAR			'#'
 # define LABEL_CHAR				':'
-# define DIRECT_CHAR				'%'
+# define DIRECT_CHAR			'%'
 # define SEPARATOR_CHAR			','
 
-# define LABEL_CHARS				"abcdefghijklmnopqrstuvwxyz_0123456789"
+# define LABEL_CHARS			"abcdefghijklmnopqrstuvwxyz_0123456789"
 
-# define NAME_CMD_STRING			".name"
+# define NAME_CMD_STRING		".name"
 # define COMMENT_CMD_STRING		".comment"
 
 # define REG_NUMBER				16
 
 # define CYCLE_TO_DIE			1536
-# define CYCLE_DELTA				50
+# define CYCLE_DELTA			50
 # define NBR_LIVE				21
 # define MAX_CHECKS				10
 
@@ -71,7 +71,6 @@ typedef struct					s_header
 	unsigned int				prog_size;
 	char						comment[COMMENT_LENGTH + 1];
 }								t_header;
-
 /*
 ** This header goes at the top of every warrior file
 */
@@ -95,13 +94,23 @@ typedef struct					s_line
 	int							p[3];
 }								t_line;
 
+typedef struct					s_byte
+{
+	uint8_t						code[14];
+	uint8_t						count;
+}
+
 /*
 ** This struct for declaring op tab in op.c
 */
 
-void		asm_error(int n, char *s);
-uint32_t	endian_swap(uint32_t);
-t_header	get_header(int fd);
-void		bytecode(int fds, int fdc);
+void							asm_error(int n);
+void							com_error(int n, char *s, int l);
+uint32_t						endian_swap(uint32_t);
+t_header						get_header(int fd);
+
+t_byte							get_bytes(char **coms, char **args);
+t_byte							asm_parse(char *s);
+void							bytecode(int fds, int fdc);
 
 #endif

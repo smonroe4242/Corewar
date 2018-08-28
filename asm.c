@@ -6,13 +6,13 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/26 03:37:03 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/27 18:53:00 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/28 00:59:32 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
 
-void	asm_error(int n, char *s)
+void	asm_error(int n)
 {
 	if (n == 0)
 	{
@@ -21,8 +21,16 @@ void	asm_error(int n, char *s)
 	}
 	else if (n == 1)
 		ft_printf("File not readable. Please enter valid .s champion file.\n");
-	else if	(n == 2)
-		ft_printf("\e[31m\e[1mError:\e[0m Bad op \"\e[31m%s\e[0m\" found.\n", s);
+	exit(0);
+}
+
+void	comp_error(int n, char *s, int l)
+{
+	if (n == 0)
+	{
+		ft_printf("\e[31m\e[1mError:\e[0m Bad op \"\e[31m%s\e[0m\"", s);
+		ft_printf(" found on line \e[32m%d\e[0m.\nFile failed to compile.\n", l);
+	}
 	exit(0);
 }
 
@@ -65,11 +73,11 @@ int		main(int ac, char **av)
 	char		*cor;
 
 	if (ac != 2)
-		asm_error(0, NULL);
+		asm_error(0);
 	fds = open(av[1], O_RDONLY);
 	cor = NULL;
 	if (fds == -1 || (read(fds, cor, 0)) == -1)
-		asm_error(1, NULL);
+		asm_error(1);
 	cor = ft_strnew(ft_strlen(av[1]) + 2);
 	cor = ft_strcat(cor, av[1]);
 	ft_memmove(&cor[ft_strlen(cor) - 1], "cor", 3);

@@ -1,6 +1,6 @@
 .name           "Steven"
 .comment        "Just a basic Winner Program"
 
-live:	live %1
-		zjmp 0
-		sti	 r1, %42, r2
+		st		r1,r13
+live:	live	r13
+		zjmp	0
