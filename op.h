@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/30 07:38:25 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/30 08:25:45 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,14 @@ typedef struct					s_byte
 {
 	uint8_t						*code;
 	uint8_t						count;
+	char						*name;
+	int							lbyte;
 }								t_byte;
 
 typedef struct					s_label
 {
 	char						*name;
-	int							num;
-	uint32_t					loc;
+	uint16_t					loc;
 }								t_label;
 
 void							asm_error(int n);

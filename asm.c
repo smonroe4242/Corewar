@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/26 03:37:03 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/30 07:41:11 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/30 08:30:06 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,8 @@ t_header	get_header(int fd)
 		h.comment[i - 1] = dq[i];
 	h.magic = COREWAR_EXEC_MAGIC;
 	h.prog_size = 0;
-	h.magic = ((h.magic & 0xff000000) >> 24) | ((h.magic & 0xff0000) >> 8)
-			| ((h.magic & 0xff00) << 8) | ((h.magic & 0xff) << 24);
-	h.prog_size = ((h.prog_size & 0xff00) << 8) | ((h.prog_size & 0xff) << 24)
-		| ((h.prog_size & 0xff000000) >> 24) | ((h.prog_size & 0xff0000) >> 8);
+	h.magic = endian_swap32(h.magic);
+	h.prog_size = endian_swap32(h.prog_size);
 	return (h);
 }
 
@@ -98,7 +96,6 @@ int		main(int ac, char **av)
 	fdc = open(cor, O_CREAT | O_RDWR | O_TRUNC, 0777);
 	free(cor);
 	write(fdc, &s, HEADER_SIZE);
-	ft_printf("fd = %d, file.code = %s, file.count = %d\n", fdc, file.code, file.count);
 	write(fdc, file.code, file.count);
 	close(fdc);
 	free(file.code);

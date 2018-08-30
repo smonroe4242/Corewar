@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/30 07:50:02 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/30 08:53:32 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,21 @@ t_byte	arg_bytes(int i, char **args, int lc)
 
 	prm.code = (uint8_t *)malloc(0);
 	prm.count = 0;
+	prm.name = NULL;
 	a = 0;
 	while (args[a])
 	{
 		if (a > op_tab[i].argc)
 			comp_error(1, args[a], lc);
+		if (args[a][1] == LABEL_CHAR)
+		{
+			prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_DIR));
+			y = 0;
+			ft_memcpy(&prm.code[prm.count], &y, T_DIR);
+			prm.name = ft_strdup(&arg[a++][2]);
+			prm.lbyte = prm.count;
+			prm.count += T_DIR;
+		}
 		if (ft_strchr("0123456789", args[a][0]))
 		{
 			if (op_tab[i].types[a] & T_IND || op_tab[i].acb == 0)
@@ -162,7 +172,6 @@ t_byte	arg_bytes(int i, char **args, int lc)
 			}
 		}
 	}
-	ft_printf("arg_bytes count = %d\n", prm.count);
 	return (prm);
 }
 
@@ -191,8 +200,14 @@ t_byte	get_bytes(char **coms, char **args, int lc)
 	byte.code = (uint8_t *)realloc(byte.code, prm.count + byte.count);
 	ft_memcpy(&byte.code[byte.count], &prm.code[0], prm.count);
 	byte.count += prm.count;
-	ft_printf("get_bytes count = %d\n", byte.count, byte.code);
 	free(prm.code);
+	byte.name = NULL;
+	if (prm.name)
+	{
+		byte.name = ft_strdup(prm.name);
+		free(prm.name);
+		byte.lbyte = prm.lbyte;
+	}
 	return (byte);
 }
 
@@ -227,11 +242,13 @@ t_byte	bytecode(int fds)
 	char	*line;
 	t_byte	b;
 	t_byte	f;
+	t_label	l[50];
 	int	lc;
 
 	f.code = (uint8_t *)malloc(0);
 	f.count = 0;
 	lc = 0;
+	n = 0;
 	while((get_next_line(fds, &line)))
 	{
 		lc++;
@@ -243,10 +260,16 @@ t_byte	bytecode(int fds)
 				f.code = (uint8_t *)realloc(f.code, f.count + b.count);
 				ft_memcpy(&f.code[f.count], &b.code[0], b.count);
 				f.count += b.count;
-				ft_printf("file.count = %d, byte.count = %d\n", f.count, b.count);
+				if (b.name)
+				{
+					l[n].name = ft_strdup(b.name);
+					free(b.name);
+					l[n++].loc = f.count - b.count + b.lbyte;
+				}
 				free(b.code);
 			}
 		}
 	}
+	l[n].name = NULL;
 	return (f);
 }
