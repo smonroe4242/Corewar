@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/30 00:49:33 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/30 07:38:25 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef char					t_arg_type;
 # define T_LAB					8
 
 # define PROG_NAME_LENGTH		(128)
-# define COMMENT_LENGTH			(2048)
+# define COMMENT_LENGTH			(2048 + 8)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 # define HEADER_SIZE			PROG_NAME_LENGTH + COMMENT_LENGTH + 8
 
@@ -83,7 +83,7 @@ typedef struct					s_op
 	int							code;
 	int							cycles;
 	char						*desc;
-	int							flag1;
+	int							acb;
 	int							flag2;
 }								t_op;
 /*
@@ -104,14 +104,16 @@ typedef struct					s_label
 }								t_label;
 
 void							asm_error(int n);
-void							com_error(int n, char *s, int l);
+void							comp_error(int n, char *s, int l);
 void							cw_realloc(t_byte*org, t_byte *app);
 t_header						get_header(int fd);
-
+uint32_t						endian_swap32(uint32_t x);
 uint8_t							acb_byte(int i, char **args, int lc);
-t_byte							arg_bytes(int i, char **args);
+t_byte							arg_bytes(int i, char **args, int lc);
 t_byte							get_bytes(char **coms, char **args, int lc);
 t_byte							asm_parse(char *s, int lc);
-void							bytecode(int fds, int fdc);
+t_byte							bytecode(int fds);
+
+void							printnbytes(t_byte p);
 
 #endif
