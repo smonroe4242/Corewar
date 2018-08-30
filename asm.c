@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/26 03:37:03 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/29 21:04:23 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/30 00:49:09 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,37 +31,46 @@ void	comp_error(int n, char *s, int l)
 		ft_printf("\e[31m\e[1mError:\e[0m Bad op \"\e[31m%s\e[0m\"", s);
 		ft_printf(" found on line \e[32m%d\e[0m.\nFile failed to compile.\n", l);
 	}
+	else if (n == 1)
+	{
+		ft_printf("\e[31m\e[1mError:\e[0m Bad argument \"\e[31m%s\e[0m\"", s);
+		ft_printf(" found on line \e[32m%d\e[0m.\nFile failed to compile.\n", l);
+	}
 	exit(0);
 }
 
-uint32_t	endian_swap(uint32_t n)
+void		cw_realloc(t_byte *org, t_byte *app)
 {
-	return (((n & 0xff000000) >> 24) | ((n & 0xff0000) >> 8)
-			| ((n & 0xff00) << 8) | ((n & 0xff) << 24));
+	org->code = (uint8_t)realloc(org->code, org->count + app->count);
+	ft_memcpy(org->code[org->count], app->code, app->count);
+	org->count += app->count;
+	free(app->code);
 }
 
 t_header	get_header(int fd)
 {
-	t_header	head;
+	t_header	h;
 	char		*line;
 	char		*dq;
 	int			i;
 
-	ft_memset(&head, 0, HEADER_SIZE);
+	ft_memset(&h, 0, HEADER_SIZE);
 	get_next_line(fd, &line);
 	dq = ft_strchr(line, '"');
 	i = 0;
 	while (dq[++i] != '"')
-		head.prog_name[i - 1] = dq[i];
+		h.prog_name[i - 1] = dq[i];
 	get_next_line(fd, &line);
 	dq = ft_strchr(line, '"');
 	i = 0;
 	while (dq[++i] != '"')
-		head.comment[i - 1] = dq[i];
-	head.magic = COREWAR_EXEC_MAGIC;
-	head.prog_size = 42;
-	head.magic = endian_swap(head.magic);
-	head.prog_size = endian_swap(head.prog_size);
+		h.comment[i - 1] = dq[i];
+	h.magic = COREWAR_EXEC_MAGIC;
+	h.prog_size = 20;
+	h.magic = ((h.magic & 0xff000000) >> 24) | ((h.magic & 0xff0000) >> 8)
+			| ((h.magic & 0xff00) << 8) | ((h.magic & 0xff) << 24);
+	h.prog_size = ((h.prog_size & 0xff00) << 8) | ((h.prog_size & 0xff) << 24)
+		| ((h.prog_size & 0xff000000) >> 24) | ((h.prog_size & 0xff0000) >> 8);
 	return (head);
 }
 
@@ -71,6 +80,7 @@ int		main(int ac, char **av)
 	int			fds;
 	int			fdc;
 	char		*cor;
+	uint64_t	null = 0;
 
 	if (ac != 2)
 		asm_error(0);
@@ -83,10 +93,9 @@ int		main(int ac, char **av)
 	ft_memmove(&cor[ft_strlen(cor) - 1], "cor", 3);
 	fdc = open(cor, O_CREAT | O_RDWR | O_TRUNC, 0777);
 	s = get_header(fds);
-	bytecode(fdc, fds);
 	write(fdc, &s, HEADER_SIZE);
-	if (!ft_strcmp(cor, "Rainbow_Dash.cor"))
-		
+	write(fdc, &null, 8);
+	bytecode(fdc, fds);
 	close(fds);
 	close(fdc);
 	free(cor);

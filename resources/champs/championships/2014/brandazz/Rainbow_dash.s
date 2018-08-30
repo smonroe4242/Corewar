@@ -1,7 +1,7 @@
-;basic.s
-
 .name		"basic"
 .comment	"this is a basic stuff"
+;basic.s
+
 
 loop:
 	st r1, 6

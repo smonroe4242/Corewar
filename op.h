@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/29 20:45:36 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/30 00:49:33 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,21 +90,11 @@ typedef struct					s_op
 ** This struct for declaring op tab in op.c
 */
 
-typedef struct					s_line
-{
-	char						*label;
-	int							op;
-	int							p[3];
-}								t_line;
-
 typedef struct					s_byte
 {
-	uint8_t						code[14];
+	uint8_t						*code;
 	uint8_t						count;
-	uint8_t						lcode;
-	uint8_t						lbyte;
-	t_byte						*next;
-}
+}								t_byte;
 
 typedef struct					s_label
 {
@@ -115,11 +105,13 @@ typedef struct					s_label
 
 void							asm_error(int n);
 void							com_error(int n, char *s, int l);
-uint32_t						endian_swap(uint32_t);
+void							cw_realloc(t_byte*org, t_byte *app);
 t_header						get_header(int fd);
 
-t_byte							get_bytes(char **coms, char **args);
-t_byte							asm_parse(char *s);
+uint8_t							acb_byte(int i, char **args, int lc);
+t_byte							arg_bytes(int i, char **args);
+t_byte							get_bytes(char **coms, char **args, int lc);
+t_byte							asm_parse(char *s, int lc);
 void							bytecode(int fds, int fdc);
 
 #endif
