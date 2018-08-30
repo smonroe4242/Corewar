@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/28 01:59:38 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/29 20:45:36 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,9 @@ typedef struct					s_op
 	int							flag1;
 	int							flag2;
 }								t_op;
+/*
+** This struct for declaring op tab in op.c
+*/
 
 typedef struct					s_line
 {
@@ -98,11 +101,17 @@ typedef struct					s_byte
 {
 	uint8_t						code[14];
 	uint8_t						count;
+	uint8_t						lcode;
+	uint8_t						lbyte;
+	t_byte						*next;
 }
 
-/*
-** This struct for declaring op tab in op.c
-*/
+typedef struct					s_label
+{
+	char						*name;
+	int							num;
+	uint32_t					loc;
+}								t_label;
 
 void							asm_error(int n);
 void							com_error(int n, char *s, int l);

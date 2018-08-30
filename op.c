@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/28 02:16:17 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/29 21:04:24 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,28 @@ t_op    op_tab[17] =
 };
 
 /*
-{1, 1} is only for index commands, always 3 args;
-{1, 0} are simple codes, load store math and aff, 2 or 3 args;
-{0, 1} is forks and jump, only takes 1 direct arg;
-{0, 0} is live only, 1 direct arg but 4 bytes after op code;
-
-if first num == 0, whole command will be 3 bytes. 1 byte opcode, no ACB byte, 2 byte direct.
-if second num == 1, last arg will be 1 byte REG, except sti where IND or REG is interpreted as 2 byte IND.
+**{1, 1} is only for index commands, always 3 args;
+**{1, 0} are simple codes, load store math and aff, 2 or 3 args;
+**{0, 1} is forks and jump, only takes 1 direct arg;
+**{0, 0} is live only, 1 direct arg but 4 bytes after op code;
+**
+**if first num == 0, whole command will be 3 bytes. 1 byte opcode, no ACB byte, 2 byte direct.
+**if second num == 1, last arg will be 1 byte REG, except sti where IND or REG is interpreted as 2 byte IND.
 */
+uint8_t	asm_label(char *nlab)
+{
+	static s_label	labels;
+}
+
 t_byte	get_bytes(char **coms, char **args)
 {
-	static int	l;
 	t_byte		byte;
 	int			i;
 	int			n;
 
 	n = 0;
 	if (ft_strrchr(coms[n], LABEL_CHAR))
-		g_labels[l++] = coms[n++];
+		byte.lcode = asm_label(coms[n++]);
 	i = 0;
 	while (op_tab[i])
 		if (!(ft_strcmp(op_tab[i].name, coms[n])))
@@ -93,13 +97,14 @@ t_byte	asm_parse(char *s)
 		while (args[++i])
 			ft_printf("\tP:%d : %s\n", i, args[i]);
 	}
-	return (get_bytes);
+	return (get_bytes(coms, args));
 }
 
 void	bytecode(int fdc, int fds)
 {
 	char	*line;
 	t_byte	bytes;
+	char	*comment;
 
 	(void)fdc;
 	while((get_next_line(fds, &line)))
@@ -107,8 +112,13 @@ void	bytecode(int fdc, int fds)
 		ft_printf("line: %s\n", line);
 		if (line[0])
 		{
-			bytes = asm_parse(line);
-			write(fdc, &bytes.code, bytes.count);
+			if ((comment = ft_strrchr(line, COMMENT_CHAR)))
+				comment = 0;
+			if (line[0])
+			{
+				bytes = asm_parse(line);
+				write(fdc, &bytes.code, bytes.count);
+			}
 		}
 		free(line);
 	}
