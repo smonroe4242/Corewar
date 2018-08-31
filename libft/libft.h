@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 06:44:19 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/27 19:40:24 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/31 05:58:02 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,19 @@
 # define UMAX 4294967296
 # define LMAX 9223372036854775807
 # define NLMAX -9223372036854775808
+# define T_RED "\e[31m"
+# define T_32 "\e[32m"
+# define T_33 "\e[33m"
+# define T_34 "\e[34m"
+# define T_35 "\e[35m"
+# define T_36 "\e[36m"
+# define T_37 "\e[37m"
+# define T_38 "\e[38m"
+# define T_39 "\e[39m"
+# define T_40 "\e[40m"
+# define T_41 "\e[41m"
+# define T_42 "\e[42m"
+# define TD "\e[0m"
 
 typedef struct		s_list
 {

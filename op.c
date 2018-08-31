@@ -59,9 +59,12 @@ void		ft_print_mem(uint8_t *mem, int n)
 	i = -1;
 	while (++i < n)
 	{
+		if(!(i % 16))
+		ft_putchar('\n');
 		ft_putchar(chars[mem[i] >> 4]);
 		ft_putchar(chars[mem[i] & 0x0f]);
 		ft_putchar(' ');
+
 	}
 	ft_putchar('\n');
 }
@@ -75,7 +78,7 @@ uint8_t	acb_byte(int i, char **args, int lc)
 	a = 0;
 	while (a < op_tab[i].argc)
 	{
-		ft_putendl(args[a]);
+//		ft_putendl(args[a]);
 		if (ft_strchr("0123456789", args[a][0]))
 		{
 			if (op_tab[i].types[a] & T_IND)
@@ -246,7 +249,8 @@ t_byte	bytecode(int fds)
 				f = label_append(f, b);
 			if (b.label)
 				l = add_lab(b, f, l);
-//			free_t_byte(b);
+			ft_print_mem(f.code, f.count);
+			ft_printf("lc:%d count:%d\n", lc, f.count);
 		}
 		free(line);
 	}
