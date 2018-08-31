@@ -6,13 +6,13 @@
 #    By: smonroe <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/26 22:02:30 by smonroe           #+#    #+#              #
-#    Updated: 2018/08/26 23:34:22 by smonroe          ###   ########.fr        #
+#    Updated: 2018/08/30 21:56:38 by smonroe          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME = asm
 
-SRC = asm.c op.c
+SRC = asm.c op.c funcy.c
 
 INC = -I libft -I . -L libft -lft
 

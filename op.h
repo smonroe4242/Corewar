@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/30 08:25:45 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/30 23:47:16 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ typedef char					t_arg_type;
 # define COMMENT_LENGTH			(2048 + 8)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 # define HEADER_SIZE			PROG_NAME_LENGTH + COMMENT_LENGTH + 8
-
+# define END16(x) ((x << 8) | (x >> 8))
+# define END3(x) (((x & 0xff0000) >> 8) | ((x & 0xff00) << 8))
+# define END32(x) ((x << 24) | (x >> 24) | END3(x))
 typedef struct					s_header
 {
 	unsigned int				magic;
@@ -90,31 +92,36 @@ typedef struct					s_op
 ** This struct for declaring op tab in op.c
 */
 
-typedef struct					s_byte
-{
-	uint8_t						*code;
-	uint8_t						count;
-	char						*name;
-	int							lbyte;
-}								t_byte;
-
 typedef struct					s_label
 {
 	char						*name;
 	uint16_t					loc;
 }								t_label;
 
+typedef struct					s_byte
+{
+	char						*label;
+	uint8_t						*code;
+	uint8_t						count;
+	t_label						*l;
+}								t_byte;
+
 void							asm_error(int n);
 void							comp_error(int n, char *s, int l);
-void							cw_realloc(t_byte*org, t_byte *app);
+void							free_line(char **coms, char **args);
 t_header						get_header(int fd);
-uint32_t						endian_swap32(uint32_t x);
+
+void							printnbytes(t_byte p);
 uint8_t							acb_byte(int i, char **args, int lc);
 t_byte							arg_bytes(int i, char **args, int lc);
 t_byte							get_bytes(char **coms, char **args, int lc);
 t_byte							asm_parse(char *s, int lc);
 t_byte							bytecode(int fds);
 
-void							printnbytes(t_byte p);
+t_byte							init_t_byte(void);
+t_byte							t_byte_append(t_byte org, t_byte app);
+t_byte							label_append(t_byte org, t_byte app);
+t_label							*add_lab(t_byte b, t_byte f, t_label *l);
+uint8_t							*labelify(t_byte f, t_label *l);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/30 08:53:32 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/30 23:57:06 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,6 @@ void		ft_print_mem(uint8_t *mem, int n)
 	ft_putchar('\n');
 }
 
-uint32_t	endian_swap32(uint32_t x)
-{
-	return ((x << 24) | (x >> 24) | ((x & 0xff0000) >> 8) | ((x & 0xff00) << 8));
-}
-
-uint16_t	endian_swap16(uint16_t x)
-{
-	return ((x << 8) | (x >> 8));
-}
-
 uint8_t	acb_byte(int i, char **args, int lc)
 {
 	int	a;
@@ -110,17 +100,17 @@ uint8_t	acb_byte(int i, char **args, int lc)
 
 t_byte	arg_bytes(int i, char **args, int lc)
 {
-	t_byte	prm;
-	int		a;
+	t_byte		prm;
+	int			a;
+	int			n;
 	uint32_t	x;
 	uint16_t	y;
 	uint8_t		z;
 
-	prm.code = (uint8_t *)malloc(0);
-	prm.count = 0;
-	prm.name = NULL;
-	a = 0;
-	while (args[a])
+	prm = init_t_byte();
+	a = -1;
+	n = 0;
+	while (args[++a])
 	{
 		if (a > op_tab[i].argc)
 			comp_error(1, args[a], lc);
@@ -129,16 +119,16 @@ t_byte	arg_bytes(int i, char **args, int lc)
 			prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_DIR));
 			y = 0;
 			ft_memcpy(&prm.code[prm.count], &y, T_DIR);
-			prm.name = ft_strdup(&arg[a++][2]);
-			prm.lbyte = prm.count;
+			prm.l[n].name = ft_strdup(&args[a][2]);
+			prm.l[n++].loc = prm.count;
 			prm.count += T_DIR;
 		}
-		if (ft_strchr("0123456789", args[a][0]))
+		else if (ft_strchr("0123456789", args[a][0]))
 		{
 			if (op_tab[i].types[a] & T_IND || op_tab[i].acb == 0)
 			{
 				prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_IND));
-				x = endian_swap32((int32_t)ft_atoi(args[a++]));
+				x = END32((int32_t)ft_atoi(args[a]));
 				ft_memcpy(&prm.code[prm.count], &x, T_IND);
 				prm.count += T_IND;
 			}
@@ -146,17 +136,16 @@ t_byte	arg_bytes(int i, char **args, int lc)
 		else if (args[a][0] == DIRECT_CHAR && op_tab[i].flag2 == 0)
 		{
 				prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_IND));
-				x = endian_swap32((uint32_t)ft_atoi(&args[a++][1]));
+				x = END32((uint32_t)ft_atoi(&args[a][1]));
 				ft_memcpy(&prm.code[prm.count], &x, T_IND);
 				prm.count += T_IND;
-				ft_print_mem(prm.code, prm.count);
 		}
 		else if (args[a][0] == 'r')
 		{
 			if (op_tab[i].types[a] & T_REG)
 			{
 				prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_REG));
-				z = (int8_t)ft_atoi(&args[a++][1]);
+				z = (int8_t)ft_atoi(&args[a][1]);
 				ft_memcpy(&prm.code[prm.count], &z, T_REG);
 				prm.count += T_REG;
 			}
@@ -166,7 +155,7 @@ t_byte	arg_bytes(int i, char **args, int lc)
 			if (op_tab[i].types[a] & T_DIR)
 			{
 				prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_DIR));
-				y = endian_swap16((int16_t)ft_atoi(&args[a++][1]));
+				y = END16((int16_t)ft_atoi(&args[a][1]));
 				ft_memcpy(&prm.code[prm.count], &y, T_DIR);
 				prm.count += T_DIR;
 			}
@@ -183,31 +172,24 @@ t_byte	get_bytes(char **coms, char **args, int lc)
 	int			n;
 
 	n = 0;
+	byte = init_t_byte();
 	if (ft_strrchr(coms[n], LABEL_CHAR))
-		n++;
+		byte.label = ft_strdup(coms[n++]);
 	i = -1;
 	while (op_tab[++i].name)
 		if (!(ft_strcmp(op_tab[i].name, coms[n])))
 			break ;
 	if (!op_tab[i].name)
 		comp_error(0, coms[n], lc);
-	byte.count = 0;
-	byte.code = (uint8_t *)malloc(2);
+	prm = init_t_byte();
+	byte.code = (uint8_t *)realloc(byte.code, 2);
 	byte.code[byte.count++] = (uint8_t)(op_tab[i].code & 0xff);
 	if (op_tab[i].acb)
 		byte.code[byte.count++] = acb_byte(i, args, lc);
 	prm = arg_bytes(i, args, lc);
-	byte.code = (uint8_t *)realloc(byte.code, prm.count + byte.count);
-	ft_memcpy(&byte.code[byte.count], &prm.code[0], prm.count);
-	byte.count += prm.count;
-	free(prm.code);
-	byte.name = NULL;
-	if (prm.name)
-	{
-		byte.name = ft_strdup(prm.name);
-		free(prm.name);
-		byte.lbyte = prm.lbyte;
-	}
+	byte = t_byte_append(byte, prm);
+	byte = label_append(byte, prm);
+	free_line(coms, args);
 	return (byte);
 }
 
@@ -221,6 +203,8 @@ t_byte	asm_parse(char *line, int lc)
 
 	args = NULL;
 	null.code = NULL;
+	if (!line[0])
+		return (null);
 	if ((comment = ft_strrchr(line, COMMENT_CHAR)))
 		comment = 0;
 	line = ft_strtrim(line);
@@ -233,22 +217,20 @@ t_byte	asm_parse(char *line, int lc)
 		i++;
 	if (--i)
 		args = ft_strsplit(coms[i], ',');
-	free(line);
-	return (get_bytes(coms, args, lc));
+	null = get_bytes(coms, args, lc);
+	return (null);
 }
 
 t_byte	bytecode(int fds)
 {
 	char	*line;
+	t_label *l;
 	t_byte	b;
 	t_byte	f;
-	t_label	l[50];
-	int	lc;
+	static int	lc;
 
-	f.code = (uint8_t *)malloc(0);
-	f.count = 0;
-	lc = 0;
-	n = 0;
+	f = init_t_byte();
+	l = NULL;
 	while((get_next_line(fds, &line)))
 	{
 		lc++;
@@ -256,20 +238,15 @@ t_byte	bytecode(int fds)
 		{
 			b = asm_parse(line, lc);
 			if (b.code)
-			{
-				f.code = (uint8_t *)realloc(f.code, f.count + b.count);
-				ft_memcpy(&f.code[f.count], &b.code[0], b.count);
-				f.count += b.count;
-				if (b.name)
-				{
-					l[n].name = ft_strdup(b.name);
-					free(b.name);
-					l[n++].loc = f.count - b.count + b.lbyte;
-				}
-				free(b.code);
-			}
+				f = t_byte_append(f, b);
+			if (b.code && b.l[0].name)
+				f = label_append(f, b);
+			if (b.label)
+				l = add_lab(b, f, l);
+//			free_t_byte(b);
 		}
+		free(line);
 	}
-	l[n].name = NULL;
+	f.code = labelify(f, l);
 	return (f);
 }

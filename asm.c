@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/26 03:37:03 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/30 08:30:06 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/30 23:56:04 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,24 @@ void	comp_error(int n, char *s, int l)
 	exit(0);
 }
 
-void		cw_realloc(t_byte *org, t_byte *app)
+void		free_line(char **coms, char **args)
 {
-	org->code = (uint8_t *)realloc(org->code, org->count + app->count);
-	ft_memcpy(&org->code[org->count], app->code, app->count);
-	org->count += app->count;
-	free(app->code);
+	int i;
+
+	if (coms)
+	{
+		i = -1;
+		while (coms[++i])
+			free(coms[i]);
+		free(coms);
+	}
+	if (args)
+	{
+		i = -1;
+		while (args[++i])
+			free(args[i]);
+		free(args);
+	}
 }
 
 t_header	get_header(int fd)
@@ -60,15 +72,17 @@ t_header	get_header(int fd)
 	i = 0;
 	while (dq[++i] != '"')
 		h.prog_name[i - 1] = dq[i];
+	free(line);
 	get_next_line(fd, &line);
 	dq = ft_strchr(line, '"');
 	i = 0;
 	while (dq[++i] != '"')
 		h.comment[i - 1] = dq[i];
+	free(line);
 	h.magic = COREWAR_EXEC_MAGIC;
 	h.prog_size = 0;
-	h.magic = endian_swap32(h.magic);
-	h.prog_size = endian_swap32(h.prog_size);
+	h.magic = END32(h.magic);
+	h.prog_size = END32(h.prog_size);
 	return (h);
 }
 
@@ -88,7 +102,7 @@ int		main(int ac, char **av)
 		asm_error(1);
 	s = get_header(fds);
 	file = bytecode(fds);
-	s.prog_size = endian_swap32(file.count);
+	s.prog_size = END32(file.count);
 	close(fds);
 	cor = ft_strnew(ft_strlen(av[1]) + 2);
 	cor = ft_strcat(cor, av[1]);
@@ -99,6 +113,7 @@ int		main(int ac, char **av)
 	write(fdc, file.code, file.count);
 	close(fdc);
 	free(file.code);
+	while(1);
 	return (0);
 }
 
