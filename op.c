@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/30 23:57:06 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/31 04:41:10 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ uint8_t	acb_byte(int i, char **args, int lc)
 	a = 0;
 	while (a < op_tab[i].argc)
 	{
+		ft_putendl(args[a]);
 		if (ft_strchr("0123456789", args[a][0]))
 		{
 			if (op_tab[i].types[a] & T_IND)
@@ -199,25 +200,27 @@ t_byte	asm_parse(char *line, int lc)
 	char			**coms;
 	char			**args;
 	int				i;
-	char			*comment;
+	char			*cmt;
 
 	args = NULL;
-	null.code = NULL;
+	null = init_t_byte();
 	if (!line[0])
 		return (null);
-	if ((comment = ft_strrchr(line, COMMENT_CHAR)))
-		comment = 0;
-	line = ft_strtrim(line);
-	if (!line[0])
+	cmt = ft_strchr(line, COMMENT_CHAR);
+	if (cmt)
+		*cmt = 0;
+	cmt = ft_strtrim(line);
+	if (!cmt[0])
 		return (null);
-	ft_putendl(line);
-	coms = ft_strsplit(line, '\t');
+	ft_putendl(cmt);
+	coms = ft_strsplitwsp(cmt);
 	i = 0;
 	while (coms[i])
 		i++;
 	if (--i)
 		args = ft_strsplit(coms[i], ',');
 	null = get_bytes(coms, args, lc);
+	free(cmt);
 	return (null);
 }
 

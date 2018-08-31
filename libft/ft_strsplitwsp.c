@@ -6,12 +6,12 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 20:13:34 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/27 19:43:25 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/31 04:02:01 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#define WSP(i) ((s[i] <= 9 && s[i] <= 13) || s[i] != ' ')
+#define WSP(i) ((s[i] >= 9 && s[i] <= 13) || s[i] == ' ')
 #define PWSP ((*s >= 9 && *s <= 13) || *s == ' ')
 
 static char	ft_word_count(char const *s)

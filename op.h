@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/30 23:47:16 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/31 03:12:08 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef char					t_arg_type;
 # define END16(x) ((x << 8) | (x >> 8))
 # define END3(x) (((x & 0xff0000) >> 8) | ((x & 0xff00) << 8))
 # define END32(x) ((x << 24) | (x >> 24) | END3(x))
+
 typedef struct					s_header
 {
 	unsigned int				magic;
@@ -96,6 +97,7 @@ typedef struct					s_label
 {
 	char						*name;
 	uint16_t					loc;
+	uint16_t					addr;
 }								t_label;
 
 typedef struct					s_byte

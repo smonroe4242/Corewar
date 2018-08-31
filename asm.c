@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/26 03:37:03 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/30 23:56:04 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/31 02:05:54 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ int		main(int ac, char **av)
 	write(fdc, file.code, file.count);
 	close(fdc);
 	free(file.code);
-	while(1);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:41 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/30 23:43:10 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/31 04:36:47 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_byte		init_t_byte(void)
 	{
 		tmp.l[i].name = NULL;
 		tmp.l[i].loc = 0;
+		tmp.l[i].addr = 0;
 	}
 	tmp.label = NULL;
 	return (tmp);
@@ -45,17 +46,6 @@ t_byte		label_append(t_byte org, t_byte app)
 	int	o;
 	int	i;
 
-	if (!org.l)
-	{
-		org.l = (t_label *)malloc(sizeof(t_label) * MAX_ARGS_NUMBER);
-		ft_memset(org.l, 0, sizeof(t_label) * MAX_ARGS_NUMBER);
-		i = -1;
-		while (++i < MAX_ARGS_NUMBER)
-		{
-			org.l[i].name = NULL;
-			org.l[i].loc = 0;
-		}
-	}
 	o = 0;
 	while (org.l[o].name)
 		o++;
@@ -63,11 +53,16 @@ t_byte		label_append(t_byte org, t_byte app)
 	while (app.l[i].name)
 	{
 		org.l[o].name = ft_strdup(app.l[i].name);
-		org.l[o].loc = app.l[i].loc;
+		org.l[o].loc = app.l[i].loc + org.count - app.count;
+		org.l[o].addr = org.count - app.count;
 		free(app.l[i].name);
 		o++;
 		i++;
 	}
+	org.l = (t_label *)realloc(org.l, sizeof(t_label) * ++o);
+	org.l[--o].name = NULL;
+	org.l[o].loc = 0;
+	org.l[o].addr = 0;
 	return (org);
 }
 
@@ -90,26 +85,30 @@ t_label		*add_lab(t_byte b, t_byte f, t_label *l)
 	l[n++].loc = f.count - b.count;
 	l[n].name = NULL;
 	l[n].loc = 0;
+	l[n].addr = 0;
 	return (l);
 }
 
 uint8_t		*labelify(t_byte f, t_label *l)
 {
-	int n;
+	int		n;
+	int		i;
+	uint16_t diff;
 
-	ft_printf("t_byte f labels:\n");
 	n = -1;
 	while (f.l[++n].name)
 	{
-		ft_printf("label %d: %s @ %d\n", n, f.l[n].name, f.l[n].loc);
+		i = -1;
+		while (l[++i].name)
+			if (!ft_strcmp(l[i].name, f.l[n].name))
+				break ;
+		diff = l[--i].loc - f.l[n].addr;
+		diff = END16(diff);
+		ft_memcpy(&f.code[f.l[n].loc], &diff, 2);
 		free(f.l[n].name);
 	}
-	ft_printf("Labels in list:\n");
 	n = -1;
 	while (l[++n].name)
-	{
-		ft_printf("func labels %d: %s as %d\n", n, l[n].name, l[n].loc);
 		free(l[n].name);
-	}
 	return (f.code);
 }
