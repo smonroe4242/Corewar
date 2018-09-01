@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:41 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/31 22:43:07 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/01 05:33:17 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,20 +98,23 @@ uint8_t		*labelify(t_byte f, t_label *l)
 	n = -1;
 	while (f.l[++n].name)
 	{
-		ft_printf("|%s|", f.l[n].name);
+		ft_printf("|%s : ", f.l[n].name);
 		i = -1;
 		while (l[++i].name)
 			if (!ft_strcmp(l[i].name, f.l[n].name))
 				break ;
 		diff = l[i].loc - f.l[n].addr;
-		ft_printf("|%s|", l[i].name);
+//		ft_printf("%s|", l[i].name);
 		ft_printf("%.4x/%d = %d - %d\n", diff, diff, l[i].loc, f.l[n].addr);
 		diff = END16(diff);
 		ft_memcpy(&f.code[f.l[n].loc], &diff, 2);
 		free(f.l[n].name);
 	}
-	n = -1;
-	while (l[++n].name)
-		free(l[n].name);
+	if (f.l[0].name)
+	{
+		n = -1;
+		while (l[++n].name)
+			free(l[n].name);
+	}
 	return (f.code);
 }
