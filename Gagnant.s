@@ -1,5 +1,5 @@
-.name		"Celebration Funebre v0.99pl42"
-.comment	"Jour J"
+.name		"Gagnant Revised"
+.comment	"By smonroe"
 
 		ld   %0,r3		
 label:		zjmp %:avantdebut

@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2018/08/31 04:41:10 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/08/31 18:32:43 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ void		ft_print_mem(uint8_t *mem, int n)
 	while (++i < n)
 	{
 		if(!(i % 16))
-		ft_putchar('\n');
+		{
+			ft_putchar('\n');
+			ft_printf("%.7x ", i + HEADER_SIZE);
+		}
 		ft_putchar(chars[mem[i] >> 4]);
 		ft_putchar(chars[mem[i] & 0x0f]);
 		ft_putchar(' ');
@@ -178,7 +181,10 @@ t_byte	get_bytes(char **coms, char **args, int lc)
 	n = 0;
 	byte = init_t_byte();
 	if (ft_strrchr(coms[n], LABEL_CHAR))
-		byte.label = ft_strdup(coms[n++]);
+	{
+		byte.label = ft_strndup(coms[n], ft_strlen(coms[n]) - 1);
+		n++;
+	}
 	i = -1;
 	while (op_tab[++i].name)
 		if (!(ft_strcmp(op_tab[i].name, coms[n])))
@@ -249,11 +255,11 @@ t_byte	bytecode(int fds)
 				f = label_append(f, b);
 			if (b.label)
 				l = add_lab(b, f, l);
-			ft_print_mem(f.code, f.count);
-			ft_printf("lc:%d count:%d\n", lc, f.count);
 		}
 		free(line);
 	}
+	ft_print_mem(f.code, f.count);
 	f.code = labelify(f, l);
+	ft_print_mem(f.code, f.count);
 	return (f);
 }
