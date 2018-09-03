@@ -2,10 +2,9 @@
 .comment	"spawn lfork wall behind"
 
 		ld		%786432,r2
-		ld		%1,r4
 		ld		%4,r5
 live:	live	%-1
-		sti		r2,%-500,r4
+		sti		r2,%-511,r4
 		add		r5,r4,r4
 		and		r6,r6,r6
 		zjmp	%:live

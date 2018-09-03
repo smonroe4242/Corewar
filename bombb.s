@@ -2,10 +2,9 @@
 .comment	"spawn lfork wall forward"
 
 		ld		%786432,r2
-		ld		%0,r4
-		ld		%-28,r5
+		ld		%-4,r8
 live:	live	%-2
-		sti		r2,%496,r4
-		add		r5,r4,r4
+		sti		r2,%511,r7
+		add		r8,r7,r7
 		and		r6,r6,r6
 		zjmp	%:live
