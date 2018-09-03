@@ -10,7 +10,7 @@
 		ld		%1409614852,r13	#54 05 04 04
 		ld		%106169862,r14	#06 54 06 06
 		ld		%101318635,r15	#06 09 ff eb
-#wallbomb: "live %n:sti r2,,r4:add r5,r4,r4:and r6,r6,r6: zjmp live"
+
 live:	live	%42				#5
 		st		r10,-501		#5
 		st		r11,-502		#5
@@ -20,6 +20,5 @@ live:	live	%42				#5
 		st		r14,-510		#5
 		st		r15,-511		#5
 		lfork	%-541			#3
-#wall bomb front
 		and		r8,r8,r8
 		zjmp	%:live			#3
