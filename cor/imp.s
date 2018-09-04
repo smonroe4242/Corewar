@@ -1,7 +1,7 @@
 .name		"Imp"
 .comment	"Impervious Imperial Impossible"
 
-go:	ld	%16777216,r3
-	st	r3,14
-	st	r1,8
+	st		r1,6
+go:	live	%1
+	and		r2,r2,r2
 	zjmp	%:go

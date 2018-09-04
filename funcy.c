@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:41 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/03 22:45:13 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/04 12:59:23 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ uint8_t		*labelify(t_byte f, t_label *l)
 		ft_memcpy(&f.code[f.l[n].loc], &diff, 2);
 	}
 	n = -1;
-	while (l[++n].name)
-		free(l[n].name);
+	if (l)
+		while (l[++n].name)
+			free(l[n].name);
 	return (f.code);
 }
