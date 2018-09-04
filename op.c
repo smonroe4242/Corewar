@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2018/09/02 06:48:34 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/03 22:56:46 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,16 @@ void		ft_print_mem(uint8_t *mem, int n)
 
 	}
 	ft_putchar('\n');
+}
+
+void		t_byte_free(t_byte *x)
+{
+	int		i;
+
+	i = -1;
+	while (x->l[++i].name)
+		free(x->l[i].name);
+	free(x->l);
 }
 
 uint8_t	acb_byte(int i, char **args, int lc)
@@ -327,6 +337,7 @@ t_byte	get_bytes(char **coms, char **args, int lc)
 	prm = arg_bytes(i, args, lc, byte.code[byte.count - 1]);
 	byte = t_byte_append(byte, prm);
 	byte = label_append(byte, prm);
+	t_byte_free(&prm);
 	free_line(coms, args);
 	return (byte);
 }
@@ -371,6 +382,7 @@ t_byte	bytecode(int fds)
 
 	f = init_t_byte();
 	l = NULL;
+	b = init_t_byte();
 	while((get_next_line(fds, &line)))
 	{
 		lc++;
@@ -383,10 +395,10 @@ t_byte	bytecode(int fds)
 				f = label_append(f, b);
 			if (b.label)
 				l = add_lab(b, f, l);
+			t_byte_free(&b);
 		}
 		free(line);
 	}
-	ft_print_mem(f.code, f.count);
 	f.code = labelify(f, l);
 	ft_print_mem(f.code, f.count);
 	return (f);

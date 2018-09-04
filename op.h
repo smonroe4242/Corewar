@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/09/01 03:33:24 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/03 22:12:25 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void							free_line(char **coms, char **args);
 t_header						get_header(int fd);
 
 void							printnbytes(t_byte p);
+void							t_byte_free(t_byte *x);
 uint8_t							acb_byte(int i, char **args, int lc);
 t_byte							arg_bytes(int i, char **args, int lc, uint8_t acb);
 t_byte							get_bytes(char **coms, char **args, int lc);

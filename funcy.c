@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:41 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/01 05:33:17 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/03 22:45:13 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ t_byte		label_append(t_byte org, t_byte app)
 		org.l[o].name = ft_strdup(app.l[i].name);
 		org.l[o].loc = app.l[i].loc + org.count - app.count;
 		org.l[o].addr = org.count - app.count;
-		free(app.l[i].name);
 		o++;
 		i++;
 	}
@@ -108,13 +107,9 @@ uint8_t		*labelify(t_byte f, t_label *l)
 		ft_printf("%.4x/%d = %d - %d\n", diff, diff, l[i].loc, f.l[n].addr);
 		diff = END16(diff);
 		ft_memcpy(&f.code[f.l[n].loc], &diff, 2);
-		free(f.l[n].name);
 	}
-	if (f.l[0].name)
-	{
-		n = -1;
-		while (l[++n].name)
-			free(l[n].name);
-	}
+	n = -1;
+	while (l[++n].name)
+		free(l[n].name);
 	return (f.code);
 }
