@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2018/09/03 22:56:46 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/04 23:32:10 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,16 @@ void		t_byte_free(t_byte *x)
 	int		i;
 
 	i = -1;
-	while (x->l[++i].name)
-		free(x->l[i].name);
-	free(x->l);
+	if (x->l)
+	{
+		while (x->l[++i].name)
+			free(x->l[i].name);
+		free(x->l);
+	}
+	if (x->code)
+		free(x->code);
+	if (x->label)
+		free(x->label);
 }
 
 uint8_t	acb_byte(int i, char **args, int lc)
@@ -232,83 +239,6 @@ t_byte	arg_bytes(int i, char **args, int lc, uint8_t acb)
 	return (prm);
 }
 
-t_byte	arg_bytes_old(int i, char **args, int lc)
-{
-	t_byte		prm;
-	int			a;
-	int			n;
-	uint32_t	x;
-	uint16_t	y;
-	uint8_t		z;
-
-	prm = init_t_byte();
-	a = -1;
-	n = 0;
-	while (args[++a])
-	{
-		if (a > op_tab[i].argc)
-			comp_error(1, args[a], lc);
-		if (args[a][1] == LABEL_CHAR)
-		{
-			prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_DIR));
-			y = 0;
-			ft_memcpy(&prm.code[prm.count], &y, T_DIR);
-			prm.l[n].name = ft_strdup(&args[a][2]);
-			prm.l[n++].loc = prm.count;
-			prm.count += T_DIR;
-		}
-		else if (ft_strchr("-0123456789", args[a][0]))
-		{
-			ft_printf("IN HERE-------------\n");
-			if (op_tab[i].types[a] & T_IND || op_tab[i].acb == 0)
-			{
-				ft_printf("T_IND\n");
-				prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_IND));
-				x = END32((int32_t)ft_atoi(args[a]));
-				ft_memcpy(&prm.code[prm.count], &x, T_IND);
-				prm.count += T_IND;
-			}
-			else if (op_tab[i].types[a] & T_DIR || op_tab[i].acb == 0)
-			{
-				ft_printf("T_DIR\n");
-				prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_DIR));
-				x = END32((uint16_t)ft_atoi(args[a]));
-				ft_memcpy(&prm.code[prm.count], &x, T_DIR);
-				prm.count += T_IND;
-			}
-
-		}
-		else if (args[a][0] == DIRECT_CHAR && op_tab[i].flag2 == 0)
-		{
-				prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_IND));
-				x = END32((uint32_t)ft_atoi(&args[a][1]));
-				ft_memcpy(&prm.code[prm.count], &x, T_IND);
-				prm.count += T_IND;
-		}
-		else if (args[a][0] == 'r')
-		{
-			if (op_tab[i].types[a] & T_REG)
-			{
-				prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_REG));
-				z = (int8_t)ft_atoi(&args[a][1]);
-				ft_memcpy(&prm.code[prm.count], &z, T_REG);
-				prm.count += T_REG;
-			}
-		}
-		else if (args[a][0] == DIRECT_CHAR || (op_tab[i].acb == 0 && op_tab[i].flag2 == 1))
-		{
-			if (op_tab[i].types[a] & T_DIR)
-			{
-				prm.code = (uint8_t *)realloc(prm.code, (prm.count + T_DIR));
-				y = END16((int16_t)ft_atoi(&args[a][1]));
-				ft_memcpy(&prm.code[prm.count], &y, T_DIR);
-				prm.count += T_DIR;
-			}
-		}
-	}
-	return (prm);
-}
-
 t_byte	get_bytes(char **coms, char **args, int lc)
 {
 	t_byte		byte;
@@ -329,7 +259,6 @@ t_byte	get_bytes(char **coms, char **args, int lc)
 			break ;
 	if (!op_tab[i].name)
 		comp_error(0, coms[n], lc);
-	prm = init_t_byte();
 	byte.code = (uint8_t *)realloc(byte.code, 2);
 	byte.code[byte.count++] = (uint8_t)(op_tab[i].code & 0xff);
 	if (op_tab[i].acb)
@@ -354,19 +283,25 @@ t_byte	asm_parse(char *line, int lc)
 	null = init_t_byte();
 	if (!line[0])
 		return (null);
+	ft_putendl(line);
 	cmt = ft_strchr(line, COMMENT_CHAR);
 	if (cmt)
 		*cmt = 0;
 	cmt = ft_strtrim(line);
+//	free(cmt);
 	if (!cmt[0])
 		return (null);
 	ft_putendl(cmt);
+//	coms = ft_strsplit(cmt, '\t');
 	coms = ft_strsplitwsp(cmt);
+//	if (cmt)
+//		free(cmt);
 	i = 0;
 	while (coms[i])
 		i++;
 	if (--i)
 		args = ft_strsplit(coms[i], ',');
+	t_byte_free(&null);
 	null = get_bytes(coms, args, lc);
 	free(cmt);
 	return (null);
@@ -382,7 +317,6 @@ t_byte	bytecode(int fds)
 
 	f = init_t_byte();
 	l = NULL;
-	b = init_t_byte();
 	while((get_next_line(fds, &line)))
 	{
 		lc++;
@@ -400,6 +334,5 @@ t_byte	bytecode(int fds)
 		free(line);
 	}
 	f.code = labelify(f, l);
-	ft_print_mem(f.code, f.count);
 	return (f);
 }

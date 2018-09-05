@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:41 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/04 12:59:23 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/04 20:17:32 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_byte		t_byte_append(t_byte org, t_byte app)
 	org.code = (uint8_t *)realloc(org.code, org.count + app.count);
 	ft_memcpy(&org.code[org.count], app.code, app.count);
 	org.count += app.count;
-	free(app.code);
 	return (org);
 }
 
@@ -80,7 +79,6 @@ t_label		*add_lab(t_byte b, t_byte f, t_label *l)
 		n++;
 	l = (t_label *)realloc(l, sizeof(t_label) * (n + 2));
 	l[n].name = ft_strdup(b.label);
-	free(b.label);
 	l[n++].loc = f.count - b.count;
 	l[n].name = NULL;
 	l[n].loc = 0;
@@ -97,20 +95,20 @@ uint8_t		*labelify(t_byte f, t_label *l)
 	n = -1;
 	while (f.l[++n].name)
 	{
-		ft_printf("|%s : ", f.l[n].name);
 		i = -1;
 		while (l[++i].name)
 			if (!ft_strcmp(l[i].name, f.l[n].name))
 				break ;
 		diff = l[i].loc - f.l[n].addr;
-//		ft_printf("%s|", l[i].name);
-		ft_printf("%.4x/%d = %d - %d\n", diff, diff, l[i].loc, f.l[n].addr);
 		diff = END16(diff);
 		ft_memcpy(&f.code[f.l[n].loc], &diff, 2);
 	}
 	n = -1;
 	if (l)
+	{
 		while (l[++n].name)
 			free(l[n].name);
+		free(l);
+	}
 	return (f.code);
 }

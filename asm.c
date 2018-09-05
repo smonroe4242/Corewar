@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/26 03:37:03 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/04 10:30:47 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/04 21:00:26 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ int		main(int ac, char **av)
 	t_byte_free(&file);
 //	pause();
 	ft_printf("Final byte count: %d\n", file.count);
-//	system("hexdump resources/champs/Gagnant.cor | tail 22");
 	return (0);
 }
 
