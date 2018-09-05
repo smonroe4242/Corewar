@@ -1,0 +1,12 @@
+.name		"Reg Test"
+.comment	"Reg Test"
+
+		fork	%:add
+sub:	sub		%1,r2,r2
+		st		r2,64
+		and		r3,r3,r3
+		zjmp	%:sub
+add:	add		%1,r2,r2
+		st		r2,64
+		and		r3,r3,r3
+		zjmp	%:add
