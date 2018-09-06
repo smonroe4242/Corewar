@@ -6,7 +6,7 @@
 /*   By: smonroe <smonroe@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/05 03:51:26 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/05 17:59:51 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/05 22:55:23 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,19 @@ t_head	file_stuff(char *cor)
 		exit_msg(2, cor);
 	ret = read(fd, buf, PROG_NAME_LENGTH);
 	ft_memcpy(file.name, buf, PROG_NAME_LENGTH);
-	ret = read(fd, buf, 4);
-	ft_memcpy(&file.size, buf, 4);
-	file.size = END32(file.size);
-	ret = read(fd, buf, COMMENT_LENGTH);
-	ft_memcpy(file.comment, buf, COMMENT_LENGTH);
-	if ((ret = read(fd, buf, file.size)) != file.size)
-		exit_msg(2, cor);
+	ft_printf("Name: %s\n", file.name);
+	ret = read(fd, buf, 8);
+	ft_print_mem((uint8_t *)&buf[0], 8);
+	ft_memcpy(&file.size, &buf[4], 4);
+	file.size = endian_swap32(file.size);
+	ft_printf("size: %d\n", file.size);
+	ret = read(fd, buf, COMMENT_LENGTH - 4);
+	ft_memcpy(file.comment, buf, COMMENT_LENGTH - 4);
+	ft_printf("comment: %s\n", file.comment);
+	ret = read(fd, buf, file.size);
 	ft_memcpy(file.code, buf, file.size);
+	ft_print_mem(file.code, file.size);
+	ft_printf("got code\n");
 	if ((ret = read(fd, buf, 1)))
 		exit_msg(2, cor);
 	file.pnum = --pn;

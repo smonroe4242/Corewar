@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2018/09/04 23:32:10 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/05 22:45:14 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,6 @@ t_op    op_tab[17] =
 **if first num == 0, whole command will be 3 bytes. 1 byte opcode, no ACB byte, 2 byte direct.
 **if second num == 1, last arg will be 1 byte REG, except sti where IND or REG is interpreted as 2 byte IND.
 */
-
-void		ft_print_mem(uint8_t *mem, int n)
-{
-	char	*chars;
-	int		i;
-
-	if (mem == NULL)
-		return ;
-	chars = "0123456789abcdef";
-	i = -1;
-	while (++i < n)
-	{
-		if(!(i % 16))
-		{
-			ft_putchar('\n');
-			ft_printf("%.7x ", i + HEADER_SIZE);
-		}
-		ft_putchar(chars[mem[i] >> 4]);
-		ft_putchar(chars[mem[i] & 0x0f]);
-		ft_putchar(' ');
-
-	}
-	ft_putchar('\n');
-}
 
 void		t_byte_free(t_byte *x)
 {

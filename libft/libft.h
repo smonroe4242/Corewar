@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/16 06:44:19 by smonroe           #+#    #+#             */
-/*   Updated: 2018/08/31 05:58:02 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/05 22:43:35 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,10 @@ char				*parse(char *s, va_list ap);
 int					ft_printf(char *str, ...);
 
 /*
-**		libftprintf
+**		libft
 */
 
+void				ft_print_mem(uint8_t *mem, int n);
 int					get_next_line(int fd, char **line);
 
 int					ft_rand(int max);
