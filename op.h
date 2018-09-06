@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/09/03 22:12:25 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/05 17:54:33 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef char					t_arg_type;
 # define COREWAR_EXEC_MAGIC		0xea83f3
 # define HEADER_SIZE			PROG_NAME_LENGTH + COMMENT_LENGTH + 8
 # define END16(x) ((x << 8) | (x >> 8))
-# define END3(x) (((x & 0xff0000) >> 8) | ((x & 0xff00) << 8))
+# define END3(x) ((x & 0xff0000) >> 8) | ((x & 0xff00) << 8)
 # define END32(x) ((x << 24) | (x >> 24) | END3(x))
 
 typedef struct					s_header

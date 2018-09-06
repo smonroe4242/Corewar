@@ -6,7 +6,7 @@
 /*   By: smonroe <smonroe@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/05 03:53:45 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/05 04:58:21 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/05 17:36:05 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,16 @@ typedef struct		s_head
 	char			comment[COMMENT_LENGTH];
 	int				size;
 	uint8_t			code[CHAMP_MAX_SIZE];
-}
+}					t_head;
 
 typedef struct		s_pc
 {
 	uint8_t			*p;
 	int				r[REG_NUMBER + 1];
 	uint8_t			carry;
-	t_pc			*next;
+	struct t_pc		*next;
 }					t_pc;
 
-typedef struct		s_flg
-{
-	
+t_head				file_stuff(char *cor);
 
 #endif
