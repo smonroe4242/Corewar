@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/09/05 22:50:47 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/06 05:39:50 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 #ifndef OP_H
 # define OP_H
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <fcntl.h>
 
 # define IND_SIZE				2
