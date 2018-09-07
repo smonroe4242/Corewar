@@ -6,46 +6,46 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/06 00:22:39 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/06 09:42:03 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/06 22:43:50 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+
+t_cyc	do_cycle(uint8_t **mem, uint8_t **ref, t_pc *pc, int c)
+{
+	t_cyc	info;
+
+	pc_scan_op(mem, ref, pc);
+	return (info);
+}
 
 void	init_env(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], t_pc *pc)
 {
 	int		cycle;
 	int		die;
 	int		step;
+	t_cyc	info;
 
 	cycle = 0;
 	die = CYCLE_TO_DIE;
-	(void)mem;
-	(void)ref;
-//	pc->alive = 1;
-//	pc->next->alive = 1;
-//	pc->next->next->alive = 1;
-	pc->next->next->next->alive = 1;
 	while (die > 0)
 	{
 		step = 0;
 		while (step++ < die)
-		{
-//			ft_dump_mem(*mem, *ref);
-			ft_printf("%d:%d\n", step, cycle);
-			cycle++;
-		}
+			info = do_cycle(mem, ref, pc, cycle++);
 		pc_scan_rem(pc);
 		if (!pc->alive)
 			pc = pc_rem_head(pc);
-		prove(pc);
-		die -= CYCLE_DELTA;
+		if (info.kill)
+			die -= CYCLE_DELTA;
 	}
 	die = 0;
-	while (champ[die].pnum != champ[0].pnum)
+	while (champ[die].pnum != info.last)
 		die++;
 	ft_printf("Player %d (%s) won\n", champ[die].pnum, champ[die].name);
-	pc_free(pc);
+	if (pc)
+		pc_free(pc);
 }
 
 void	init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], int n)

@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/06 04:23:32 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/06 18:53:20 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/06 22:43:34 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ t_pc	*pc_new(uint32_t pnum, uint16_t loc)
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
+}
+
+void	pc_scan_op(uint8_t **mem, uint8_t **ref, t_pc *pc)
+{
+	
 }
 
 void	pc_app(t_pc *org, t_pc *new)

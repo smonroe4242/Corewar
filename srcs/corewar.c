@@ -6,7 +6,7 @@
 /*   By: smonroe <smonroe@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/05 03:51:26 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/06 09:38:00 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/06 19:53:56 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void    ft_dump_mem(uint8_t *mem, uint8_t *ref)
     uint8_t tmp;
 
     chars = "0123456789abcdef";
-    system("clear");
+    system("sleep 0.2; clear");
     write(1, "\e[0m", 4);
     i = -1;
     tmp = 0;
