@@ -6,7 +6,7 @@
 /*   By: smonroe <smonroe@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/05 03:53:45 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/06 19:53:56 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/07 00:05:14 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,18 @@ typedef struct		s_pc
 
 typedef struct		s_cyc
 {
+	int				cycle;
 	int				last;
 	uint8_t			kill;
+	uint8_t			**mem;
+	uint8_t			**ref;
+	t_pc			*pc;
 }					t_cyc;
 
 void				prove(t_pc *pc);
 
 t_pc				*pc_new(uint32_t pnum, uint16_t loc);
+void				pc_scan_op(t_cyc *info);
 void				pc_app(t_pc *org, t_pc *new);
 void				pc_rem(t_pc *old);
 t_pc				*pc_rem_head(t_pc *pc);

@@ -6,37 +6,41 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/06 00:22:39 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/06 22:43:50 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/06 23:20:26 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-t_cyc	do_cycle(uint8_t **mem, uint8_t **ref, t_pc *pc, int c)
+t_cyc	t_cyc_init(uint8_t **mem, uint8_t **ref, t_pc *pc)
 {
 	t_cyc	info;
 
-	pc_scan_op(mem, ref, pc);
+	info.cycle = 0;
+	info.last = 0;
+	info.kill = 0;
+	info.mem = mem;
+	info.ref = ref;
+	info.pc = pc;
 	return (info);
 }
 
 void	init_env(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], t_pc *pc)
 {
-	int		cycle;
 	int		die;
 	int		step;
 	t_cyc	info;
 
-	cycle = 0;
+	info = t_cyc_init(mem, ref, pc);
 	die = CYCLE_TO_DIE;
 	while (die > 0)
 	{
 		step = 0;
 		while (step++ < die)
-			info = do_cycle(mem, ref, pc, cycle++);
+			pc_scan_op(&info);
 		pc_scan_rem(pc);
-		if (!pc->alive)
-			pc = pc_rem_head(pc);
+		if (!info.pc->alive)
+			info.pc = pc_rem_head(info.pc);
 		if (info.kill)
 			die -= CYCLE_DELTA;
 	}
@@ -44,8 +48,8 @@ void	init_env(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], t_pc *pc)
 	while (champ[die].pnum != info.last)
 		die++;
 	ft_printf("Player %d (%s) won\n", champ[die].pnum, champ[die].name);
-	if (pc)
-		pc_free(pc);
+	if (info.pc)
+		pc_free(info.pc);
 }
 
 void	init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], int n)

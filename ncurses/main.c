@@ -6,85 +6,43 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/06 20:05:57 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/06 22:25:41 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/06 23:54:52 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <curses.h>
 #include "../libft/libft.h"
+#include <fcntl.h>
 #define X 0
 #define Y 0
-#define MAC A_BOLD
+
 int	main(void)
 {
-	int ch;
-	int	y;
-	int	x;
+	int 	ch;
+	int		row;
+	int		col;
+	int		fd;
+	char	*line;
 
+	col = 0;
+	row = 0;
 	initscr();
-	raw();
-	keypad(stdscr, TRUE);
 	noecho();
-	getmaxyx(stdscr, y, x);
-	x /= 2;
-	y /= 2;
-	attron(MAC);
+	fd = open("enter", O_RDONLY);
+	getmaxyx(stdscr, row, col);
+	start_color();
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+	attron(COLOR_PAIR(1));
+	ch = -18;
+	while (get_next_line(fd, &line))
+	{
+		mvprintw(row / 2 + ch++, (col - ft_strlen(line)) / 2, "%s", line);
+		free(line);
+	}
+	refresh();
 	ch = getch();
-	if (ch == 97)
-	{
-		while (1)
-		{
-			ch = getch();
-			if (ch == KEY_UP)
-				mvprintw(y - 1, x, "U");
-			else if (ch == KEY_DOWN)
-				mvprintw(y + 1, x, "D");
-			else if (ch == KEY_LEFT)
-				mvprintw(y, x - 2, "L");
-			else if (ch == KEY_RIGHT)
-				mvprintw(y, x + 2, "R");
-			else if (ch == 10 || ch == 3)
-				break ;
-			else
-				mvprintw(0, 0, "%d\n", ch);
-			refresh();
-		}
-	}
-	else
-	{
-		while (1)
-		{
-			ch = getch();
-			if (ch == 3)
-				break ;
-			mvprintw(y - 12, x - 58, " _________   _        _      ___________     _________   ____                ___________     _       _   _________");
-			mvprintw(y - 11, x - 58, "|*________| |*\\      |*|    |____***____|   |*________| |**__*\\             |____***____|   |*|     |*| |*________|");
-			mvprintw(y - 10, x - 58, "|*|         |**\\     |*|         |*|        |*|         |*|  |*|                 |*|        |*|     |*| |*|");
-			mvprintw(y - 9, x - 58, "|*|____     |***\\    |*|         |*|        |*|____     |*|__|*|                 |*|        |*|_____|*| |*|____");
-			mvprintw(y - 8, x - 58, "|* ____|    |*|\\*\\   |*|         |*|        |**____|    |*****/                  |*|        |* _____ *| |* ____|");
-			mvprintw(y - 7, x - 58, "|*|         |*| \\*\\  |*|         |*|        |*|         |*|\\*\\                   |*|        |*|     |*| |*|");
-			mvprintw(y - 6, x - 58, "|*|_______  |*|  \\*\\_|*|         |*|        |*|_______  |*| \\*\\                  |*|        |*|     |*| |*|_______");
-			mvprintw(y - 5, x - 58, "|_________| |_|   \\___/          |_|        |_________| |_|  \\_\\                 |_|        |_|     |_| |_________|");
-			color_set(1, NULL);
-			mvprintw(y - 2, x - 46, " __________________      __________________     _______________          __________________");
-			mvprintw(y - 1, x - 46, "{******************}    {******************}    {***************\\       {******************}");
-			mvprintw(y, x - 46, "{*** ______________}    {****__________****}    {*****______*****\\      {****______________}");
-			mvprintw(y + 1, x - 46, "{***}                   {***}          {***}    {****|       \\****\\     {***}");
-			mvprintw(y + 2, x - 46, "{***}                   {***}          {***}    {****|_______/****/     {***}");
-			mvprintw(y + 3, x - 46, "{***}                   {***}          {***}    {****************/      {***}_________");
-			mvprintw(y + 4, x - 46, "{***}                   {***}          {***}    {****____****___/       {*************}");
-			mvprintw(y + 5, x - 46, "{***}                   {***}          {***}    {***}    \\***\\          {****_________}");
-			mvprintw(y + 6, x - 46, "{***}                   {***}          {***}    {***}     \\***\\         {***}");
-			mvprintw(y + 7, x - 46, "{***}                   {***}          {***}    {***}      \\***\\        {***}");
-			mvprintw(y + 8, x - 46, "{***}                   {***}          {***}    {***}       \\***\\       {***}");
-			mvprintw(y + 9, x - 46, "{***}______________     {***}__________{***}    {***}        \\***\\      {***}______________");
-			mvprintw(y + 10, x - 46, "{******************}    {******************}    {***}         \\***\\     {******************}");
-			mvprintw(y + 11, x - 46, "{__________________}    {__________________}    {___}          \\___\\    {__________________}");
-			color_set(0, NULL);
-			refresh();
-		}
-	}
-	attroff(MAC);
+	attroff(COLOR_PAIR(0));
+	close(fd);
 	endwin();
 	return (0);
 }
