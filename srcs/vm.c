@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/06 00:22:39 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/06 23:20:26 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/08 00:53:09 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_cyc	t_cyc_init(uint8_t **mem, uint8_t **ref, t_pc *pc)
 
 	info.cycle = 0;
 	info.last = 0;
+	ft_bzero(info.pcount, sizeof(info.pcount));
 	info.kill = 0;
 	info.mem = mem;
 	info.ref = ref;
@@ -37,7 +38,7 @@ void	init_env(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], t_pc *pc)
 	{
 		step = 0;
 		while (step++ < die)
-			pc_scan_op(&info);
+			pc_scan_op(&info, pc);
 		pc_scan_rem(pc);
 		if (!info.pc->alive)
 			info.pc = pc_rem_head(info.pc);

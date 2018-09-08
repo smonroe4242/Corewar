@@ -6,7 +6,7 @@
 /*   By: smonroe <smonroe@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/05 03:53:45 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/07 00:05:14 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/08 14:29:57 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,21 @@ typedef struct		s_cyc
 {
 	int				cycle;
 	int				last;
+	int				pcount[MAX_PLAYERS];
 	uint8_t			kill;
 	uint8_t			**mem;
 	uint8_t			**ref;
 	t_pc			*pc;
 }					t_cyc;
 
+typedef void	(*t_fn)(t_cyc *, t_pc *);
+
 void				prove(t_pc *pc);
 
-t_pc				*pc_new(uint32_t pnum, uint16_t loc);
 void				pc_scan_op(t_cyc *info);
+
+
+t_pc				*pc_new(uint32_t pnum, uint16_t loc);
 void				pc_app(t_pc *org, t_pc *new);
 void				pc_rem(t_pc *old);
 t_pc				*pc_rem_head(t_pc *pc);
@@ -56,9 +61,10 @@ void				pc_free(t_pc *pc);
 
 void				ft_dump_mem(uint8_t *mem, uint8_t *ref);
 t_head				file_stuff(char *cor);
-int					turn(uint8_t **mem, uint8_t **ref, t_pc *pc);
-void				init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], int n);
+
+t_cyc				t_cyc_init(uint8_t **mem, uint8_t **ref, t_pc *pc);
 void				init_env(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], t_pc *pc);
+void				init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], int n);
 void				init_vm(t_head champ[MAX_PLAYERS], int chs);
 
 #endif
