@@ -12,7 +12,7 @@
 
 #include "corewar.h"
 
-t_pc	*pc_new(uint32_t pnum, uint16_t loc)
+t_pc	*pc_new(uint32_t pnum, uint16_t loc, uint8_t op)
 {
 	t_pc	*new;
 
@@ -23,16 +23,12 @@ t_pc	*pc_new(uint32_t pnum, uint16_t loc)
 	new->r[1] = pnum;
 	new->carry = 0;
 	new->alive = 0;
-	new->wait = 0;
+	wait_mod(&new->wait, op);
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
 }
 
-void	pc_scan_op(t_cyc *info)
-{
-	ft_dump_mem(*info->mem, *info->ref);
-}
 
 void	pc_app(t_pc *org, t_pc *new)
 {

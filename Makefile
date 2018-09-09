@@ -18,7 +18,7 @@ SRCDIR = srcs
 
 SRCA = asm.c op.c funcy.c
 
-SRCB = corewar.c vm.c pc.c
+SRCB = corewar.c vm.c pc.c display.c cycle.c
 
 SRCS = $(addprefix $(SRCDIR)/,$(SRCA)) $(addprefix $(SRCDIR)/,$(SRCB))
 

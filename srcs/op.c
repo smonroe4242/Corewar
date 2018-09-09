@@ -12,7 +12,7 @@
 
 #include "op.h"
 
-t_op    op_tab[17] =
+t_op    g_op_tab[17] =
 {
 /*
 **	text		#args		arg types									op code		#cycles			real name		see note;
@@ -72,25 +72,25 @@ uint8_t	acb_byte(int i, char **args, int lc)
 
 	byte = 0;
 	a = 0;
-	while (a < op_tab[i].argc)
+	while (a < g_op_tab[i].argc)
 	{
 		if (ft_strchr("-0123456789:", args[a][0]))
 		{
-			if (op_tab[i].types[a] & T_IND)
+			if (g_op_tab[i].types[a] & T_IND)
 				byte |= (IND_CODE << (6 - (a++ << 1)));
 			else
 				comp_error(1, args[a], lc);
 		}
 		else if (args[a][0] == 'r')
 		{			
-			if (op_tab[i].types[a] & T_REG)
+			if (g_op_tab[i].types[a] & T_REG)
 				byte |= (REG_CODE << (6 - (a++ << 1)));
 			else
 				comp_error(1, args[a], lc);
 		}
 		else if (args[a][0] == '%')
 		{
-			if (op_tab[i].types[a] & T_DIR)
+			if (g_op_tab[i].types[a] & T_DIR)
 				byte |= (DIR_CODE << (6 - (a++ << 1)));
 			else
 				comp_error(1, args[a], lc);
@@ -179,7 +179,7 @@ t_byte arg_no_acb(int i, char *arg, int lc, t_byte prm)
 	(void)i;
 	if (ft_strchr(arg, ':'))
 		prm	= arg_label(prm, arg, 0, lc);
-	else if (op_tab[i].code == 1)
+	else if (g_op_tab[i].code == 1)
 		prm = arg_dir(prm, arg, lc);
 	else
 		prm = arg_ind(prm, arg, lc);
@@ -194,20 +194,20 @@ t_byte	arg_bytes(int i, char **args, int lc, uint8_t acb)
 
 	n = 0;
 	prm = init_t_byte();
-	if (op_tab[i].acb == 0)
+	if (g_op_tab[i].acb == 0)
 		return (arg_no_acb(i, args[0], lc, prm));
 	a = -1;
 	while (args[++a])
 	{
-		if (a > op_tab[i].argc)
+		if (a > g_op_tab[i].argc)
 			comp_error(1, args[a], lc);
 		if (ft_strchr(args[a], ':'))
 			prm = arg_label(prm, args[a], n, lc);
 		else if ((acb >> (6 - (a << 1)) & 0x3) == REG_CODE)
 			prm = arg_reg(prm, args[a], lc);
-		else if ((acb >> (6 - (a << 1)) & 0x3) == DIR_CODE && op_tab[i].flag2 == 1)
+		else if ((acb >> (6 - (a << 1)) & 0x3) == DIR_CODE && g_op_tab[i].flag2 == 1)
 			prm = arg_ind(prm, &args[a][1], lc);
-		else if ((acb >> (6 - (a << 1)) & 0x3) == DIR_CODE && op_tab[i].flag2 == 0)
+		else if ((acb >> (6 - (a << 1)) & 0x3) == DIR_CODE && g_op_tab[i].flag2 == 0)
 			prm = arg_dir(prm, args[a], lc);
 		else if ((acb >> (6 - (a << 1)) & 0x3) == IND_CODE)
 			prm = arg_ind(prm, args[a], lc);
@@ -230,14 +230,14 @@ t_byte	get_bytes(char **coms, char **args, int lc)
 		n++;
 	}
 	i = -1;
-	while (op_tab[++i].name)
-		if (!(ft_strcmp(op_tab[i].name, coms[n])))
+	while (g_op_tab[++i].name)
+		if (!(ft_strcmp(g_op_tab[i].name, coms[n])))
 			break ;
-	if (!op_tab[i].name)
+	if (!g_op_tab[i].name)
 		comp_error(0, coms[n], lc);
 	byte.code = (uint8_t *)realloc(byte.code, 2);
-	byte.code[byte.count++] = (uint8_t)(op_tab[i].code & 0xff);
-	if (op_tab[i].acb)
+	byte.code[byte.count++] = (uint8_t)(g_op_tab[i].code & 0xff);
+	if (g_op_tab[i].acb)
 		byte.code[byte.count++] = acb_byte(i, args, lc);
 	prm = arg_bytes(i, args, lc, byte.code[byte.count - 1]);
 	byte = t_byte_append(byte, prm);

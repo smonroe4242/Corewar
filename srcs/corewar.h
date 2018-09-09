@@ -13,6 +13,10 @@
 #ifndef COREWAR_H
 # define COREWAR_H
 # include "op.h"
+# define MLX 'm'
+# define PRINT 'p'
+# define NCURSES 'n'
+# include <stdio.h>
 
 typedef struct		s_head
 {
@@ -45,26 +49,55 @@ typedef struct		s_cyc
 	t_pc			*pc;
 }					t_cyc;
 
+typedef struct		s_flg
+{
+	uint8_t			print;
+}					t_flg;
+
 typedef void	(*t_fn)(t_cyc *, t_pc *);
 
 void				prove(t_pc *pc);
 
-void				pc_scan_op(t_cyc *info);
+char				*g_optarg;
+int					g_optind;
+int					g_optopt;
+t_flg				ft_setopt(int ac, char **av);
+int					ft_getopt(int ac, char **av, char *flg);
+void				op_live(t_cyc *info, t_pc *pc);
+void				op_ld(t_cyc *info, t_pc *pc);
+void				op_st(t_cyc *info, t_pc *pc);
+void				op_add(t_cyc *info, t_pc *pc);
+void				op_sub(t_cyc *info, t_pc *pc);
+void				op_and(t_cyc *info, t_pc *pc);
+void				op_or(t_cyc *info, t_pc *pc);
+void				op_xor(t_cyc *info, t_pc *pc);
+void				op_zjmp(t_cyc *info, t_pc *pc);
+void				op_ldi(t_cyc *info, t_pc *pc);
+void				op_sti(t_cyc *info, t_pc *pc);
+void				op_fork(t_cyc *info, t_pc *pc);
+void				op_lld(t_cyc *info, t_pc *pc);
+void				op_lldi(t_cyc *info, t_pc *pc);
+void				op_lfork(t_cyc *info, t_pc *pc);
+void				op_aff(t_cyc *info, t_pc *pc);
 
+void				wait_mod(uint16_t *wait, uint8_t op);
+void				pc_scan_op(t_cyc *info, t_pc *pc);
 
-t_pc				*pc_new(uint32_t pnum, uint16_t loc);
+t_pc				*pc_new(uint32_t pnum, uint16_t loc, uint8_t op);
 void				pc_app(t_pc *org, t_pc *new);
 void				pc_rem(t_pc *old);
 t_pc				*pc_rem_head(t_pc *pc);
 void				pc_scan_rem(t_pc *pc);
 void				pc_free(t_pc *pc);
 
-void				ft_dump_mem(uint8_t *mem, uint8_t *ref);
+void				ft_dump_mem(t_cyc *info);
 t_head				file_stuff(char *cor);
+void				exit_msg(int n, char *s);
+void				display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag);
 
 t_cyc				t_cyc_init(uint8_t **mem, uint8_t **ref, t_pc *pc);
-void				init_env(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], t_pc *pc);
-void				init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], int n);
-void				init_vm(t_head champ[MAX_PLAYERS], int chs);
+int					init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag);
+void				init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], t_flg flag);
+void				init_vm(t_head champ[MAX_PLAYERS], t_flg flag);
 
 #endif

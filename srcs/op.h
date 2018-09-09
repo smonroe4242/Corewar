@@ -67,6 +67,18 @@ typedef char					t_arg_type;
 # define END3(x) ((x & 0xff0000) >> 8) | ((x & 0xff00) << 8)
 # define END32(x) ((x << 24) | (x >> 24) | END3(x))
 
+# if MEM_SIZE == 4096
+#  define MEM(x) (x) & 4095
+# else
+#  define MEM(x) (x) % MEM_SIZE
+# endif
+
+# if IDX_MOD == 512
+#  define IDX(x) (x) & 511
+# else
+#  define IDX(x) (x) % IDX_MOD
+# endif
+
 typedef struct					s_header
 {
 	unsigned int				magic;

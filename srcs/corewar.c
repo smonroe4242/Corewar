@@ -12,51 +12,19 @@
 
 #include "corewar.h"
 
-void    color_dt(uint8_t n)
-{
-    if (n == 1)
-        write(1, "\e[34m", 5);
-    else if (n == 2)
-        write(1, "\e[32m", 5);
-    else if (n == 3)
-        write(1, "\e[31m", 5);
-    else if (n == 4)
-        write(1, "\e[36m", 5);
-    else
-        write(1, "\e[0m", 4);
-}
-
-void    ft_dump_mem(uint8_t *mem, uint8_t *ref)
-{
-    char    *chars;
-    int     i;
-    uint8_t tmp;
-
-    chars = "0123456789abcdef";
-    system("sleep 0.2; clear");
-    write(1, "\e[0m", 4);
-    i = -1;
-    tmp = 0;
-    while (++i < MEM_SIZE)
-    {
-        if (ref[i] != tmp)
-            color_dt(ref[i]);
-        tmp = ref[i];
-        if(!(i % 64))
-            ft_putchar('\n');
-        ft_putchar(chars[mem[i] >> 4]);
-        ft_putchar(chars[mem[i] & 0x0f]);
-        ft_putchar(' ');
-    }
-    write(1, "\e[0m\n", 5);
-}
 
 void	exit_msg(int n, char *s)
 {
 	if (!n)
-		ft_printf("Usage: its the goddamn corewar executable\n");
+	{
+		ft_printf("Usage: ./corewar [-p] [-m] [-n] FILE.cor\n-p to enable ");
+		ft_printf("printing to stdout\n-m to enable graphic window mode\n-");
+		ft_printf("n to enable ncurses mode\n\nThe -p -m and -n flags over");
+		ft_printf("ride each other. if multiple have been given, the last ");
+		ft_printf("one will be the output mode.\n");
+	}
 	else if (n == 1)
-		ft_printf("%s is bust dude better luck next time\n", s);
+		ft_printf("Error in file read in for champion file %s\n", s);
 	else if (n == 2)
 		ft_printf("Header got f u c k e d in %s man\n", s);
 	exit(0);
@@ -79,7 +47,7 @@ t_head	file_stuff(char *cor)
 		exit_msg(1, cor);
 	ret = read(fd, buf, 4);
 	ft_memcpy(&ret, &buf, 4);
-	ret = endian_swap32(ret);
+	ret = (uint32_t)END32((uint32_t)ret);
 	if (ret != COREWAR_EXEC_MAGIC)
 		exit_msg(2, cor);
 	ret = read(fd, buf, PROG_NAME_LENGTH);
@@ -95,21 +63,67 @@ t_head	file_stuff(char *cor)
 	return (file);
 }
 
+t_flg	ft_setopt(int ac, char **av)
+{
+	t_flg	flag;
+	int8_t	opt;
+
+	g_optind = 1;
+	while ((opt = ft_getopt(ac, av, "pmn")) != -1)
+	{
+		if (opt == '?')
+			exit_msg(0, NULL);
+		else
+			if (opt == 'p' || opt == 'm' || opt == 'n')
+				flag.print = opt;
+	}
+	return (flag);
+}
+
+int		ft_getopt(int ac, char **av, char *flg)
+{
+	static int	nextchar;
+	int			i;
+
+	g_optind += (&g_optarg == &av[g_optind] ? 1 : 0);
+	g_optarg = NULL;
+	if (g_optind >= ac || av[g_optind][0] != '-')
+		return (-1);
+	i = -1;
+	nextchar++;
+	while (++i < (int)ft_strlen(flg))
+	{
+		if (av[g_optind][nextchar] == flg[i])
+		{
+			g_optarg = (flg[i + 1] == ':' ? &av[g_optind + 1][0] : NULL);
+			if (!(av[g_optind][nextchar + 1]))
+			{
+				g_optind++;
+				nextchar = 0;
+			}
+//			g_optind += (g_optarg) ? 1 : 0;
+			return (flg[i]);
+		}
+	}
+	g_optopt = av[g_optind][nextchar];
+	return ('?');
+}
+
 int		main(int ac, char **av)
 {
 	t_head	file[MAX_PLAYERS];
-	int		i;
+	t_flg	flag;
 
 	if (ac == 1)
 		exit_msg(0, NULL);
 	ft_bzero(&file, sizeof(t_head) * MAX_PLAYERS);
-	i = 0;
-	while (++i < ac)	
-		file[i - 1] = file_stuff(av[i]);
-	i = 0;
-	while (i < MAX_PLAYERS && file[i].name[0])
-		i++;
-	init_vm(file, i);
+	flag = ft_setopt(ac, av);
+	if (g_optind >= ac)
+		exit_msg(0, NULL);
+	g_optind--;
+	while (++g_optind < ac)
+		file[g_optind - 1] = file_stuff(av[g_optind]);
+	init_vm(file, flag);
 //	pause();
 	return (0);
 }
