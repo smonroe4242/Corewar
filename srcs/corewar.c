@@ -49,7 +49,7 @@ t_head	file_stuff(char *cor)
 		exit_msg(1, cor);
 	ret = read(fd, buf, 4);
 	ft_memcpy(&ret, &buf, 4);
-	ret = (uint32_t)END32((uint32_t)ret);
+	ret = END32((uint32_t)ret);
 	if (ret != COREWAR_EXEC_MAGIC)
 		exit_msg(2, cor);
 	ret = read(fd, buf, PROG_NAME_LENGTH);

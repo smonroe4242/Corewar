@@ -19,29 +19,62 @@ const t_fn g_op_fn[] = {NULL, &op_live, &op_ld, &op_st, &op_add,
 
 void	op_live(t_cyc *info, t_pc *pc)//imp
 {
-	pc->i++;
-	ft_memcpy(&info->last, &info->mem[0][MEM(pc->i)], REG_SIZE);
-	info->last = END32((uint8_t)info->last);
-	info->pcount[-info->last - 1]++;
+	ft_printf("--------------Im alive------------------");
+	ft_memcpy(&info->last, &info->mem[0][MEM(pc->i + 1)], REG_SIZE);
+	info->last = END32((uint32_t)info->last);
+	if (-info->last - 1  < MAX_PLAYERS)
+		info->pcount[-info->last - 1]++;
 	pc->alive++;
-	pc->i += REG_SIZE;
-	pc->i %= MEM_SIZE;
+	pc->i += 5;
 }
 
 void	op_ld(t_cyc *info, t_pc *pc)
 {
-	(void)info;
-	(void)pc;
-	//load REG_SIZE bytes from pc + arg and place in reg
-	//check if first arg is ind or dir
-	//
+	uint8_t		reg;
+	uint16_t	loc;
+
+	ft_printf("-----------------ld--%.2x---------------------", info->mem[0][MEM(pc->i + 1)]);
+	if (info->mem[0][MEM(pc->i + 1)] == 0x90)
+	{
+		ft_printf("ACB:90\n");
+		reg = info->mem[0][MEM(pc->i + 6)];
+		ft_memcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + 2)], REG_SIZE);
+		pc->r[reg] = END32((uint32_t)pc->r[reg]);
+		pc->i += 7;
+	}
+	else if (info->mem[0][MEM(pc->i + 1)] == 0xd0)
+	{
+		ft_printf("ACB:d0\n");
+		reg = info->mem[0][MEM(pc->i + 4)];
+		loc = (uint16_t)info->mem[0][MEM(pc->i + 2)];
+		loc = END16(loc);
+		ft_memcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + IDX(loc))], REG_SIZE);
+		pc->r[reg] = END16(pc->r[reg]);
+		pc->i += 5;
+	}
+	else
+		pc->i++;
 }
 
 void	op_st(t_cyc *info, t_pc *pc)//imp
 {
-	(void)info;
-	(void)pc;	
-	//store REG_SIZE bytes from reg and write at mem[i + arg]
+	uint8_t		loc;
+
+	ft_printf("-----------------st---------------------");
+	if (info->mem[0][MEM(pc->i + 1)] == 0x50)
+	{
+		pc->r[info->mem[0][MEM(pc->i + 3)]] = pc->r[info->mem[0][MEM(pc->i + 2)]];
+		pc->i += 4;
+	}
+	else if (info->mem[0][MEM(pc->i + 1)] == 0x70)
+	{
+		loc = (uint16_t)info->mem[0][MEM(pc->i + 3)];
+		loc = END16(loc);
+		ft_memcpy(&info->mem[0][MEM(pc->i + IDX(loc))], &pc->r[info->mem[0][MEM(pc->i + 2)]], REG_SIZE);
+		pc->i += 5;
+	}
+	else
+		pc->i++;
 }
 
 void	op_add(t_cyc *info, t_pc *pc)
@@ -61,19 +94,19 @@ void	op_sub(t_cyc *info, t_pc *pc)
 void	op_and(t_cyc *info, t_pc *pc)//imp
 {
 	(void)info;
-	(void)pc;
+	pc->carry = 1;
 }
 
 void	op_or(t_cyc *info, t_pc *pc)
 {
 	(void)info;
-	(void)pc;
+	pc->carry = 1;
 }
 
 void	op_xor(t_cyc *info, t_pc *pc)
 {
 	(void)info;
-	(void)pc;
+	pc->carry = 1;
 }
 
 void	op_zjmp(t_cyc *info, t_pc *pc)//imp
@@ -95,7 +128,6 @@ void	op_ldi(t_cyc *info, t_pc *pc)
 {
 	(void)info;
 	(void)pc;
-	
 }
 
 void	op_sti(t_cyc *info, t_pc *pc)
@@ -162,14 +194,16 @@ void	wait_mod(uint16_t *wait, uint8_t op)
 
 void	pc_scan_op(t_cyc *info, t_pc *pc)
 {
-	//ft_printf("at %.2x for %d more cycles\n", info->mem[0][pc->i], pc->wait);
+	ft_printf("at %.2x for %d more cycles\n", info->mem[0][pc->i], pc->wait);
 	pc->i %= MEM_SIZE;
 	if (info->mem[0][pc->i] < 1 || info->mem[0][pc->i] > 16)
 		pc->i++;
 	else if (!pc->wait)
 	{
+		ft_printf("Doing function, pc->i = %d;", pc->i);
 		g_op_fn[info->mem[0][pc->i]](info, pc);
 		wait_mod(&pc->wait, info->mem[0][pc->i]);
+		ft_printf("Updated to %d\n", pc->i);
 	}
 	else if (pc->wait > 0)
 		pc->wait--;
