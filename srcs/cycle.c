@@ -17,90 +17,99 @@ extern const t_fn g_op_fn[] = {NULL, &op_live, &op_ld, &op_st, &op_add,
 							&op_ldi, &op_sti, &op_fork, &op_lld, &op_lldi,
 							&op_lfork, &op_aff}
 
-void	op_live(info, pc)
+void	op_live(t_cyc *info, t_pc *pc)
 {
 	pc->i++;
 	ft_memcpy(info->last, info->mem[pc->i], REG_SIZE);
-	info->last = END32(info->last);
+	info->last = END32((uint8_t)info->last);
 	info->pcount[-info->last - 1]++;
 	pc->alive++;
 	pc->i += REG_SIZE;
+	pc->i %= MEM_SIZE;
 }
 
-void	op_ld(info, pc)
+void	op_ld(t_cyc *info, t_pc *pc)
+{
+	//load REG_SIZE bytes from pc + arg and place in reg
+}
+
+void	op_st(t_cyc *info, t_pc *pc)
+{
+	//store REG_SIZE bytes from reg and write at mem[i + arg]
+}
+
+void	op_add(t_cyc *info, t_pc *pc)
 {
 	
 }
 
-void	op_st(info, pc)
+void	op_sub(t_cyc *info, t_pc *pc)
 {
-
-}
-
-void	op_add(info, pc)
-{
-
-}
-
-void	op_sub(info, pc)
-{
-
-}
-
-void	op_and(info, pc)
-{
-
-}
-
-void	op_or(info, pc)
-{
-
-}
-
-void	op_xor(info, pc)
-{
-
-}
-
-void	op_zjmp(info, pc)
-{
-	pc->i++;
 	
 }
 
-void	op_ldi(info, pc)
+void	op_and(t_cyc *info, t_pc *pc)
 {
-
+	
 }
 
-void	op_sti(info, pc)
+void	op_or(t_cyc *info, t_pc *pc)
 {
-
+	
 }
 
-void	op_fork(info, pc)
+void	op_xor(t_cyc *info, t_pc *pc)
 {
-
+	
 }
 
-void	op_lld(info, pc)
+void	op_zjmp(t_cyc *info, t_pc *pc)
 {
+	int16_t addr;
 
+	if (pc->carry)
+	{
+		pc->i++;
+		ft_memrcpy(&addr, info->mem[pc->i], 2);
+		pc->i += addr % IDX_MOD;
+	}
+	else
+		pc->i += 3;
 }
 
-void	op_lldi(info, pc)
+void	op_ldi(t_cyc *info, t_pc *pc)
 {
-
+	
 }
 
-void	op_lfork(info, pc)
+void	op_sti(t_cyc *info, t_pc *pc)
 {
-
+	
 }
 
-void	op_aff(info, pc)
+void	op_fork(t_cyc *info, t_pc *pc)
 {
+	
+}
 
+void	op_lld(t_cyc *info, t_pc *pc)
+{
+	
+}
+
+void	op_lldi(t_cyc *info, t_pc *pc)
+{
+	
+}
+
+void	op_lfork(t_cyc *info, t_pc *pc)
+{
+	//same as fork but no idx_mod
+}
+
+void	op_aff(t_cyc *info, t_pc *pc)
+{
+	//print single reg val to stdout
 }
 
 void	wait_mod(t_pc *pc, uint8_t op)
