@@ -20,6 +20,7 @@ t_pc	*pc_new(uint32_t pnum, uint16_t loc, uint8_t op)
 	new->i = loc;
 	ft_memset(&new->r, 0, sizeof(new->r));
 	new->r[0] = -pnum;
+	ft_memrcpy(&new->r[1], &pnum, 4);
 	new->r[1] = pnum;
 	new->carry = 0;
 	new->alive = 0;

@@ -68,20 +68,20 @@ void	init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], t_flg fl
 		n++;
 	//ft_printf("Printing mem in init_proc();\n");
 	//ft_print_mem(mem[0], MEM_SIZE);
-	ft_printf("We have %d champions in the arena.\n", n);
-	ft_printf("creating link for champion 1 now\n");
+	ft_printf("\tWe have %d champions in the arena.\n", n);
+	ft_printf("\tcreating link for champion 1 now\n");
 	pc = pc_new(champ[0].pnum, 0, mem[0][0]);
 	i = 0;
 	if (n > 1)
 		while (++i < n)
 		{
-			ft_printf("appending link for champion %d now\n", i);
-			ft_printf("%d : ", champ[i].pnum);
+			ft_printf("\tappending link for champion %d now\n", i);
+			ft_printf("\t\t%d : ", champ[i].pnum);
 			ft_printf("mem[%d] = ", MEM_SIZE / n * i);
 			ft_printf("%d---\n", mem[0][MEM_SIZE / n * i]);
 			pc_app(pc, pc_new(champ[i].pnum, MEM_SIZE / n * i, mem[0][MEM_SIZE / n * i]));
 		}
-	ft_printf("champions ready!\n");
+	ft_printf("\tchampions ready!\n");
 	info = t_cyc_init(mem, ref, pc);
 	if (!(winner = init_env(info, champ, flag)))
 		ft_printf("There has been a tie!\n", champ[0].pnum, champ[0].name);
@@ -106,7 +106,7 @@ void	init_vm(t_head champ[MAX_PLAYERS], t_flg flag)
 	n = 0;
 	while (champ[n].pnum && n < MAX_PLAYERS)
 		n++;
-	ft_printf("%d Champions have entered the Arena!\n", n);
+	ft_printf("\t%d Champions have entered the Arena!\n", n);
 	if (!n)
 		exit_msg(n, NULL);
 	i = -1;

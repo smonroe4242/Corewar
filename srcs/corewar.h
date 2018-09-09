@@ -57,6 +57,7 @@ typedef struct		s_flg
 typedef void	(*t_fn)(t_cyc *, t_pc *);
 
 void				prove(t_pc *pc);
+void				ft_memrcpy(void *dst, void *src, size_t n);
 
 char				*g_optarg;
 int					g_optind;

@@ -12,6 +12,16 @@
 
 #include "corewar.h"
 
+void	ft_memrcpy(void *dst, void *src, size_t n)
+{
+	uint8_t		*p;
+	uint8_t		*w;
+
+	p = src + n - 1;
+	w = dst;
+	while (n--)
+		*(w++) = *(p--);
+}
 
 void	exit_msg(int n, char *s)
 {
@@ -48,15 +58,13 @@ t_head	file_stuff(char *cor)
 	if ((fd = open(cor, O_RDONLY)) == 1 || (read(fd, buf, 0)))
 		exit_msg(1, cor);
 	ret = read(fd, buf, 4);
-	ft_memcpy(&ret, &buf, 4);
-	ret = END32((uint32_t)ret);
+	ft_memrcpy(&ret, buf, 4);
 	if (ret != COREWAR_EXEC_MAGIC)
 		exit_msg(2, cor);
 	ret = read(fd, buf, PROG_NAME_LENGTH);
 	ft_memcpy(file.name, buf, PROG_NAME_LENGTH);
 	ret = read(fd, buf, 8);
-	ft_memcpy(&file.size, &buf[4], 4);
-	file.size = endian_swap32(file.size);
+	ft_memrcpy(&file.size, &buf[4], 4);
 	ret = read(fd, buf, COMMENT_LENGTH - 4);
 	ft_memcpy(file.comment, buf, COMMENT_LENGTH - 4);
 	ret = read(fd, buf, file.size);
