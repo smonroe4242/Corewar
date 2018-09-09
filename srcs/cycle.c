@@ -33,6 +33,8 @@ void	op_ld(t_cyc *info, t_pc *pc)
 	(void)info;
 	(void)pc;
 	//load REG_SIZE bytes from pc + arg and place in reg
+	//check if first arg is ind or dir
+	//
 }
 
 void	op_st(t_cyc *info, t_pc *pc)//imp
@@ -160,7 +162,7 @@ void	wait_mod(uint16_t *wait, uint8_t op)
 
 void	pc_scan_op(t_cyc *info, t_pc *pc)
 {
-	ft_printf("at %.2x for %d more cycles\n", info->mem[0][pc->i], pc->wait);
+	//ft_printf("at %.2x for %d more cycles\n", info->mem[0][pc->i], pc->wait);
 	pc->i %= MEM_SIZE;
 	if (info->mem[0][pc->i] < 1 || info->mem[0][pc->i] > 16)
 		pc->i++;

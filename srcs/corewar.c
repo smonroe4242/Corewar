@@ -27,6 +27,8 @@ void	exit_msg(int n, char *s)
 		ft_printf("Error in file read in for champion file %s\n", s);
 	else if (n == 2)
 		ft_printf("Header got f u c k e d in %s man\n", s);
+	else if (n == 3)
+		ft_printf("Error in grabbing flags. Only p, n, and m are available.\n");
 	exit(0);
 }
 
@@ -72,7 +74,7 @@ t_flg	ft_setopt(int ac, char **av)
 	while ((opt = ft_getopt(ac, av, "pmn")) != -1)
 	{
 		if (opt == '?')
-			exit_msg(0, NULL);
+			exit_msg(3, NULL);
 		else
 			if (opt == 'p' || opt == 'm' || opt == 'n')
 				flag.print = opt;
@@ -113,16 +115,20 @@ int		main(int ac, char **av)
 {
 	t_head	file[MAX_PLAYERS];
 	t_flg	flag;
+	int		i;
 
 	if (ac == 1)
 		exit_msg(0, NULL);
 	ft_bzero(&file, sizeof(t_head) * MAX_PLAYERS);
 	flag = ft_setopt(ac, av);
+	ft_printf("g_optind = %d and ac = %d\n", g_optind, ac);
 	if (g_optind >= ac)
 		exit_msg(0, NULL);
-	g_optind--;
-	while (++g_optind < ac)
-		file[g_optind - 1] = file_stuff(av[g_optind]);
+	ft_printf("Going through files now\n");
+	i = 0;
+	while (g_optind < ac && i < MAX_PLAYERS)
+		file[i++] = file_stuff(av[g_optind++]);
+	ft_printf("Success! Initializing vm now.\n");
 	init_vm(file, flag);
 //	pause();
 	return (0);

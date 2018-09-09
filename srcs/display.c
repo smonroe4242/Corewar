@@ -33,19 +33,20 @@ void    ft_dump_mem(t_cyc *info)
     uint8_t tmp;
 
     chars = "0123456789abcdef";
-    system("sleep 0.2; clear");
+    system("clear");
+    ft_printf("Cycle: %.5d\t\tLast Live Call: %d\n", info->cycle, info->last);
     write(1, "\e[0m", 4);
     i = -1;
     tmp = 0;
     while (++i < MEM_SIZE)
     {
-        if (*info->ref[i] != tmp)
-            color_dt(*info->ref[i]);
-        tmp = *info->ref[i];
+        if (info->ref[0][i] != tmp)
+            color_dt(info->ref[0][i]);
+        tmp = info->ref[0][i];
         if(!(i % 64))
             ft_putchar('\n');
-        ft_putchar(chars[*info->mem[i] >> 4]);
-        ft_putchar(chars[*info->mem[i] & 0x0f]);
+        ft_putchar(chars[info->mem[0][i] >> 4]);
+        ft_putchar(chars[info->mem[0][i] & 0x0f]);
         ft_putchar(' ');
     }
     write(1, "\e[0m\n", 5);
