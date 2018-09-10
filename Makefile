@@ -6,7 +6,7 @@
 #    By: smonroe <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/26 22:02:30 by smonroe           #+#    #+#              #
-#    Updated: 2018/09/06 08:49:47 by smonroe          ###   ########.fr        #
+#    Updated: 2018/09/10 00:38:50 by smonroe          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -42,7 +42,7 @@ all: $(NAME)
 
 $(NAME):
 	gcc $(FLG) -c $(SRCS)
-	mv *.o objs/
+	mv *.o $(OBJDIR)/
 	gcc $(FLG) -o $(ASM) $(OBJA) $(INC)
 	gcc $(FLG) -o $(NAME) $(OBJC) $(INC)
 
@@ -56,12 +56,12 @@ re: fclean all
 
 lldb:
 	gcc $(FLG) -c $(SRCS) -g
-	mv *.o objs/
+	mv *.o $(OBJDIR)
 	gcc $(FLG) -o $(ASM) $(OBJA) $(INC) -g
 	gcc $(FLG) -o $(NAME) $(OBJC) $(INC) -g
 
 fsan:
 	gcc $(FLG) -c $(SRCS) -g $(FSAN) -g $(FSAN)
-	mv *.o objs/
+	mv *.o $(OBJDIR)
 	gcc $(FLG) -o $(ASM) $(OBJA) $(INC) -g $(FSAN)
 	gcc $(FLG) -o $(NAME) $(OBJC) $(INC) -g $(FSAN)

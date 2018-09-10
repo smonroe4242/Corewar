@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/06 00:22:39 by smonroe           #+#    #+#             */
-/*   Updated: 2018/09/10 00:43:01 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/08 00:53:09 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 			break ;
 		while (step++ < die)
 		{
-			ft_printf("\e[36m[%d]\e[0m\n", info.cycle);
 			//ft_printf("%d, %d, %d\n", die, step, info.cycle);
 			pc_scan_op(&info, info.pc);
 			display(&info, champ, flag);
