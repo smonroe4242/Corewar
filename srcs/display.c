@@ -33,7 +33,7 @@ void    ft_dump_mem(t_cyc *info)
     uint8_t tmp;
 
     chars = "0123456789abcdef";
-    system("clear");
+    system("sleep 0.2; clear");
     ft_printf("Cycle: %.5d\t\tLast Live Call: %d\n", info->cycle, info->last);
     write(1, "\e[0m", 4);
     i = -1;
