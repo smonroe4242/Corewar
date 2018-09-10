@@ -42,8 +42,7 @@ typedef struct		s_cyc
 {
 	int				cycle;
 	int				last;
-	int				pcount[MAX_PLAYERS];
-	uint8_t			kill;
+	uint32_t		pcount[MAX_PLAYERS];
 	uint8_t			**mem;
 	uint8_t			**ref;
 	t_pc			*pc;
@@ -64,6 +63,9 @@ int					g_optind;
 int					g_optopt;
 t_flg				ft_setopt(int ac, char **av);
 int					ft_getopt(int ac, char **av, char *flg);
+
+uint8_t				acb_arg(uint8_t tb);
+
 void				op_live(t_cyc *info, t_pc *pc);
 void				op_ld(t_cyc *info, t_pc *pc);
 void				op_st(t_cyc *info, t_pc *pc);
@@ -95,7 +97,7 @@ void				ft_dump_mem(t_cyc *info);
 t_head				file_stuff(char *cor);
 void				exit_msg(int n, char *s);
 void				display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag);
-
+void				ft_memfree(uint8_t **m, size_t n);
 t_cyc				t_cyc_init(uint8_t **mem, uint8_t **ref, t_pc *pc);
 int					init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag);
 void				init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], t_flg flag);

@@ -16,21 +16,9 @@ NAME = corewar
 
 SRCDIR = srcs
 
-SRCA = asm.c op.c funcy.c
+SRCA = srcs/asm.c srcs/op.c srcs/funcy.c
 
-SRCB = corewar.c vm.c pc.c display.c cycle.c
-
-SRCS = $(addprefix $(SRCDIR)/,$(SRCA)) $(addprefix $(SRCDIR)/,$(SRCB))
-
-OBJDIR = objs
-
-AOBJ = $(SRCA:.c=.o)
-
-OBJA = $(addprefix $(OBJDIR)/,$(AOBJ))
-
-COBJ = $(SRCB:.c=.o)
-
-OBJC = $(addprefix $(OBJDIR)/,$(COBJ))
+SRCB = srcs/corewar.c srcs/vm.c srcs/pc.c srcs/display.c srcs/cycle.c
 
 INC = -I libft -I . -L libft -lft
 
@@ -41,10 +29,8 @@ FSAN = -fsanitize=address
 all: $(NAME)
 
 $(NAME):
-	gcc $(FLG) -c $(SRCS)
-	mv *.o $(OBJDIR)/
-	gcc $(FLG) -o $(ASM) $(OBJA) $(INC)
-	gcc $(FLG) -o $(NAME) $(OBJC) $(INC)
+	gcc $(FLG) -o $(ASM) $(SRCA) $(INC)
+	gcc $(FLG) -o $(NAME) $(SRCB) $(INC)
 
 clean:
 	/bin/rm -rf *~ \#*\# a.out* $(OBJDIR)/*.o
@@ -55,13 +41,11 @@ fclean: clean
 re: fclean all
 
 lldb:
-	gcc $(FLG) -c $(SRCS) -g
-	mv *.o $(OBJDIR)
-	gcc $(FLG) -o $(ASM) $(OBJA) $(INC) -g
-	gcc $(FLG) -o $(NAME) $(OBJC) $(INC) -g
+	gcc $(FLG) -o $(ASM) $(SRCA) $(INC) -g
+	gcc $(FLG) -o $(NAME) $(SRCB) $(INC) -g
 
 fsan:
 	gcc $(FLG) -c $(SRCS) -g $(FSAN) -g $(FSAN)
 	mv *.o $(OBJDIR)
-	gcc $(FLG) -o $(ASM) $(OBJA) $(INC) -g $(FSAN)
-	gcc $(FLG) -o $(NAME) $(OBJC) $(INC) -g $(FSAN)
+	gcc $(FLG) -o $(ASM) $(SRCA) $(INC) -g $(FSAN)
+	gcc $(FLG) -o $(NAME) $(SRCB) $(INC) -g $(FSAN)

@@ -16,7 +16,8 @@ t_pc	*pc_new(uint32_t pnum, uint16_t loc, uint8_t op)
 {
 	t_pc	*new;
 
-	new = ft_memalloc(sizeof(t_pc));
+	if (!(new = ft_memalloc(sizeof(t_pc))))
+		exit_msg(4, "pc_new");
 	new->i = loc;
 	ft_memset(&new->r, 0, sizeof(new->r));
 	new->r[0] = -pnum;

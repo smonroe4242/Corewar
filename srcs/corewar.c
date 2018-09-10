@@ -39,6 +39,8 @@ void	exit_msg(int n, char *s)
 		ft_printf("Header got f u c k e d in %s man\n", s);
 	else if (n == 3)
 		ft_printf("Error in grabbing flags. Only p, n, and m are available.\n");
+	else if (n == 4)
+		ft_printf("Failed to malloc in %s\n");
 	exit(0);
 }
 

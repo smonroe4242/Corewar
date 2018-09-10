@@ -51,8 +51,7 @@ void    ft_dump_mem(t_cyc *info)
     }
     write(1, "\e[0m\n", 5);
 }
-
-void    display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag)
+void  		 display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag)
 {
     (void)champ;
     if (flag.print == PRINT)
