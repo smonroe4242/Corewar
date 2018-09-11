@@ -59,5 +59,5 @@ void  		 display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag)
     else if (flag.print == MLX)
         ;//mlx function
     else if (flag.print == NCURSES)
-        ;//ncurses function
+        ncurse(info, info->pc, champ);//ncurses function
 }

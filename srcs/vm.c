@@ -54,9 +54,9 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 		while (step++ < die)
 		{
 			pc_scan_op(&info, info.pc);
-			if (flag.print && !(info.cycle % 20))
+			if (flag.print)
 				display(&info, champ, flag);
-			ft_printf("\e[35m%d\e[0m\n", info.cycle);
+//			ft_printf("\e[35m%d\e[0m\n", info.cycle);
 			info.cycle++;
 		}
 		total = live_sum(info.pcount);
@@ -81,6 +81,8 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 	}
 	if (info.pc)
 		pc_free(info.pc);
+	if (flag.print == NCURSES)
+		endwin();
 	return (info.last);
 }
 

@@ -18,9 +18,9 @@ SRCDIR = srcs
 
 SRCA = srcs/asm.c srcs/op.c srcs/funcy.c
 
-SRCB = srcs/corewar.c srcs/vm.c srcs/pc.c srcs/display.c srcs/cycle.c
+SRCB = srcs/corewar.c srcs/vm.c srcs/pc.c srcs/display.c srcs/cycle.c srcs/curse.c
 
-INC = -I libft -I . -L libft -lft
+INC = -I libft -I . -lncurses -L libft -lft
 
 FLG = -Wall -Werror -Wextra
 
@@ -45,7 +45,5 @@ lldb:
 	gcc $(FLG) -o $(NAME) $(SRCB) $(INC) -g
 
 fsan:
-	gcc $(FLG) -c $(SRCS) -g $(FSAN) -g $(FSAN)
-	mv *.o $(OBJDIR)
 	gcc $(FLG) -o $(ASM) $(SRCA) $(INC) -g $(FSAN)
 	gcc $(FLG) -o $(NAME) $(SRCB) $(INC) -g $(FSAN)

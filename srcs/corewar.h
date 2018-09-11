@@ -12,11 +12,11 @@
 
 #ifndef COREWAR_H
 # define COREWAR_H
+# include <curses.h>
 # include "op.h"
 # define MLX 'm'
 # define PRINT 'p'
 # define NCURSES 'n'
-# include <stdio.h>
 # define ACB_ARG(x) ((x == 3) ? 4 : x)
 
 typedef struct		s_head
@@ -58,7 +58,7 @@ typedef void	(*t_fn)(t_cyc *, t_pc *);
 
 void				prove(t_pc *pc);
 void				ft_memrcpy(void *dst, void *src, size_t n);
-
+void				ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS]);
 char				*g_optarg;
 int					g_optind;
 int					g_optopt;
