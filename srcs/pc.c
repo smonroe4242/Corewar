@@ -23,6 +23,7 @@ t_pc	*pc_new(uint32_t pnum, uint16_t loc, uint8_t op)
 	new->r[0] = -pnum;
 	ft_memrcpy(&new->r[1], &pnum, 4);
 	new->r[1] = pnum;
+	//what? ^^^^ choose one; Veryify which one works first;
 	new->carry = 0;
 	new->alive = 0;
 	wait_mod(&new->wait, op);

@@ -17,6 +17,7 @@
 # define PRINT 'p'
 # define NCURSES 'n'
 # include <stdio.h>
+# define ACB_ARG(x) ((x == 3) ? 4 : x)
 
 typedef struct		s_head
 {
@@ -64,7 +65,7 @@ int					g_optopt;
 t_flg				ft_setopt(int ac, char **av);
 int					ft_getopt(int ac, char **av, char *flg);
 
-uint8_t				acb_arg(uint8_t tb);
+//uint8_t				ACB_ARG(uint8_t tb);
 
 void				op_live(t_cyc *info, t_pc *pc);
 void				op_ld(t_cyc *info, t_pc *pc);

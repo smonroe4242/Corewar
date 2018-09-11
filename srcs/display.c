@@ -15,9 +15,9 @@
 void    color_dt(uint8_t n)
 {
     if (n == 1)
-        write(1, "\e[34m", 5);
-    else if (n == 2)
         write(1, "\e[32m", 5);
+    else if (n == 2)
+        write(1, "\e[34m", 5);
     else if (n == 3)
         write(1, "\e[31m", 5);
     else if (n == 4)
