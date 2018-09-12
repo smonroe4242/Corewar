@@ -35,13 +35,13 @@ t_pc	*pc_new(uint32_t pnum, uint16_t loc, uint8_t op)
 
 void	pc_app(t_pc *org, t_pc *new)
 {
-	if (org->next)
-		pc_app(org->next, new);
-	else
+	if (!org->next)
 	{
-		org->next = new;
 		new->prev = org;
+		org->next = new;
 	}
+	else
+		pc_app(org->next, new);
 }
 
 void	pc_rem(t_pc *old)

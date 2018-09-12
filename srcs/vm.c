@@ -43,7 +43,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 	int32_t	step;
 	uint32_t	total;
 	uint32_t	kill;
-
+	
 	die = CYCLE_TO_DIE;
 	kill = 0;
 	while (die > 0)

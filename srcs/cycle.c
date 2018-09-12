@@ -59,27 +59,32 @@ uint16_t	acb_lend(uint8_t acb)
 
 uint16_t	acb_len(uint8_t acb)
 {
+	//TEA
 	uint16_t	len;
 
 	len = 2;
 	len += (((acb >> 6) == 3) ? 4 : (acb >> 6));
 	len += ((((acb >> 4) & 3) == 3) ? 4 : ((acb >> 4) & 3));
 	len += ((((acb >> 2) & 3) == 3) ? 4 : ((acb >> 2) & 3));
+	//TIME("acb_len\t")
 	return (len);
 }
 
 void	op_live(t_cyc *info, t_pc *pc)//imp
 {
+	TEA
 	//ft_printf("%d-[ALIVE]\n", pc->r[0]);
 	ft_memrcpy(&info->last, &info->mem[0][MEM(pc->i + 1)], REG_SIZE);
 	if (-info->last - 1  < MAX_PLAYERS)
 		info->pcount[-info->last - 1]++;
 	pc->alive++;
 	pc->i += 5;
+	TIME("op_live\t")
 }
 
 void	op_ld(t_cyc *info, t_pc *pc)
 {
+	TEA
 	uint8_t		reg;
 	uint16_t	loc;
 
@@ -101,10 +106,12 @@ void	op_ld(t_cyc *info, t_pc *pc)
 	}
 	else
 		pc->i++;
+	TIME("op_ld\t")
 }
 
 void	op_st(t_cyc *info, t_pc *pc)//imp
 {
+	TEA
 	int16_t		loc;
 
 	//ft_printf("%d---[ST]\n", pc->r[0]);
@@ -125,10 +132,12 @@ void	op_st(t_cyc *info, t_pc *pc)//imp
 	}
 	else
 		pc->i++;
+	TIME("op_sti\t")
 }
 
 void	op_add(t_cyc *info, t_pc *pc)
 {
+	TEA
 	//ft_printf("%d-----[ADD]\n", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x54)
 	{
@@ -138,10 +147,12 @@ void	op_add(t_cyc *info, t_pc *pc)
 	}
 	else
 		pc->i++;
+	TIME("op_add\t")
 }
 
 void	op_sub(t_cyc *info, t_pc *pc)
 {
+	TEA
 	//ft_printf("%d-----[SUB]\n", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x54)
 	{
@@ -151,10 +162,12 @@ void	op_sub(t_cyc *info, t_pc *pc)
 	}
 	else
 		pc->i++;
+	TIME("op_sub\t")
 }
 
 void	op_and(t_cyc *info, t_pc *pc)//imp
 {
+	TEA
 	uint32_t	d1;
 	uint32_t	d2;
 	uint16_t	loc;
@@ -187,26 +200,32 @@ void	op_and(t_cyc *info, t_pc *pc)//imp
 	//if (!(d1 & d2))
 	pc->carry = 1;
 	pc->i += loc;
+	TIME("op_and\t")
 }
 
 void	op_or(t_cyc *info, t_pc *pc)
 {
+	TEA
 	//ft_printf("%d-------[OR]\n", pc->r[0]);
 	(void)info;
 	pc->carry = 1;
 	//copy op_and when confirmed working
+	TIME("op_or\t")
 }
 
 void	op_xor(t_cyc *info, t_pc *pc)
 {
+	TEA
 	//ft_printf("%d--------[XOR]\n", pc->r[0]);
 	(void)info;
 	pc->carry = 1;
 	//copy op_and when confirmed working
+	TIME("op_xor\t")
 }
 
 void	op_zjmp(t_cyc *info, t_pc *pc)//imp
 {
+	TEA
 	int16_t addr;
 
 	//ft_printf("%d---------[ZJMP]\n", pc->r[0]);
@@ -221,10 +240,12 @@ void	op_zjmp(t_cyc *info, t_pc *pc)//imp
 		//ft_printf("whoops lol~~~\n");
 		pc->i += 3;
 	}
+	TIME("op_zjmp\t")
 }
 
 void	op_ldi(t_cyc *info, t_pc *pc)
 {
+	TEA
 	int32_t		loc;
 	int32_t		tmp;
 	uint8_t		acb;
@@ -246,12 +267,14 @@ void	op_ldi(t_cyc *info, t_pc *pc)
 	//ft_printf("%d\n", loc);
 	ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + IDX((int16_t)loc))], REG_SIZE);
 	pc->i += acb_len(acb);
+	TIME("op_ldi\t")
 }
 
 //[01 | 10 | 11][10 | 01][01]
 
 void	op_sti(t_cyc *info, t_pc *pc)
 {
+	TEA
 	int16_t		loc;
 	int16_t		tmp;
 	uint8_t		acb;
@@ -277,38 +300,35 @@ void	op_sti(t_cyc *info, t_pc *pc)
 	&pc->r[info->mem[0][MEM(pc->i + 2)]], REG_SIZE);
 	ft_memset(&info->ref[0][MEM(pc->i + IDX((int16_t)loc))], pc->r[0], REG_SIZE);
 	pc->i += acb_len(acb);
+	TIME("op_sti\t")
 }
 
 void	op_fork(t_cyc *info, t_pc *pc)
 {
+	TEA
 	//ft_printf("%d------------[FORK]\n", pc->r[0]);
+	clock_t t;
 	int16_t	addr;
 	t_pc	*new;
 
 	ft_memrcpy(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
-//	addr = END16((int16_t)addr);
 	//ft_printf("ADDR: %#.4x : %d; pc->i: %d\n", addr, addr, pc->i);
 	new = pc_new(-pc->r[0], MEM(pc->i + IDX(addr)), info->mem[0][MEM(pc->i + IDX(addr))]);
 	ft_memcpy(&new->r[0], &pc->r[0], sizeof(new->r));
 	//ft_printf("%d : %.2x\n", MEM(pc->i + IDX(addr)), info->mem[0][MEM(pc->i + IDX(addr))]);
 	new->carry = pc->carry;
 	new->alive = pc->alive;
+	t = clock();
 	pc_app(pc, new);
+	printf("-----pc_app in fork: %lu\n", clock() - t);
 	//ft_printf("addr: %d + %d = %d:%d\n", addr, pc->i, addr + pc->i, new->i);
 	pc->i += 3;
-	/*	int16_t	addr;
-	t_pc	*new;
-
-	ft_memrcpy(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
-	new = pc_new(-pc->r[0], MEM(pc->i + addr), info->mem[0][MEM(pc->i + addr)]);
-	ft_memcpy(&new->r, &pc->r, sizeof(new->r));
-	new->carry = pc->carry;
-	pc_app(pc, new);
-*/
+	TIME("op_fork\t")
 }
 
 void	op_lld(t_cyc *info, t_pc *pc)
 {
+	TEA
 	uint8_t		reg;
 	uint16_t	loc;
 
@@ -330,10 +350,12 @@ void	op_lld(t_cyc *info, t_pc *pc)
 	}
 	else
 		pc->i++;
+	TIME("op_lld\t")
 }
 
 void	op_lldi(t_cyc *info, t_pc *pc)
 {
+	TEA
 	int32_t		loc;
 	int32_t		tmp;
 	uint8_t		acb;
@@ -355,10 +377,12 @@ void	op_lldi(t_cyc *info, t_pc *pc)
 	//ft_printf("%d\n", loc);
 	ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + (int16_t)loc)], REG_SIZE);
 	pc->i += acb_len(acb);
+	TIME("op_lld\t")
 }
 
 void	op_lfork(t_cyc *info, t_pc *pc)
 {
+	TEA
 	//ft_printf("%d---------------[LFORK]\n", pc->r[0]);
 	int16_t	addr;
 	t_pc	*new;
@@ -369,10 +393,12 @@ void	op_lfork(t_cyc *info, t_pc *pc)
 	new->carry = pc->carry;
 	pc_app(pc, new);
 	pc->i += 3;
+	TIME("op_lfork\t")
 }
 
 void	op_aff(t_cyc *info, t_pc *pc)
 {
+	TEA
 	uint32_t	chr;
 
 	//ft_printf("%d----------------[AFF]", pc->r[0]);
@@ -393,10 +419,12 @@ void	op_aff(t_cyc *info, t_pc *pc)
 	else
 		pc->i++;
 	//ft_printf("\n");
+	TIME("op_aff\t")
 }
 
 void	wait_mod(uint16_t *wait, uint8_t op)
 {
+//	TEA
 	if (op == 16)
 		*wait = 2;
 	else if (op == 2 || op == 3)
@@ -417,6 +445,7 @@ void	wait_mod(uint16_t *wait, uint8_t op)
 		*wait = 1000;
 	else
 		*wait = -1;
+//	TIME("wait_mod")
 }
 
 void	pc_scan_op(t_cyc *info, t_pc *pc)
