@@ -141,8 +141,10 @@ void	op_add(t_cyc *info, t_pc *pc)
 	//ft_printf("%d-----[ADD]\n", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x54)
 	{
+		//ft_printf("arg1[%d] + arg2[%d]", pc->r[info->mem[0][MEM(pc->i + 2)]], pc->r[info->mem[0][MEM(pc->i + 3)]]);
 		pc->r[info->mem[0][MEM(pc->i + 4)]] = pc->r[info->mem[0][MEM(pc->i + 2)]]
 					+ pc->r[info->mem[0][MEM(pc->i + 3)]];
+		//ft_printf(" = arg3[%d]\n", pc->r[info->mem[0][MEM(pc->i + 4)]]);
 		pc->i += 5;
 	}
 	else
@@ -156,8 +158,8 @@ void	op_sub(t_cyc *info, t_pc *pc)
 	//ft_printf("%d-----[SUB]\n", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x54)
 	{
-		pc->r[info->mem[0][MEM(pc->i + 4)]] = pc->r[info->mem[0][MEM(pc->i + 2)]]
-					- pc->r[info->mem[0][MEM(pc->i + 3)]];
+		pc->r[info->mem[0][MEM(pc->i + 4)]] = pc->r[info->mem[0][MEM(pc->i + 3)]]
+					- pc->r[info->mem[0][MEM(pc->i + 2)]];
 		pc->i += 5;
 	}
 	else
@@ -286,11 +288,14 @@ void	op_sti(t_cyc *info, t_pc *pc)
 		loc += pc->r[info->mem[0][MEM(pc->i + 3)]];
 	else if ((acb >> 4) == 7 || (acb >> 4) == 6)
 		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 3)], IND_SIZE);
-//	else if ()
-//		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 3)], IND_SIZE);
 	//ft_printf("%d\n", loc);
 	if ((acb & 0x0f) == 4)
+	{
+		//ft_printf("\n[register %d hold %d]\n", info->mem[0][(MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4)))], pc->r[info->mem[0][(MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4)))]]);
+		//ft_printf("loc is %d before", loc);
 		loc += pc->r[info->mem[0][(MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4)))]];
+		//ft_printf(" and %d after\n", loc);
+	}
 	else if ((acb & 0x0f) == 8)
 		ft_memrcpy(&tmp, &info->mem[0][MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4))], IND_SIZE);
 	//ft_printf("loc: %d tmp: %d | ", loc, tmp);
@@ -307,7 +312,7 @@ void	op_fork(t_cyc *info, t_pc *pc)
 {
 	TEA
 	//ft_printf("%d------------[FORK]\n", pc->r[0]);
-	clock_t t;
+//	clock_t t;
 	int16_t	addr;
 	t_pc	*new;
 
@@ -318,9 +323,9 @@ void	op_fork(t_cyc *info, t_pc *pc)
 	//ft_printf("%d : %.2x\n", MEM(pc->i + IDX(addr)), info->mem[0][MEM(pc->i + IDX(addr))]);
 	new->carry = pc->carry;
 	new->alive = pc->alive;
-	t = clock();
+//	t = clock();
 	pc_app(pc, new);
-	printf("-----pc_app in fork: %lu\n", clock() - t);
+//	printf("-----pc_app in fork: %lu\n", clock() - t);
 	//ft_printf("addr: %d + %d = %d:%d\n", addr, pc->i, addr + pc->i, new->i);
 	pc->i += 3;
 	TIME("op_fork\t")
@@ -447,7 +452,7 @@ void	wait_mod(uint16_t *wait, uint8_t op)
 		*wait = -1;
 //	TIME("wait_mod")
 }
-
+//
 void	pc_scan_op(t_cyc *info, t_pc *pc)
 {
 //	//ft_printf("at mem[%d] (%.2x) for %d more cycles\n", pc->i, info->mem[0][pc->i], pc->wait);

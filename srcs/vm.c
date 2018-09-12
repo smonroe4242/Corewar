@@ -53,7 +53,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 			break ;
 		while (step++ < die)
 		{
-			pc_scan_op(&info, info.pc);
+			pc_scan_op(&info, info.pc, info.pc);
 			if (flag.print)
 				display(&info, champ, flag);
 //			ft_printf("\e[35m%d\e[0m\n", info.cycle);

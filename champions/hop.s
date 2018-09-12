@@ -117,6 +117,6 @@ live2:	live	%42
 		st		r9,503
 		st		r14,502
 		st		r15,501
-		fork	%480
+		fork	%476
 		and		r6,r6,r6
 		zjmp	%:live1			#3

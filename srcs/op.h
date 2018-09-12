@@ -69,8 +69,8 @@ typedef char					t_arg_type;
 # define END32(x) ((x << 24) | (x >> 24) | END3(x))
 # define MEM(x) (x % MEM_SIZE)
 # define IDX(x) (x % IDX_MOD)
-# define TEA g_time = clock();
-# define TIME(s) printf("%s: %8lu\n", s, clock() - g_time);
+# define TEA //g_time = clock();
+# define TIME(s) //printf("%s: %8lu\n", s, clock() - g_time);
 clock_t					g_time;
 
 typedef struct					s_header
