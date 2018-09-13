@@ -192,8 +192,7 @@ void	op_and(t_cyc *info, t_pc *pc)//imp
 		ft_memrcpy(&d2, &info->mem[0][MEM(pc->i + ACB_ARG((acb & 0x20) >> 4))], DIR_SIZE);
 	loc = acb_len(acb);
 	pc->r[info->mem[0][MEM(pc->i + loc - 1)]] = d1 & d2;
-	if (!(d1 & d2))
-		pc->carry = 1;
+	pc->carry = (!(d1 & d2)) ? 1 : 0;
 	pc->i += loc;
 	TIME("op_and\t")
 }
@@ -301,26 +300,48 @@ void	op_sti(t_cyc *info, t_pc *pc)
 	pc->i += acb_len(acb);
 	TIME("op_sti\t")
 }
+/*
+void	op_fork(t_cyc *info, t_pc *pc)
+{
+	ft_printf("%d------------[FORK]\n", pc->r[0]);
+	TEA
+	t_pc	*new;
+	int16_t	addr;
 
+	ft_memrcpy(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
+	if (!(new = ft_memalloc(sizeof(t_pc))))
+		exit_msg(4, "pc_new");
+	ft_memcpy(&new, &pc, sizeof(t_pc));
+	new->i = MEM(new->i + IDX(addr));
+	wait_mod(&new->wait, info->mem[0][new->i]);
+	ft_printf("%d : %.2x\n", MEM(new->i + IDX(addr)), info->mem[0][MEM(new->i + IDX(addr))]);
+	new->next = g_head;
+	g_head->prev = new;
+	new->prev = NULL;
+	g_head = new;
+	pc->i += 3;
+	TIME("op_fork\t")
+}
+*/
 void	op_fork(t_cyc *info, t_pc *pc)
 {
 	TEA
 	ft_printf("%d------------[FORK]\n", pc->r[0]);
-//	clock_t t;
 	int16_t	addr;
 	t_pc	*new;
 
 	ft_memrcpy(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
-	ft_printf("ADDR: %#.4x : %d; pc->i: %d\n", addr, addr, pc->i);
 	new = pc_new(-pc->r[0], MEM(pc->i + IDX(addr)), info->mem[0][MEM(pc->i + IDX(addr))]);
 	ft_memcpy(&new->r[0], &pc->r[0], sizeof(new->r));
-	ft_printf("%d : %.2x\n", MEM(pc->i + IDX(addr)), info->mem[0][MEM(pc->i + IDX(addr))]);
+
+	ft_printf("ADDR: %#.4x : %d; pc->i: %d\n", addr, addr, pc->i);
+
 	new->carry = pc->carry;
 	new->alive = pc->alive;
-//	t = clock();
 	pc_app(&g_head, new);
-//	printf("-----pc_app in fork: %lu\n", clock() - t);
+
 	ft_printf("addr: %d + %d = %d:%d\n", addr, pc->i, addr + pc->i, new->i);
+
 	pc->i += 3;
 	TIME("op_fork\t")
 }
@@ -373,7 +394,7 @@ void	op_lldi(t_cyc *info, t_pc *pc)
 		ft_memrcpy(&tmp, &info->mem[0][MEM(pc->i + 2 + ACB_ARG((acb & 0x30) >> 4))], IND_SIZE);
 	loc += tmp;
 	tmp = info->mem[0][MEM(pc->i + acb_len(acb) - 1)];
-	ft_printf("%d\n", loc);
+	ft_printf("%d as loc and for tmp %d\n", loc, tmp);
 	ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + (int16_t)loc)], REG_SIZE);
 	pc->i += acb_len(acb);
 	TIME("op_lld\t")
@@ -390,7 +411,8 @@ void	op_lfork(t_cyc *info, t_pc *pc)
 	new = pc_new(-pc->r[0], MEM(pc->i + addr), info->mem[0][MEM(pc->i + addr)]);
 	ft_memcpy(&new->r, &pc->r, sizeof(new->r));
 	new->carry = pc->carry;
-	pc_app(&pc, new);
+	new->alive = pc->alive;
+	pc_app(&g_head, new);
 	pc->i += 3;
 	TIME("op_lfork\t")
 }

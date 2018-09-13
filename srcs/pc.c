@@ -116,9 +116,15 @@ void	pc_free(t_pc *pc)
 
 void	prove(t_pc *pc)
 {
+	int		i;
+
+	i = -1;
 	ft_printf("%d, at mem[%d], with %d lives\n", pc->r[0], pc->i, pc->alive);
+	while (++i < 17)
+		ft_printf("%d:%.8x ", i, pc->r[i]);
+	ft_putchar('\n');
 	if (pc->next)
 		prove(pc->next);
 	else
-		ft_printf("List end\n");
+		ft_printf("List end\n\n\n\n\n");
 }

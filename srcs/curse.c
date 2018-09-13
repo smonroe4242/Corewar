@@ -53,5 +53,5 @@ void    ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS])
         head = head->next;
     }
     refresh();
-    usleep(10000); // Microsecond cycle interval
+    usleep(1000); // Microsecond cycle interval
 }

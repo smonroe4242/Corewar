@@ -12,52 +12,47 @@
 
 #include "corewar.h"
 
-void    color_dt(uint8_t n)
+void    p_flag_init(void)
 {
-    if (n == 1)
-        write(1, "\e[32m", 5);
-    else if (n == 2)
-        write(1, "\e[34m", 5);
-    else if (n == 3)
-        write(1, "\e[31m", 5);
-    else if (n == 4)
-        write(1, "\e[36m", 5);
-    else
-        write(1, "\e[0m", 4);
+    /*Initialize pipe to python instance and send header info*/
+}
+
+void    ft_hex_print(uint8_t x)
+{
+    char s[3];
+
+    s[0] = x >> 4;
+    s[1] = x & 15;
+    s[2] = ' ';
+    write(1, &s, 3); 
 }
 
 void    ft_dump_mem(t_cyc *info)
 {
     char    *chars;
     int     i;
-    uint8_t tmp;
 
     chars = "0123456789abcdef";
-    system("sleep 0.2; clear");
-    ft_printf("Cycle: %.5d\t\tLast Live Call: %d\n", info->cycle, info->last);
-    write(1, "\e[0m", 4);
+    ft_printf("Cycle: %d Last: %d ", info->cycle, info->last);
     i = -1;
-    tmp = 0;
+    ft_putendl("startmem ");
+    while (++i < MEM_SIZE)
+        ft_hex_print(chars[info->mem[0][i] >> 4]);
+    ft_putendl("endmem startref ");
+    i = -1;
     while (++i < MEM_SIZE)
     {
-        if (info->ref[0][i] != tmp)
-            color_dt(info->ref[0][i]);
-        tmp = info->ref[0][i];
-        if(!(i % 64))
-            ft_putchar('\n');
-        ft_putchar(chars[info->mem[0][i] >> 4]);
-        ft_putchar(chars[info->mem[0][i] & 0x0f]);
+        ft_putchar(info->ref[0][i] + '0');
         ft_putchar(' ');
     }
-    write(1, "\e[0m\n", 5);
+    ft_putendl("endref");
 }
+
 void  		 display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag)
 {
     (void)champ;
     if (flag.print == PRINT)
         ft_dump_mem(info);
-    else if (flag.print == MLX)
-        ;//mlx function
     else if (flag.print == NCURSES)
         ncurse(info, g_head, champ);//ncurses function
 }
