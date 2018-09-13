@@ -18,7 +18,8 @@ SRCDIR = srcs
 
 SRCA = srcs/asm.c srcs/op.c srcs/funcy.c
 
-SRCB = srcs/corewar.c srcs/vm.c srcs/pc.c srcs/display.c srcs/cycle.c srcs/curse.c
+SRCB = srcs/corewar.c srcs/vm.c srcs/pc.c srcs/display.c srcs/cycle.c\
+		srcs/curse.c srcs/globe.c
 
 INC = -I libft -I . -lncurses -L libft -lft
 

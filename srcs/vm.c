@@ -12,6 +12,27 @@
 
 #include "corewar.h"
 
+void	init_op(void)
+{
+	g_op_fn[0] = NULL;
+	g_op_fn[1] = &op_live;
+	g_op_fn[2] = &op_ld;
+	g_op_fn[3] = &op_st;
+	g_op_fn[4] = &op_add;
+	g_op_fn[5] = &op_sub;
+	g_op_fn[6] = &op_and;
+	g_op_fn[7] = &op_or;
+	g_op_fn[8] = &op_xor;
+	g_op_fn[9] = &op_zjmp;
+	g_op_fn[10] = &op_ldi;
+	g_op_fn[11] = &op_sti;
+	g_op_fn[12] = &op_fork;
+	g_op_fn[13] = &op_lld;
+	g_op_fn[14] = &op_lldi;
+	g_op_fn[15] = &op_lfork;
+	g_op_fn[16] = &op_aff;
+}
+
 t_cyc	t_cyc_init(uint8_t **mem, uint8_t **ref, t_pc *pc)
 {
 	t_cyc	info;
@@ -46,6 +67,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 	
 	die = CYCLE_TO_DIE;
 	kill = 0;
+	init_op();
 	while (die > 0)
 	{
 		step = 0;
@@ -53,7 +75,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 			break ;
 		while (step++ < die)
 		{
-			pc_scan_op(&info, info.pc, info.pc);
+			pc_scan_op(&info, info.pc);
 			if (flag.print)
 				display(&info, champ, flag);
 //			ft_printf("\e[35m%d\e[0m\n", info.cycle);
@@ -61,7 +83,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 		}
 		total = live_sum(info.pcount);
 		ft_memset(&info.pcount, 0, sizeof(info.pcount));
-		pc_scan_rem(info.pc);
+		pc_scan_rem(&(info.pc));
 		if (!info.pc->alive)
 			info.pc = pc_rem_head(info.pc);
 		if (!info.pc)
@@ -101,7 +123,7 @@ void	init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS], t_flg fl
 	i = 0;
 	if (n > 1)
 		while (++i < n)
-			pc_app(pc, pc_new(champ[i].pnum, MEM_SIZE / n * i, mem[0][MEM_SIZE / n * i]));
+			pc_app(&pc, pc_new(champ[i].pnum, MEM_SIZE / n * i, mem[0][MEM_SIZE / n * i]));
 	info = t_cyc_init(mem, ref, pc);
 	if (!(winner = init_env(info, champ, flag)))
 		ft_printf("There has been a tie!\n", champ[0].pnum, champ[0].name);

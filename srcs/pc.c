@@ -21,9 +21,7 @@ t_pc	*pc_new(uint32_t pnum, uint16_t loc, uint8_t op)
 	new->i = loc;
 	ft_memset(&new->r, 0, sizeof(new->r));
 	new->r[0] = -pnum;
-	ft_memrcpy(&new->r[1], &pnum, 4);
 	new->r[1] = pnum;
-	//what? ^^^^ choose one; Veryify which one works first;
 	new->carry = 0;
 	new->alive = 0;
 	wait_mod(&new->wait, op);
@@ -32,7 +30,18 @@ t_pc	*pc_new(uint32_t pnum, uint16_t loc, uint8_t op)
 	return (new);
 }
 
-
+void   pc_app(t_pc **lst, t_pc *node)
+{
+//	while (lst->prev)
+//		lst = lst->prev;
+    if (lst)
+    {
+        node->next = *lst;
+        (*lst)->prev = node;
+	}
+    *lst = node;
+}
+/*
 void	pc_app(t_pc *org, t_pc *new)
 {
 	if (!org->next)
@@ -43,32 +52,32 @@ void	pc_app(t_pc *org, t_pc *new)
 	else
 		pc_app(org->next, new);
 }
-
-void	pc_rem(t_pc *old)
+*/
+void	pc_rem(t_pc **old)
 {
-	if (old->next)
-		old->next->prev = old->prev;
-	if (old->prev)
-		old->prev->next = old->next;
-	ft_bzero(old, sizeof(t_pc));
-	free(old);
+	if ((*old)->next)
+		(*old)->next->prev = (*old)->prev;
+	if ((*old)->prev)
+		(*old)->prev->next = (*old)->next;
+	ft_bzero(*old, sizeof(t_pc));
+	free(*old);
 }
 
-t_pc	*pc_rem_head(t_pc *pc)
+void	*pc_rem_head(t_pc **pc)
 {
 	t_pc	*tmp;
 
-	tmp = pc->next;
-	ft_bzero(pc, sizeof(t_pc));
-	free(pc);
-	return (tmp);
+	tmp = (*pc)->next;
+	ft_bzero(*pc, sizeof(*pc));
+	free(*pc);
+	*pc = tmp;
 }
 	
-void	pc_scan_rem(t_pc *pc)
+void	pc_scan_rem(t_pc **pc)
 {
-	if (pc->next)
-		pc_scan_rem(pc->next);
-	if (!pc->alive && pc->prev)
+	if ((*pc)->next)
+		pc_scan_rem((*pc)->next);
+	if (!(*pc)->alive && (*pc)->prev)
 		pc_rem(pc);
 }
 

@@ -12,14 +12,6 @@
 
 #include "corewar.h"
 
-const t_fn g_op_fn[] = {NULL, &op_live, &op_ld, &op_st, &op_add,
-							&op_sub, &op_and, &op_or, &op_xor, &op_zjmp,
-							&op_ldi, &op_sti, &op_fork, &op_lld, &op_lldi,
-							&op_lfork, &op_aff};
-//live, ld, st, add, sub, and, or, xor, zjmp, ldi, sti, fork, lld, lldi, lfork, aff
-// |     |   |   |    |    S    C   C    |     |    |    S      |   |     S&C    |
-//| == Done, S == Corta done, C = Copypasta, N == Nothing;
-
 void	ft_memfree(uint8_t **m, size_t n)
 {
 	if (m && *m)
@@ -324,7 +316,7 @@ void	op_fork(t_cyc *info, t_pc *pc)
 	new->carry = pc->carry;
 	new->alive = pc->alive;
 //	t = clock();
-	pc_app(pc, new);
+	pc_app(&pc, new);
 //	printf("-----pc_app in fork: %lu\n", clock() - t);
 	//ft_printf("addr: %d + %d = %d:%d\n", addr, pc->i, addr + pc->i, new->i);
 	pc->i += 3;
@@ -396,7 +388,7 @@ void	op_lfork(t_cyc *info, t_pc *pc)
 	new = pc_new(-pc->r[0], MEM(pc->i + addr), info->mem[0][MEM(pc->i + addr)]);
 	ft_memcpy(&new->r, &pc->r, sizeof(new->r));
 	new->carry = pc->carry;
-	pc_app(pc, new);
+	pc_app(&pc, new);
 	pc->i += 3;
 	TIME("op_lfork\t")
 }

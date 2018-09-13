@@ -56,7 +56,9 @@ typedef struct		s_flg
 
 typedef void	(*t_fn)(t_cyc *, t_pc *);
 
-
+clock_t		g_time;
+t_fn         g_op_fn[17];
+t_pc         *g_head;
 
 void				prove(t_pc *pc);
 void				ft_memrcpy(void *dst, void *src, size_t n);
@@ -66,8 +68,6 @@ int					g_optind;
 int					g_optopt;
 t_flg				ft_setopt(int ac, char **av);
 int					ft_getopt(int ac, char **av, char *flg);
-
-//uint8_t				ACB_ARG(uint8_t tb);
 
 void				op_live(t_cyc *info, t_pc *pc);
 void				op_ld(t_cyc *info, t_pc *pc);
@@ -90,7 +90,7 @@ void				wait_mod(uint16_t *wait, uint8_t op);
 void				pc_scan_op(t_cyc *info, t_pc *pc);
 
 t_pc				*pc_new(uint32_t pnum, uint16_t loc, uint8_t op);
-void				pc_app(t_pc *org, t_pc *new);
+void				pc_app(t_pc **org, t_pc *new);
 void				pc_rem(t_pc *old);
 t_pc				*pc_rem_head(t_pc *pc);
 void				pc_scan_rem(t_pc *pc);
