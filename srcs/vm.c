@@ -68,25 +68,26 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 	die = CYCLE_TO_DIE;
 	kill = 0;
 	init_op();
+	g_head = info.pc;
 	while (die > 0)
 	{
 		step = 0;
-		if (!info.pc)
+		if (!g_head)
 			break ;
 		while (step++ < die)
 		{
-			pc_scan_op(&info, info.pc);
+			pc_scan_op(&info, g_head);
 			if (flag.print)
 				display(&info, champ, flag);
-//			ft_printf("\e[35m%d\e[0m\n", info.cycle);
+			ft_printf("\e[35m%d\e[0m\n", info.cycle);
 			info.cycle++;
 		}
 		total = live_sum(info.pcount);
 		ft_memset(&info.pcount, 0, sizeof(info.pcount));
-		pc_scan_rem(&(info.pc));
-		if (!info.pc->alive)
-			info.pc = pc_rem_head(info.pc);
-		if (!info.pc)
+		pc_scan_rem(&(g_head));
+		if (!g_head->alive)
+			pc_rem_head(&g_head);
+		if (!g_head)
 			break ;
 		if (total >= NBR_LIVE)
 		{
@@ -101,8 +102,8 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 			die -= CYCLE_DELTA;
 		}
 	}
-	if (info.pc)
-		pc_free(info.pc);
+	if (g_head)
+		pc_free(g_head);
 	if (flag.print == NCURSES)
 		endwin();
 	return (info.last);

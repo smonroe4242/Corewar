@@ -32,8 +32,10 @@ t_pc	*pc_new(uint32_t pnum, uint16_t loc, uint8_t op)
 
 void   pc_app(t_pc **lst, t_pc *node)
 {
-//	while (lst->prev)
-//		lst = lst->prev;
+//	ft_printf("pc_app\n");
+//	prove(*lst);
+//	while ((*lst)->prev)
+//		lst = &(*lst)->prev;
     if (lst)
     {
         node->next = *lst;
@@ -42,15 +44,15 @@ void   pc_app(t_pc **lst, t_pc *node)
     *lst = node;
 }
 /*
-void	pc_app(t_pc *org, t_pc *new)
+void	pc_app(t_pc **org, t_pc *new)
 {
-	if (!org->next)
+	if (!(*org)->next)
 	{
-		new->prev = org;
-		org->next = new;
+		new->prev = *org;
+		(*org)->next = new;
 	}
 	else
-		pc_app(org->next, new);
+		pc_app((&org->next), new);
 }
 */
 void	pc_rem(t_pc **old)
@@ -63,24 +65,47 @@ void	pc_rem(t_pc **old)
 	free(*old);
 }
 
-void	*pc_rem_head(t_pc **pc)
+void	pc_rem_head(t_pc **pc)
 {
 	t_pc	*tmp;
 
-	tmp = (*pc)->next;
+	tmp = NULL;
+	if ((*pc)->next)
+		tmp = (*pc)->next;
 	ft_bzero(*pc, sizeof(*pc));
 	free(*pc);
 	*pc = tmp;
 }
+
+
+void    pc_scan_rem(t_pc **pc)
+{
+    t_pc    *tmp;
+
+    tmp = *pc;
+    while (tmp && tmp->next)
+    {
+        if (!tmp->alive && tmp->prev)
+            pc_rem(&tmp);
+		else
+			tmp->alive = 0;
+        tmp = tmp->next;
+    }
+    if (!(*pc)->alive)
+        pc_rem_head(pc);
+	else
+		(*pc)->alive = 0;
 	
+}
+/*
 void	pc_scan_rem(t_pc **pc)
 {
 	if ((*pc)->next)
-		pc_scan_rem((*pc)->next);
+	pc_scan_rem(pc->next);
 	if (!(*pc)->alive && (*pc)->prev)
 		pc_rem(pc);
 }
-
+*/
 void	pc_free(t_pc *pc)
 {
 	if (pc->next)

@@ -44,15 +44,14 @@ void    ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS])
         mvprintw(y, x, "%.2x", info->mem[0][i]);
     }
     attroff(COLOR_PAIR(tmp));
-    head = pc;
-    while (pc)
+    head = g_head;
+    while (head)
     {
-        attron(COLOR_PAIR(pc->r[0] + 4));
-        mvprintw((pc->i / 64) + 3, (pc->i % 64) * 3, "%.2x", info->mem[0][pc->i]);
-        attroff(COLOR_PAIR(pc->r[0] + 4));
-        pc = pc->next;
+        attron(COLOR_PAIR(head->r[0] + 4));
+        mvprintw((head->i / 64) + 3, (head->i % 64) * 3, "%.2x", info->mem[0][head->i]);
+        attroff(COLOR_PAIR(head->r[0] + 4));
+        head = head->next;
     }
-    pc = head;
     refresh();
-    //usleep(10000); // Microsecond cycle interval
+    usleep(10000); // Microsecond cycle interval
 }
