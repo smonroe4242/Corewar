@@ -15,37 +15,44 @@
 void    p_flag_init(void)
 {
     /*Initialize pipe to python instance and send header info*/
+    
 }
 
 void    ft_hex_print(uint8_t x)
 {
-    char s[3];
+    char    s[3];
+    char    *chars;
 
-    s[0] = x >> 4;
-    s[1] = x & 15;
+    chars = "0123456789abcdef";
+    s[0] = chars[x >> 4];
+    s[1] = chars[x & 15];
     s[2] = ' ';
     write(1, &s, 3); 
 }
 
 void    ft_dump_mem(t_cyc *info)
 {
-    char    *chars;
     int     i;
 
-    chars = "0123456789abcdef";
-    ft_printf("Cycle: %d Last: %d ", info->cycle, info->last);
+    ft_printf("Cycle%d\nLast%d\n", info->cycle, info->last);
     i = -1;
-    ft_putendl("startmem ");
+    ft_putstr("StartMem");
     while (++i < MEM_SIZE)
-        ft_hex_print(chars[info->mem[0][i] >> 4]);
-    ft_putendl("endmem startref ");
+    {
+        if (!(i % 64))
+            ft_putchar('\n');
+        ft_hex_print(info->mem[0][i]);
+    }
+    ft_putstr("\nEndMem\nStartRef");
     i = -1;
     while (++i < MEM_SIZE)
     {
+        if (!(i % 64))
+            ft_putchar('\n');
         ft_putchar(info->ref[0][i] + '0');
         ft_putchar(' ');
     }
-    ft_putendl("endref");
+    ft_putstr("\nEndRef\n");
 }
 
 void  		 display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag)

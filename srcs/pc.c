@@ -111,11 +111,16 @@ void	pc_rem_head(t_pc **pc)
 **		Basic: While loop for head removals then while loop for rest;
 **		Better: Remove from back to front.
 **			I'm not too keen on a global tail pointer but it would do this perfectly;
-**					-Steven;
 **
 **	[UPDATE]
 **		Failure now only happens when removing head and head is only link.
 **		Add extra case for last link or is removal code just subpar?
+**
+**	[LAST UPDATE 9/15/18 01:29]
+**		Working, pointer of new head was not being set to NULL properly;
+**		Set to NULL in pc_rem and prolem is gonel
+**		next bug found in op_st overflow in pc.c;
+**					-Steven
 */
 void    pc_scan_rem(t_pc **pc)
 {
@@ -156,12 +161,12 @@ void	prove(t_pc *pc)
 	int		i;
 
 	i = -1;
-	ft_printf("%d, at mem[%d], with %d lives : next->%p, prev->%p\n", pc->r[0], pc->i, pc->alive, pc->next, pc->prev);
+	//ft_printf("%d, at mem[%d], with %d lives : next->%p, prev->%p\n", pc->r[0], pc->i, pc->alive, pc->next, pc->prev);
 	while (++i < 17)
-		ft_printf("%d:%.8x ", i, pc->r[i]);
+		//ft_printf("%d:%.8x ", i, pc->r[i]);
 	ft_putchar('\n');
 	if (pc->next)
 		prove(pc->next);
 	else
-		ft_printf("List end\n\n");
+		;//ft_printf("List end\n\n");
 }
