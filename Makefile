@@ -6,7 +6,7 @@
 #    By: smonroe <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/26 22:02:30 by smonroe           #+#    #+#              #
-#    Updated: 2018/09/12 08:44:30 by smonroe          ###   ########.fr        #
+#    Updated: 2018/09/15 01:01:14 by smonroe          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -36,7 +36,7 @@ $(NAME):
 
 clean:
 	make clean -C libft
-	/bin/rm -rf *~ \#*\# a.out* $(OBJDIR)/*.o
+	/bin/rm -rf *~ \#*\# a.out* $(OBJDIR)/*.o *.dSYM
 
 fclean: clean
 	make fclean -C libft
