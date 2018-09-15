@@ -32,9 +32,9 @@
 
 # define MAX_ARGS_NUMBER		4
 # define MAX_PLAYERS			4
-# define MEM_SIZE				(4 * 1024) //4096 bytes
-# define IDX_MOD				(MEM_SIZE / 8) //512 bytes
-# define CHAMP_MAX_SIZE			(MEM_SIZE / 6) //682 bytes
+# define MEM_SIZE				(4096)//(4 * 1024) //4096 bytes
+# define IDX_MOD				(512)//(MEM_SIZE / 8) //512 bytes
+# define CHAMP_MAX_SIZE			(682)//(MEM_SIZE / 6) //682 bytes
 
 # define COMMENT_CHAR			'#'
 # define LABEL_CHAR				':'

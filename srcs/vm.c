@@ -79,14 +79,17 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 			pc_scan_op(&info, g_head);
 			if (flag.print)
 				display(&info, champ, flag);
-			ft_printf("\e[35m%d\e[0m\n", info.cycle);
+			//ft_printf("\e[35m%d\e[0m\n", info.cycle);
 			info.cycle++;
 		}
+		//ft_printf("Proving at pc_scan_rem\n");
+		//prove(g_head);
 		total = live_sum(info.pcount);
 		ft_memset(&info.pcount, 0, sizeof(info.pcount));
 		pc_scan_rem(&(g_head));
-		if (!g_head->alive)
-			pc_rem_head(&g_head);
+		//if (g_head)
+		//	prove(g_head);
+		//ft_printf("Done\n");
 		if (!g_head)
 			break ;
 		if (total >= NBR_LIVE)

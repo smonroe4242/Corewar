@@ -18,6 +18,7 @@
 # define PRINT 'p'
 # define NCURSES 'n'
 # define ACB_ARG(x) ((x == 3) ? 4 : x)
+# define REG(r) (r > 0 && r < REG_NUMBER)
 
 typedef struct		s_head
 {

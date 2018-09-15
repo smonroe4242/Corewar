@@ -16,7 +16,7 @@ void	ft_memfree(uint8_t **m, size_t n)
 {
 	if (m && *m)
 	{
-		ft_memset(*m, 0, n);
+		ft_bzero(*m, n);
 		free(*m);
 		*m = NULL;
 	}
@@ -65,9 +65,9 @@ uint16_t	acb_len(uint8_t acb)
 void	op_live(t_cyc *info, t_pc *pc)//imp
 {
 	TEA
-	ft_printf("%d-[ALIVE]\n", pc->r[0]);
+	//ft_printf("%d-[ALIVE]\n", pc->r[0]);
 	ft_memrcpy(&info->last, &info->mem[0][MEM(pc->i + 1)], REG_SIZE);
-	if (-info->last - 1  < MAX_PLAYERS)
+	if (-info->last - 1  < MAX_PLAYERS && -info->last - 1 >= 0)
 		info->pcount[-info->last - 1]++;
 	pc->alive++;
 	pc->i += 5;
@@ -80,20 +80,22 @@ void	op_ld(t_cyc *info, t_pc *pc)
 	uint8_t		reg;
 	uint16_t	loc;
 
-	ft_printf("%d--[LD]\n", pc->r[0]);
+	//ft_printf("%d--[LD]\n", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x90)
 	{
-		ft_printf("ACB:90\n");
+		//ft_printf("ACB:90\n");
 		reg = info->mem[0][MEM(pc->i + 6)];
-		ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + 2)], REG_SIZE);
+		if (REG(reg))
+			ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + 2)], REG_SIZE);
 		pc->i += 7;
 	}
 	else if (info->mem[0][MEM(pc->i + 1)] == 0xd0)
 	{
-		ft_printf("ACB:d0\n");
+		//ft_printf("ACB:d0\n");
 		reg = info->mem[0][MEM(pc->i + 4)];
 		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 2)], IND_SIZE);
-		ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + IDX(loc))], REG_SIZE);
+		if (REG(reg))
+			ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + IDX(loc))], REG_SIZE);
 		pc->i += 5;
 	}
 	else
@@ -106,7 +108,7 @@ void	op_st(t_cyc *info, t_pc *pc)//imp
 	TEA
 	int16_t		loc;
 
-	ft_printf("%d---[ST]\n", pc->r[0]);
+	//ft_printf("%d---[ST]\n", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x50)
 	{
 		pc->r[info->mem[0][MEM(pc->i + 3)]] = pc->r[info->mem[0][MEM(pc->i + 2)]];
@@ -115,12 +117,12 @@ void	op_st(t_cyc *info, t_pc *pc)//imp
 	else if (info->mem[0][MEM(pc->i + 1)] == 0x70)
 	{
 		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 3)], IND_SIZE);
-		ft_printf("ACB:70\tloc:%d\tpc->i:%d\n", loc, pc->i);
-		ft_printf("val %d\n", info->mem[0][MEM(pc->i + IDX(loc))]);
+		//ft_printf("ACB:70\tloc:%d\tpc->i:%d\n", loc, pc->i);
+		//ft_printf("val %d\n", info->mem[0][MEM(pc->i + IDX(loc))]);
 		ft_memrcpy(&info->mem[0][MEM(pc->i + IDX(loc))], &pc->r[info->mem[0][MEM(pc->i + 2)]], REG_SIZE);
-		ft_printf("|%.2x|", info->mem[0][MEM(pc->i + IDX(loc) + 1)]);
+		//ft_printf("|%.2x|", info->mem[0][MEM(pc->i + IDX(loc) + 1)]);
 		ft_memset(&info->ref[0][MEM(pc->i + IDX(loc))], pc->r[0], REG_SIZE);
-		ft_printf("%.2x|\n", info->mem[0][MEM(pc->i + IDX(loc) + 1)]);
+		//ft_printf("%.2x|\n", info->mem[0][MEM(pc->i + IDX(loc) + 1)]);
 		pc->i += 5;
 	}
 	else
@@ -131,13 +133,13 @@ void	op_st(t_cyc *info, t_pc *pc)//imp
 void	op_add(t_cyc *info, t_pc *pc)
 {
 	TEA
-	ft_printf("%d-----[ADD]\n", pc->r[0]);
+	//ft_printf("%d-----[ADD]\n", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x54)
 	{
-		ft_printf("arg1[%d] + arg2[%d]", pc->r[info->mem[0][MEM(pc->i + 2)]], pc->r[info->mem[0][MEM(pc->i + 3)]]);
+		//ft_printf("arg1[%d] + arg2[%d]", pc->r[info->mem[0][MEM(pc->i + 2)]], pc->r[info->mem[0][MEM(pc->i + 3)]]);
 		pc->r[info->mem[0][MEM(pc->i + 4)]] = pc->r[info->mem[0][MEM(pc->i + 2)]]
 					+ pc->r[info->mem[0][MEM(pc->i + 3)]];
-		ft_printf(" = arg3[%d]\n", pc->r[info->mem[0][MEM(pc->i + 4)]]);
+		//ft_printf(" = arg3[%d]\n", pc->r[info->mem[0][MEM(pc->i + 4)]]);
 		pc->i += 5;
 	}
 	else
@@ -148,7 +150,7 @@ void	op_add(t_cyc *info, t_pc *pc)
 void	op_sub(t_cyc *info, t_pc *pc)
 {
 	TEA
-	ft_printf("%d-----[SUB]\n", pc->r[0]);
+	//ft_printf("%d-----[SUB]\n", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x54)
 	{
 		pc->r[info->mem[0][MEM(pc->i + 4)]] = pc->r[info->mem[0][MEM(pc->i + 3)]]
@@ -167,7 +169,7 @@ void	op_and(t_cyc *info, t_pc *pc)//imp
 	uint32_t	d2;
 	uint16_t	loc;
 	uint8_t		acb;
-	ft_printf("%d------[AND]\n", pc->r[0]);
+	//ft_printf("%d------[AND]\n", pc->r[0]);
 	d1 = 0;
 	d2 = 0;
 	acb = info->mem[0][MEM(pc->i + 1)];
@@ -191,7 +193,8 @@ void	op_and(t_cyc *info, t_pc *pc)//imp
 	else if (((acb >> 4) & 0xff) == DIR_CODE)
 		ft_memrcpy(&d2, &info->mem[0][MEM(pc->i + ACB_ARG((acb & 0x20) >> 4))], DIR_SIZE);
 	loc = acb_len(acb);
-	pc->r[info->mem[0][MEM(pc->i + loc - 1)]] = d1 & d2;
+	if (REG(info->mem[0][MEM(pc->i + loc - 1)]))
+		pc->r[info->mem[0][MEM(pc->i + loc - 1)]] = d1 & d2;
 	pc->carry = (!(d1 & d2)) ? 1 : 0;
 	pc->i += loc;
 	TIME("op_and\t")
@@ -200,7 +203,7 @@ void	op_and(t_cyc *info, t_pc *pc)//imp
 void	op_or(t_cyc *info, t_pc *pc)
 {
 	TEA
-	ft_printf("%d-------[OR]\n", pc->r[0]);
+	//ft_printf("%d-------[OR]\n", pc->r[0]);
 	(void)info;
 	pc->carry = 1;
 	//copy op_and when confirmed working
@@ -210,7 +213,7 @@ void	op_or(t_cyc *info, t_pc *pc)
 void	op_xor(t_cyc *info, t_pc *pc)
 {
 	TEA
-	ft_printf("%d--------[XOR]\n", pc->r[0]);
+	//ft_printf("%d--------[XOR]\n", pc->r[0]);
 	(void)info;
 	pc->carry = 1;
 	//copy op_and when confirmed working
@@ -222,17 +225,17 @@ void	op_zjmp(t_cyc *info, t_pc *pc)//imp
 	TEA
 	int16_t addr;
 
-	ft_printf("%d---------[ZJMP]\n", pc->r[0]);
+	//ft_printf("%d---------[ZJMP]\n", pc->r[0]);
 	if (pc->carry)
 	{
 		ft_memrcpy(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
 		pc->i = MEM(pc->i + IDX(addr));
 		pc->carry = 0;
-		ft_printf("Jumped to %d:%.2x\n", pc->i, info->mem[0][pc->i]);
+		//ft_printf("Jumped to %d:%.2x\n", pc->i, info->mem[0][pc->i]);
 	}
 	else
 	{
-		ft_printf("whoops lol~~~\n");
+		//ft_printf("whoops lol~~~\n");
 		pc->i += 3;
 	}
 	TIME("op_zjmp\t")
@@ -244,7 +247,7 @@ void	op_ldi(t_cyc *info, t_pc *pc)
 	int32_t		loc;
 	int32_t		tmp;
 	uint8_t		acb;
-	ft_printf("%d----------[LDI]\n", pc->r[0]);
+	//ft_printf("%d----------[LDI]\n", pc->r[0]);
 	acb = info->mem[0][MEM(pc->i + 1)];
 	loc = 0;
 	tmp = 0;
@@ -252,14 +255,15 @@ void	op_ldi(t_cyc *info, t_pc *pc)
 		loc += pc->r[info->mem[0][MEM(pc->i + 2)]];
 	else if ((acb >> 6) == DIR_CODE || (acb >> 6) == IND_CODE)
 		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 2)], IND_SIZE);
-	ft_printf("%d\n", loc);
+	//ft_printf("%d\n", loc);
 	if ((acb & 0x30) == (REG_CODE << 4))
 		loc += pc->r[info->mem[0][(MEM(pc->i + 2 + ACB_ARG((acb & 0x30) >> 4)))]];
 	else if (((acb & 0x30) == (DIR_CODE << 4)) || ((acb & 0x30) == (IND_CODE << 4)))
 		ft_memrcpy(&tmp, &info->mem[0][MEM(pc->i + 2 + ACB_ARG((acb & 0x30) >> 4))], IND_SIZE);
 	loc += tmp;
 	tmp = info->mem[0][MEM(pc->i + acb_len(acb) - 1)];
-	ft_printf("%d\n", loc);
+	//ft_printf("%d\n", loc);
+	if (REG(tmp))
 	ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + IDX((int16_t)loc))], REG_SIZE);
 	pc->i += acb_len(acb);
 	TIME("op_ldi\t")
@@ -273,7 +277,7 @@ void	op_sti(t_cyc *info, t_pc *pc)
 	int16_t		loc;
 	int16_t		tmp;
 	uint8_t		acb;
-	ft_printf("%d-----------[STI]\n", pc->r[0]);
+	//ft_printf("%d-----------[STI]\n", pc->r[0]);
 	acb = info->mem[0][MEM(pc->i + 1)];
 	loc = 0;
 	tmp = 0;
@@ -281,19 +285,19 @@ void	op_sti(t_cyc *info, t_pc *pc)
 		loc += pc->r[info->mem[0][MEM(pc->i + 3)]];
 	else if ((acb >> 4) == 7 || (acb >> 4) == 6)
 		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 3)], IND_SIZE);
-	ft_printf("%d\n", loc);
+	//ft_printf("%d\n", loc);
 	if ((acb & 0x0f) == 4)
 	{
-		ft_printf("\n[register %d hold %d]\n", info->mem[0][(MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4)))], pc->r[info->mem[0][(MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4)))]]);
-		ft_printf("loc is %d before", loc);
+		//ft_printf("\n[register %d hold %d]\n", info->mem[0][(MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4)))], pc->r[info->mem[0][(MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4)))]]);
+		//ft_printf("loc is %d before", loc);
 		loc += pc->r[info->mem[0][(MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4)))]];
-		ft_printf(" and %d after\n", loc);
+		//ft_printf(" and %d after\n", loc);
 	}
 	else if ((acb & 0x0f) == 8)
 		ft_memrcpy(&tmp, &info->mem[0][MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4))], IND_SIZE);
-	ft_printf("loc: %d tmp: %d | ", loc, tmp);
+	//ft_printf("loc: %d tmp: %d | ", loc, tmp);
 	loc += tmp;
-	ft_printf("%d - %d idx\n", loc, IDX(loc));
+	//ft_printf("%d - %d idx\n", loc, IDX(loc));
 	ft_memrcpy(&info->mem[0][MEM(pc->i + IDX((int16_t)loc))],
 	&pc->r[info->mem[0][MEM(pc->i + 2)]], REG_SIZE);
 	ft_memset(&info->ref[0][MEM(pc->i + IDX((int16_t)loc))], pc->r[0], REG_SIZE);
@@ -303,7 +307,7 @@ void	op_sti(t_cyc *info, t_pc *pc)
 /*
 void	op_fork(t_cyc *info, t_pc *pc)
 {
-	ft_printf("%d------------[FORK]\n", pc->r[0]);
+	//ft_printf("%d------------[FORK]\n", pc->r[0]);
 	TEA
 	t_pc	*new;
 	int16_t	addr;
@@ -314,7 +318,7 @@ void	op_fork(t_cyc *info, t_pc *pc)
 	ft_memcpy(&new, &pc, sizeof(t_pc));
 	new->i = MEM(new->i + IDX(addr));
 	wait_mod(&new->wait, info->mem[0][new->i]);
-	ft_printf("%d : %.2x\n", MEM(new->i + IDX(addr)), info->mem[0][MEM(new->i + IDX(addr))]);
+	//ft_printf("%d : %.2x\n", MEM(new->i + IDX(addr)), info->mem[0][MEM(new->i + IDX(addr))]);
 	new->next = g_head;
 	g_head->prev = new;
 	new->prev = NULL;
@@ -326,7 +330,7 @@ void	op_fork(t_cyc *info, t_pc *pc)
 void	op_fork(t_cyc *info, t_pc *pc)
 {
 	TEA
-	ft_printf("%d------------[FORK]\n", pc->r[0]);
+	//ft_printf("%d------------[FORK]\n", pc->r[0]);
 	int16_t	addr;
 	t_pc	*new;
 
@@ -334,13 +338,13 @@ void	op_fork(t_cyc *info, t_pc *pc)
 	new = pc_new(-pc->r[0], MEM(pc->i + IDX(addr)), info->mem[0][MEM(pc->i + IDX(addr))]);
 	ft_memcpy(&new->r[0], &pc->r[0], sizeof(new->r));
 
-	ft_printf("ADDR: %#.4x : %d; pc->i: %d\n", addr, addr, pc->i);
+	//ft_printf("ADDR: %#.4x : %d; pc->i: %d\n", addr, addr, pc->i);
 
 	new->carry = pc->carry;
 	new->alive = pc->alive;
 	pc_app(&g_head, new);
 
-	ft_printf("addr: %d + %d = %d:%d\n", addr, pc->i, addr + pc->i, new->i);
+	//ft_printf("addr: %d + %d = %d:%d\n", addr, pc->i, addr + pc->i, new->i);
 
 	pc->i += 3;
 	TIME("op_fork\t")
@@ -352,20 +356,22 @@ void	op_lld(t_cyc *info, t_pc *pc)
 	uint8_t		reg;
 	uint16_t	loc;
 
-	ft_printf("%d-------------[LLD]\n", pc->r[0]);
+	//ft_printf("%d-------------[LLD]\n", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x90)
 	{
-		ft_printf("ACB:90\n");
+		//ft_printf("ACB:90\n");
 		reg = info->mem[0][MEM(pc->i + 6)];
-		ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + 2)], REG_SIZE);
+		if (REG(reg))
+			ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + 2)], REG_SIZE);
 		pc->i += 7;
 	}
 	else if (info->mem[0][MEM(pc->i + 1)] == 0xd0)
 	{
-		ft_printf("ACB:d0\n");
+		//ft_printf("ACB:d0\n");
 		reg = info->mem[0][MEM(pc->i + 4)];
 		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 2)], IND_SIZE);
-		ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + loc)], REG_SIZE);
+		if (REG(reg))
+			ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + loc)], REG_SIZE);
 		pc->i += 5;
 	}
 	else
@@ -379,7 +385,7 @@ void	op_lldi(t_cyc *info, t_pc *pc)
 	int32_t		loc;
 	int32_t		tmp;
 	uint8_t		acb;
-	ft_printf("%d--------------[LLDI]\n", pc->r[0]);
+	//ft_printf("%d--------------[LLDI]\n", pc->r[0]);
 	acb = info->mem[0][MEM(pc->i + 1)];
 	loc = 0;
 	tmp = 0;
@@ -387,15 +393,16 @@ void	op_lldi(t_cyc *info, t_pc *pc)
 		loc += pc->r[info->mem[0][MEM(pc->i + 2)]];
 	else if ((acb >> 6) == DIR_CODE || (acb >> 6) == IND_CODE)
 		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 2)], IND_SIZE);
-	ft_printf("%d\n", loc);
+	//ft_printf("%d\n", loc);
 	if ((acb & 0x30) == (REG_CODE << 4))
 		loc += pc->r[info->mem[0][(MEM(pc->i + 2 + ACB_ARG((acb & 0x30) >> 4)))]];
 	else if (((acb & 0x30) == (DIR_CODE << 4)) || ((acb & 0x30) == (IND_CODE << 4)))
 		ft_memrcpy(&tmp, &info->mem[0][MEM(pc->i + 2 + ACB_ARG((acb & 0x30) >> 4))], IND_SIZE);
 	loc += tmp;
 	tmp = info->mem[0][MEM(pc->i + acb_len(acb) - 1)];
-	ft_printf("%d as loc and for tmp %d\n", loc, tmp);
-	ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + (int16_t)loc)], REG_SIZE);
+	//ft_printf("%d as loc and for tmp %d\n", loc, tmp);
+	if (REG(tmp))
+		ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + (int16_t)loc)], REG_SIZE);
 	pc->i += acb_len(acb);
 	TIME("op_lld\t")
 }
@@ -403,7 +410,7 @@ void	op_lldi(t_cyc *info, t_pc *pc)
 void	op_lfork(t_cyc *info, t_pc *pc)
 {
 	TEA
-	ft_printf("%d---------------[LFORK]\n", pc->r[0]);
+	//ft_printf("%d---------------[LFORK]\n", pc->r[0]);
 	int16_t	addr;
 	t_pc	*new;
 
@@ -422,7 +429,7 @@ void	op_aff(t_cyc *info, t_pc *pc)
 	TEA
 	uint32_t	chr;
 
-	ft_printf("%d----------------[AFF]", pc->r[0]);
+	//ft_printf("%d----------------[AFF]", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x40)
 	{
 		chr = pc->r[info->mem[0][MEM(pc->i + 2)]];
@@ -439,7 +446,7 @@ void	op_aff(t_cyc *info, t_pc *pc)
 	}
 	else
 		pc->i++;
-	ft_printf("\n");
+	//ft_printf("\n");
 	TIME("op_aff\t")
 }
 
@@ -471,17 +478,17 @@ void	wait_mod(uint16_t *wait, uint8_t op)
 //
 void	pc_scan_op(t_cyc *info, t_pc *pc)
 {
-//	ft_printf("at mem[%d] (%.2x) for %d more cycles\n", pc->i, info->mem[0][pc->i], pc->wait);
-	ft_printf("");
+//	//ft_printf("at mem[%d] (%.2x) for %d more cycles\n", pc->i, info->mem[0][pc->i], pc->wait);
+	//ft_printf("");
 	if (info->mem[0][pc->i] < 1 || info->mem[0][pc->i] > 16)
 		pc->i++;
 	else if (!pc->wait)
 	{
-//		ft_printf("Doing function, pc->i = %d\n", pc->i);
+//		//ft_printf("Doing function, pc->i = %d\n", pc->i);
 		g_op_fn[info->mem[0][pc->i]](info, pc);
 		wait_mod(&pc->wait, info->mem[0][pc->i]);
 //		pc->wait--;
-//		ft_printf("pc->i updated to %d and given wait time of %d\n", pc->i, pc->wait);
+//		//ft_printf("pc->i updated to %d and given wait time of %d\n", pc->i, pc->wait);
 	}
 	else if (pc->wait > 0)
 		pc->wait--;
