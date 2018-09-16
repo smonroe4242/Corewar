@@ -81,14 +81,22 @@ t_flg	ft_setopt(int ac, char **av)
 	int8_t	opt;
 
 	g_optind = 1;
-	while ((opt = ft_getopt(ac, av, "pmn")) != -1)
+	flag.print = 0;
+	flag.delay = 0;
+	while ((opt = ft_getopt(ac, av, "pnw:")) != -1)
 	{
+		ft_printf("opt:%c, optarg:%s, optind:%d, %s\n", opt, g_optarg, g_optind, av[g_optind]);
 		if (opt == '?')
 			exit_msg(3, NULL);
 		else
-			if (opt == 'p' || opt == 'm' || opt == 'n')
+		{
+			if (opt == 'p' || opt == 'n')
 				flag.print = opt;
+			else if (opt == 'w')
+				flag.delay = ft_atoi(g_optarg);
+		}
 	}
+	flag.delay = (flag.delay != 0) ? 1000000/flag.delay : 0;
 	return (flag);
 }
 
@@ -107,13 +115,12 @@ int		ft_getopt(int ac, char **av, char *flg)
 	{
 		if (av[g_optind][nextchar] == flg[i])
 		{
-			g_optarg = (flg[i + 1] == ':' ? &av[g_optind + 1][0] : NULL);
+			g_optarg = (flg[i + 1] == ':' ? &av[++g_optind][0] : NULL);
 			if (!(av[g_optind][nextchar + 1]))
 			{
 				g_optind++;
 				nextchar = 0;
 			}
-//			g_optind += (g_optarg) ? 1 : 0;
 			return (flg[i]);
 		}
 	}
@@ -140,6 +147,5 @@ int		main(int ac, char **av)
 		file[i++] = file_stuff(av[g_optind++]);
 	ft_printf("Success! Initializing vm now.\n");
 	init_vm(file, flag);
-//	pause();
 	return (0);
 }

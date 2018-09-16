@@ -107,7 +107,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 	}
 	if (g_head)
 		pc_free(g_head);
-	if (flag.print == NCURSES)
+	if (flag.print == 'n')
 		endwin();
 	return (info.last);
 }

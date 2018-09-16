@@ -42,13 +42,6 @@ uint16_t	acb_lend(uint8_t acb)
 		return (1);
 }
 
-/*uint8_t		ACB_ARG(uint8_t tb)
-{
-	if (tb == 3)
-		return (4);
-	return (tb);
-}*/
-
 uint16_t	acb_len(uint8_t acb)
 {
 	//TEA
@@ -307,8 +300,6 @@ void	op_ldi(t_cyc *info, t_pc *pc)
 	TIME("op_ldi\t")
 }
 
-//[01 | 10 | 11][10 | 01][01]
-
 void	op_sti(t_cyc *info, t_pc *pc)
 {
 	TEA
@@ -342,29 +333,7 @@ void	op_sti(t_cyc *info, t_pc *pc)
 	pc->i += acb_len(acb);
 	TIME("op_sti\t")
 }
-/*
-void	op_fork(t_cyc *info, t_pc *pc)
-{
-	//ft_printf("%d------------[FORK]\n", pc->r[0]);
-	TEA
-	t_pc	*new;
-	int16_t	addr;
 
-	ft_memrcpy(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
-	if (!(new = ft_memalloc(sizeof(t_pc))))
-		exit_msg(4, "pc_new");
-	ft_memcpy(&new, &pc, sizeof(t_pc));
-	new->i = MEM(new->i + IDX(addr));
-	wait_mod(&new->wait, info->mem[0][new->i]);
-	//ft_printf("%d : %.2x\n", MEM(new->i + IDX(addr)), info->mem[0][MEM(new->i + IDX(addr))]);
-	new->next = g_head;
-	g_head->prev = new;
-	new->prev = NULL;
-	g_head = new;
-	pc->i += 3;
-	TIME("op_fork\t")
-}
-*/
 void	op_fork(t_cyc *info, t_pc *pc)
 {
 	TEA
@@ -490,7 +459,6 @@ void	op_aff(t_cyc *info, t_pc *pc)
 
 void	wait_mod(uint16_t *wait, uint8_t op)
 {
-//	TEA
 	if (op == 16)
 		*wait = 2;
 	else if (op == 2 || op == 3)
@@ -511,9 +479,8 @@ void	wait_mod(uint16_t *wait, uint8_t op)
 		*wait = 1000;
 	else
 		*wait = -1;
-//	TIME("wait_mod")
 }
-//
+
 void	pc_scan_op(t_cyc *info, t_pc *pc)
 {
 //	//ft_printf("at mem[%d] (%.2x) for %d more cycles\n", pc->i, info->mem[0][pc->i], pc->wait);
@@ -538,8 +505,3 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 	if (pc->next)
 		pc_scan_op(info, pc->next);
 }
-/*
-** pc at op first time	| assign wait
-** pc waiting at op		| decrement wait
-** pc executes op		| !wait then set wait
-*/

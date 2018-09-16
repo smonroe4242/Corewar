@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   curse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/15 20:42:37 by smonroe           #+#    #+#             */
+/*   Updated: 2018/09/15 20:42:41 by smonroe          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "corewar.h"
 
-void    ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS])
+void    ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS], uint32_t delay)
 {
     register uint8_t    x;
     register uint8_t    y;
@@ -53,5 +65,6 @@ void    ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS])
         head = head->next;
     }
     refresh();
-    usleep(1000); // Microsecond cycle interval
+    if (delay)
+        usleep(delay); // Microsecond cycle interval
 }

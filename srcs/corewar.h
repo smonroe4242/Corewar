@@ -14,9 +14,6 @@
 # define COREWAR_H
 # include <curses.h>
 # include "op.h"
-# define MLX 'm'
-# define PRINT 'p'
-# define NCURSES 'n'
 # define ACB_ARG(x) ((x == 3) ? 4 : x)
 # define REG(r) (r > 0 && r < REG_NUMBER)
 
@@ -53,6 +50,7 @@ typedef struct		s_cyc
 typedef struct		s_flg
 {
 	uint8_t			print;
+	uint32_t		delay;
 }					t_flg;
 
 typedef void	(*t_fn)(t_cyc *, t_pc *);
@@ -60,13 +58,13 @@ typedef void	(*t_fn)(t_cyc *, t_pc *);
 clock_t				g_time;
 t_fn				g_op_fn[17];
 t_pc				*g_head;
-
-void				prove(t_pc *pc);
-void				ft_memrcpy(void *dst, void *src, size_t n);
-void				ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS]);
 char				*g_optarg;
 int					g_optind;
 int					g_optopt;
+
+void				prove(t_pc *pc);
+void				ft_memrcpy(void *dst, void *src, size_t n);
+void				ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS], uint32_t delay);
 t_flg				ft_setopt(int ac, char **av);
 int					ft_getopt(int ac, char **av, char *flg);
 

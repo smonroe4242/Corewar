@@ -15,25 +15,21 @@
 void    p_flag_init(void)
 {
     /*Initialize pipe to python instance and send header info*/
-    
 }
 
 void    ft_hex_print(uint8_t x)
 {
-    char    s[3];
-    char    *chars;
 
-    chars = "0123456789abcdef";
-    s[0] = chars[x >> 4];
-    s[1] = chars[x & 15];
-    s[2] = ' ';
-    write(1, &s, 3); 
 }
 
 void    ft_dump_mem(t_cyc *info)
 {
     int     i;
+    char    s[2];
+    char    *chars;
+    t_pc    *ptr;
 
+    chars = "0123456789abcdef";
     ft_printf("Cycle%d\nLast%d\n", info->cycle, info->last);
     i = -1;
     ft_putstr("StartMem");
@@ -41,7 +37,9 @@ void    ft_dump_mem(t_cyc *info)
     {
         if (!(i % 64))
             ft_putchar('\n');
-        ft_hex_print(info->mem[0][i]);
+        s[0] = chars[x >> 4];
+        s[1] = chars[x & 15];
+        write(1, &s, 2);
     }
     ft_putstr("\nEndMem\nStartRef");
     i = -1;
@@ -50,16 +48,25 @@ void    ft_dump_mem(t_cyc *info)
         if (!(i % 64))
             ft_putchar('\n');
         ft_putchar(info->ref[0][i] + '0');
-        ft_putchar(' ');
     }
-    ft_putstr("\nEndRef\n");
+    ft_putstr("\nEndRef\nStartPc\n");
+    ptr = g_head;
+    i = 0;
+    while (ptr)
+    {
+        ft_printf("%d:%d\n", ptr->r[0], ptr->i);
+        ptr = ptr->next;
+        i++;
+    }
+    ft_printf("Count:%d\n", i);
+    ft_putstr("EndPc\n");
 }
 
 void  		 display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag)
 {
     (void)champ;
-    if (flag.print == PRINT)
+    if (flag.print == 'p')
         ft_dump_mem(info);
-    else if (flag.print == NCURSES)
-        ncurse(info, g_head, champ);//ncurses function
+    else if (flag.print == 'n')
+        ncurse(info, g_head, champ, flag.delay);//ncurses function
 }
