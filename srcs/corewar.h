@@ -16,6 +16,7 @@
 # include "op.h"
 # define ACB_ARG(x) ((x == 3) ? 4 : x)
 # define REG(r) (r > 0 && r < REG_NUMBER)
+# define OUT "MEMORY.txt"
 
 typedef struct		s_head
 {
@@ -51,6 +52,8 @@ typedef struct		s_flg
 {
 	uint8_t			print;
 	uint32_t		delay;
+	uint8_t			debug;
+	int				fd;
 }					t_flg;
 
 typedef void	(*t_fn)(t_cyc *, t_pc *);
@@ -64,7 +67,7 @@ int					g_optopt;
 
 void				prove(t_pc *pc);
 void				ft_memrcpy(void *dst, void *src, size_t n);
-void				ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS], uint32_t delay);
+void				ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS], t_flg flag);
 t_flg				ft_setopt(int ac, char **av);
 int					ft_getopt(int ac, char **av, char *flg);
 
@@ -95,7 +98,7 @@ void				pc_rem_head(t_pc **pc);
 void				pc_scan_rem(t_pc **pc);
 void				pc_free(t_pc *pc);
 
-void				ft_dump_mem(t_cyc *info);
+void				ft_dump_mem(t_cyc *info, int fd);
 t_head				file_stuff(char *cor);
 void				exit_msg(int n, char *s);
 void				display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag);

@@ -11,62 +11,54 @@
 /* ************************************************************************** */
 
 #include "corewar.h"
+#define DUMP 4096
 
-void    p_flag_init(void)
+void    ft_dump_info(t_cyc *info, int fd)
 {
-    /*Initialize pipe to python instance and send header info*/
+    char    *out;
+
+    out = "\nCycle ";
+    out = ft_strappfr(out, ft_itoa(info->cycle));
+    out = ft_strjoinfr(out, " Last ");
+    out = ft_strmrg(out, ft_itoa(info->last));
+    out = ft_strjoinfr(out, " Start\n");
+    write(fd, out, ft_strlen(out));
+    free(out);
 }
 
-void    ft_hex_print(uint8_t x)
+void    ft_dump_mem(t_cyc *info, int fd)
 {
+    register int     i;
+    register int     j;
+    register char    buf[(MEM_SIZE << 2) + MEM_SIZE + 1];
+    register char    *hex;
+    register uint8_t byte;
 
-}
-
-void    ft_dump_mem(t_cyc *info)
-{
-    int     i;
-    char    s[2];
-    char    *chars;
-    t_pc    *ptr;
-
-    chars = "0123456789abcdef";
-    ft_printf("Cycle%d\nLast%d\n", info->cycle, info->last);
-    i = -1;
-    ft_putstr("StartMem");
-    while (++i < MEM_SIZE)
-    {
-        if (!(i % 64))
-            ft_putchar('\n');
-        s[0] = chars[x >> 4];
-        s[1] = chars[x & 15];
-        write(1, &s, 2);
-    }
-    ft_putstr("\nEndMem\nStartRef");
-    i = -1;
-    while (++i < MEM_SIZE)
-    {
-        if (!(i % 64))
-            ft_putchar('\n');
-        ft_putchar(info->ref[0][i] + '0');
-    }
-    ft_putstr("\nEndRef\nStartPc\n");
-    ptr = g_head;
+    j = 0;
     i = 0;
-    while (ptr)
+    hex = "0123456789abcdef";
+    while (j < MEM_SIZE)
     {
-        ft_printf("%d:%d\n", ptr->r[0], ptr->i);
-        ptr = ptr->next;
-        i++;
+        byte = info->mem[0][j++];
+        buf[i++] = hex[byte >> 4];
+        buf[i++] = hex[byte & 15];
+        buf[i++] = (j % 64) ? ' ' : '\n';
     }
-    ft_printf("Count:%d\n", i);
-    ft_putstr("EndPc\n");
+    j = 0;
+    while (j < MEM_SIZE)
+    {
+        buf[i++] = (j % 64) ? ' ' : '\n';
+        buf[i++] = info->ref[0][j++] + '0';
+    }
+    ft_dump_info(info, fd);
+    write(fd, buf, i);
 }
 
-void  		 display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag)
+void    display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flg flag)
 {
     (void)champ;
     if (flag.print == 'p')
-        ft_dump_mem(info);
+        ft_dump_mem(info, flag.fd);
     else if (flag.print == 'n')
-        ncurse(info, g_head, champ, flag.delay);//ncurses function
+        ncurse(info, g_head, champ, flag);//ncurses function
 }

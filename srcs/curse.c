@@ -12,7 +12,7 @@
 
 #include "corewar.h"
 
-void    ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS], uint32_t delay)
+void    ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS], t_flg flag)
 {
     register uint8_t    x;
     register uint8_t    y;
@@ -23,6 +23,7 @@ void    ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS], uint32_t delay)
     (void)pc;
     initscr();
     noecho();
+//    nodelay(stdscr, true);
     curs_set(FALSE);
     start_color();
     init_pair(0, COLOR_WHITE, COLOR_BLACK);
@@ -65,6 +66,8 @@ void    ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS], uint32_t delay)
         head = head->next;
     }
     refresh();
-    if (delay)
-        usleep(delay); // Microsecond cycle interval
+    if (flag.delay)
+        usleep(flag.delay); // Microsecond cycle interval
+    if (flag.debug)
+        getch();
 }

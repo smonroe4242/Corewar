@@ -431,6 +431,32 @@ void	op_lfork(t_cyc *info, t_pc *pc)
 	TIME("op_lfork\t")
 }
 
+void	ft_putwchar(uint32_t chr)
+{
+	uint8_t	str[4];
+
+	if (chr < (1 << 11))
+	{
+		str[0] = (unsigned char)((chr >> 6) | 0xC0);
+		str[1] = (unsigned char)((chr & 0x3F) | 0x80);
+		write(1, &str, 2);
+	}
+	else if (chr < (1 << 16))
+	{
+		str[0] = (unsigned char)(((chr >> 12)) | 0xE0);
+		str[1] = (unsigned char)(((chr >> 6) & 0x3F) | 0x80);
+		str[2] = (unsigned char)((chr & 0x3F) | 0x80);
+		write(1, &str, 3);
+	}
+	else if (chr < (1 << 21))
+	{
+		str[0] = (unsigned char)(((chr >> 18)) | 0xF0);
+		str[1] = (unsigned char)(((chr >> 12) & 0x3F) | 0x80);
+		str[2] = (unsigned char)(((chr >> 6) & 0x3F) | 0x80);
+		str[3] = (unsigned char)((chr & 0x3F) | 0x80);
+		write(1, &str, 4);
+	}
+}
 void	op_aff(t_cyc *info, t_pc *pc)
 {
 	TEA
@@ -440,15 +466,11 @@ void	op_aff(t_cyc *info, t_pc *pc)
 	if (info->mem[0][MEM(pc->i + 1)] == 0x40)
 	{
 		chr = pc->r[info->mem[0][MEM(pc->i + 2)]];
-		chr = END32(chr);
+//		write(1, &chr, 1);
 		if (chr <= 0x7F)
 			write(1, &chr, 1);
-		else if (chr <= 0x7FF)
-			write(1, &chr, 2);
-		else if (chr <= 0xFFFF)
-			write(1, &chr, 3);
-		else if (chr <= 0x10FFFF)
-			write(1, &chr, 4);
+		else
+			ft_putwchar(chr);
 		pc->i += 3;
 	}
 	else
@@ -484,24 +506,33 @@ void	wait_mod(uint16_t *wait, uint8_t op)
 void	pc_scan_op(t_cyc *info, t_pc *pc)
 {
 //	//ft_printf("at mem[%d] (%.2x) for %d more cycles\n", pc->i, info->mem[0][pc->i], pc->wait);
-	//ft_printf("");
-	if (info->mem[0][pc->i] < 1 || info->mem[0][pc->i] > 16)
-		pc->i++;
-	else if (!pc->wait)
+	t_pc	*tmp;
+
+	tmp = pc;
+	while (tmp)
 	{
-//		//ft_printf("Doing function, pc->i = %d\n", pc->i);
-		g_op_fn[info->mem[0][pc->i]](info, pc);
-		wait_mod(&pc->wait, info->mem[0][pc->i]);
-//		pc->wait--;
-//		//ft_printf("pc->i updated to %d and given wait time of %d\n", pc->i, pc->wait);
+		if (info->mem[0][tmp->i] < 1 || info->mem[0][tmp->i] > 16)
+			tmp->i++;
+		else if (!tmp->wait)
+		{
+	//		//ft_printf("Doing function, tmp->i = %d\n", tmp->i);
+			g_op_fn[info->mem[0][tmp->i]](info, tmp);
+			if ((uint32_t)info->mem[0][MEM_SIZE] != (uint32_t)info->mem[0][0])
+			{
+				ft_printf("%.8x\n%.8x\n", (uint32_t)info->mem[0][MEM_SIZE], (uint32_t)info->mem[0][0]);
+				ft_memcpy(&info->mem[0][0], &info->mem[0][MEM_SIZE], REG_SIZE);
+				ft_memcpy(&info->ref[0][0], &info->ref[0][MEM_SIZE], REG_SIZE);
+			}
+			wait_mod(&tmp->wait, info->mem[0][tmp->i]);
+	//		//ft_printf("tmp->i updated to %d and given wait time of %d\n", tmp->i, tmp->wait);
+		}
+		else if (tmp->wait > 0)
+			tmp->wait--;
+		else
+		{
+			wait_mod(&tmp->wait, info->mem[0][tmp->i]);
+	//		tmp->wait--;
+		}
+		tmp = tmp->next;
 	}
-	else if (pc->wait > 0)
-		pc->wait--;
-	else
-	{
-		wait_mod(&pc->wait, info->mem[0][pc->i]);
-//		pc->wait--;
-	}
-	if (pc->next)
-		pc_scan_op(info, pc->next);
 }

@@ -69,6 +69,8 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 	kill = 0;
 	init_op();
 	g_head = info.pc;
+	ft_memcpy(&info.mem[0][MEM_SIZE], &info.mem[0][0], REG_SIZE);
+	ft_memcpy(&info.ref[0][MEM_SIZE], &info.ref[0][0], REG_SIZE);
 	while (die > 0)
 	{
 		step = 0;
@@ -82,14 +84,9 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flg flag)
 			//ft_printf("\e[35m%d\e[0m\n", info.cycle);
 			info.cycle++;
 		}
-		//ft_printf("Proving at pc_scan_rem\n");
-		//prove(g_head);
 		total = live_sum(info.pcount);
 		ft_memset(&info.pcount, 0, sizeof(info.pcount));
 		pc_scan_rem(&(g_head));
-		//if (g_head)
-		//	prove(g_head);
-		//ft_printf("Done\n");
 		if (!g_head)
 			break ;
 		if (total >= NBR_LIVE)
@@ -147,8 +144,8 @@ void	init_vm(t_head champ[MAX_PLAYERS], t_flg flag)
 	int			i;
 	int			n;
 
-	mem = ft_memalloc(MEM_SIZE);
-	ref	= ft_memalloc(MEM_SIZE);
+	mem = ft_memalloc(MEM_SIZE + REG_SIZE);
+	ref	= ft_memalloc(MEM_SIZE + REG_SIZE);
 	n = 0;
 	while (champ[n].pnum && n < MAX_PLAYERS)
 	{

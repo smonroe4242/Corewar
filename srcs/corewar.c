@@ -83,7 +83,8 @@ t_flg	ft_setopt(int ac, char **av)
 	g_optind = 1;
 	flag.print = 0;
 	flag.delay = 0;
-	while ((opt = ft_getopt(ac, av, "pnw:")) != -1)
+	flag.debug = 0;
+	while ((opt = ft_getopt(ac, av, "pnw:d")) != -1)
 	{
 		ft_printf("opt:%c, optarg:%s, optind:%d, %s\n", opt, g_optarg, g_optind, av[g_optind]);
 		if (opt == '?')
@@ -94,8 +95,13 @@ t_flg	ft_setopt(int ac, char **av)
 				flag.print = opt;
 			else if (opt == 'w')
 				flag.delay = ft_atoi(g_optarg);
+			else if (opt == 'd')
+				flag.debug = 1;
 		}
 	}
+	flag.fd = (flag.print == 'p') ? open(OUT, O_CREAT | O_TRUNC | O_WRONLY) : 1;
+	if (flag.fd == -1)
+		exit(1);
 	flag.delay = (flag.delay != 0) ? 1000000/flag.delay : 0;
 	return (flag);
 }
@@ -147,5 +153,6 @@ int		main(int ac, char **av)
 		file[i++] = file_stuff(av[g_optind++]);
 	ft_printf("Success! Initializing vm now.\n");
 	init_vm(file, flag);
+//	pause();
 	return (0);
 }
