@@ -466,7 +466,6 @@ void	op_aff(t_cyc *info, t_pc *pc)
 	if (info->mem[0][MEM(pc->i + 1)] == 0x40)
 	{
 		chr = pc->r[info->mem[0][MEM(pc->i + 2)]];
-//		write(1, &chr, 1);
 		if (chr <= 0x7F)
 			write(1, &chr, 1);
 		else
