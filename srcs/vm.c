@@ -33,10 +33,6 @@ void	init_op(void)
 	g_op_fn[16] = &op_aff;
 }
 
-char *hex;
-hex = "0123456789abcdef"
-ft_putchar(hex[n % base]);
-
 t_cyc	t_cyc_init(uint8_t **mem, uint8_t **ref, t_pc *pc)
 {
 	t_cyc	info;

@@ -111,32 +111,6 @@ void	op_st(t_cyc *info, t_pc *pc)//imp
 	}
 	else if (info->mem[0][MEM(pc->i + 1)] == 0x70)
 	{
-		/*
-		**	[ERROR] Heap Buffer Overflow on mem and ref
-		**		3 in 4096 chance that 4 byte write starts between
-		**		mem[4093] and mem[4095], causing MEM() macro to
-		**		allow the rightmost bits to overflow past the end
-		**		of mem and ref.
-		**
-		**	[ISSUE] Expanding upon MEM() macro will cause all check to be
-		**		longer and may lead to VM lagging. But bad values getting
-		**		passed causes far worse error, so this probably will be the
-		**		implemented fix.
-		**
-		**	[FUCK]
-		**		This is harder than it seemed at first. Cases include 1, 2, and
-		**		4 byte write sizes, having a max mem[i] offset MEM_SIZE - 0.
-		**		MEM_SIZE - 1, and MEM_SIZE - 3 respectively. So when trying to
-		**		write 4 bytes at mem[4094], bytes have to transfer like
-		**		x[0]		x[1]		x[2]		x[3]
-		**		mem[4094]	mem[4095]	mem[0]		mem[1]
-		**		so we need to copy one byte at a time checking each step before access
-		**
-		**		Implement in ft_memrcpy a check that writes in a wrap-around;
-		**		Need index or starting address of mem/ref
-		**		NOPE because sometimes it applies to dst, sometime src, sometimes both, sometimes neither.
-		**		Gotta do that macro
-		*/
 		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 3)], IND_SIZE);
 		//ft_printf("ACB:70\tloc:%d\tpc->i:%d\n", loc, pc->i);
 		//ft_printf("val %d\n", info->mem[0][MEM(pc->i + IDX(loc))]);
@@ -165,9 +139,9 @@ void	op_add(t_cyc *info, t_pc *pc)
 	//ft_printf("%d-----[ADD]\n", pc->r[0]);
 	if (info->mem[0][MEM(pc->i + 1)] == 0x54 && REG(arga) && REG(argb) && REG(argc))
 	{
-		//ft_printf("arga[%d] + argb[%d]", arga, argb);
-		pc->r[argc] = pc->r[argb] + pc->r[argc];
-		//ft_printf(" = arg3[%d]\n", argc);
+		//ft_printf("arga[%d(%d)] + argb[%d(%d)]", arga, pc->r[arga], argb, pc->r[argb]);
+		pc->r[argc] = pc->r[argb] + pc->r[arga];
+		//ft_printf(" = arg3[%d(%d)]\n", argc, pc->r[argc]);
 		pc->i += 5;
 		pc->carry = 1;
 	}
@@ -526,7 +500,7 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 			g_op_fn[info->mem[0][tmp->i]](info, tmp);
 			if ((uint32_t)info->mem[0][MEM_SIZE] != (uint32_t)info->mem[0][0])
 			{
-				ft_printf("%.8x\n%.8x\n", (uint32_t)info->mem[0][MEM_SIZE], (uint32_t)info->mem[0][0]);
+				//ft_printf("%.8x\n%.8x\n", (uint32_t)info->mem[0][MEM_SIZE], (uint32_t)info->mem[0][0]);
 				ft_memcpy(&info->mem[0][0], &info->mem[0][MEM_SIZE], REG_SIZE);
 				ft_memcpy(&info->ref[0][0], &info->ref[0][MEM_SIZE], REG_SIZE);
 			}
