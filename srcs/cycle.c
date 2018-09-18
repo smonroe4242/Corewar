@@ -81,6 +81,7 @@ void	op_ld(t_cyc *info, t_pc *pc)
 		if (REG(reg))
 			ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + 2)], REG_SIZE);
 		pc->i += 7;
+		pc->carry = 1;
 	}
 	else if (info->mem[0][MEM(pc->i + 1)] == 0xd0)
 	{
@@ -90,6 +91,7 @@ void	op_ld(t_cyc *info, t_pc *pc)
 		if (REG(reg))
 			ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + IDX(loc))], REG_SIZE);
 		pc->i += 5;
+		pc->carry = 1;
 	}
 	else
 		pc->i++;
@@ -167,6 +169,7 @@ void	op_add(t_cyc *info, t_pc *pc)
 		pc->r[argc] = pc->r[argb] + pc->r[argc];
 		//ft_printf(" = arg3[%d]\n", argc);
 		pc->i += 5;
+		pc->carry = 1;
 	}
 	else
 		pc->i++;
@@ -187,6 +190,7 @@ void	op_sub(t_cyc *info, t_pc *pc)
 	{
 		pc->r[argc] = pc->r[arga] - pc->r[argb];
 		pc->i += 5;
+		pc->carry = 1;
 	}
 	else
 		pc->i++;
@@ -261,7 +265,6 @@ void	op_zjmp(t_cyc *info, t_pc *pc)//imp
 	{
 		ft_memrcpy(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
 		pc->i = MEM(pc->i + IDX(addr));
-		pc->carry = 0;
 		//ft_printf("Jumped to %d:%.2x\n", pc->i, info->mem[0][pc->i]);
 	}
 	else
@@ -297,6 +300,7 @@ void	op_ldi(t_cyc *info, t_pc *pc)
 	if (REG(tmp))
 	ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + IDX((int16_t)loc))], REG_SIZE);
 	pc->i += acb_len(acb);
+	pc->carry = 1;
 	TIME("op_ldi\t")
 }
 
@@ -371,6 +375,7 @@ void	op_lld(t_cyc *info, t_pc *pc)
 		if (REG(reg))
 			ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + 2)], REG_SIZE);
 		pc->i += 7;
+		pc->carry = 1;
 	}
 	else if (info->mem[0][MEM(pc->i + 1)] == 0xd0)
 	{
@@ -380,6 +385,7 @@ void	op_lld(t_cyc *info, t_pc *pc)
 		if (REG(reg))
 			ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + loc)], REG_SIZE);
 		pc->i += 5;
+		pc->carry = 1;
 	}
 	else
 		pc->i++;
@@ -411,6 +417,7 @@ void	op_lldi(t_cyc *info, t_pc *pc)
 	if (REG(tmp))
 		ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + (int16_t)loc)], REG_SIZE);
 	pc->i += acb_len(acb);
+	pc->carry = 1;
 	TIME("op_lld\t")
 }
 
@@ -428,6 +435,7 @@ void	op_lfork(t_cyc *info, t_pc *pc)
 	new->alive = pc->alive;
 	pc_app(&g_head, new);
 	pc->i += 3;
+	pc->carry = 1;
 	TIME("op_lfork\t")
 }
 
