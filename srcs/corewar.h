@@ -15,7 +15,7 @@
 # include <curses.h>
 # include "op.h"
 # define ACB_ARG(x) ((x == 3) ? 4 : x)
-# define REG(r) (r > 0 && r < REG_NUMBER)
+# define REG(r) (r > 0 && r <= REG_NUMBER)
 # define OUT "MEMORY.txt"
 
 typedef struct		s_head

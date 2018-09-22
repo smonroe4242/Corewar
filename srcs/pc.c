@@ -86,18 +86,15 @@ void    pc_scan_rem(t_pc **pc)
 {
     t_pc    *tmp;
 	t_pc	*hold;
+
     tmp = *pc;
     while (tmp)
     {
-		//ft_printf("bloop\t");
         if (!tmp->alive)
 		{
-			//ft_printf("blip\t\n");
 			hold = tmp->next;
-//			//ft_printf("%p : %d\n", &hold, hold->i);
             pc_rem(&tmp);
 			tmp = hold;
-//			//ft_printf("%p : %d\n", &tmp, tmp->i);
 		}
 		else
 		{

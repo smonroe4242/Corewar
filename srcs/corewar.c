@@ -23,30 +23,32 @@ void	ft_memrcpy(void *dst, void *src, size_t n)
 		*(w++) = *(p--);
 }
 
+void	usage(void)
+{
+	ft_printf("\n\nUsage: ./corewar [-p] [-n -w N -d] [champion].cor\n\t-p: P");
+	ft_printf("ython Visualizer\n\t-n: Ncurses Visualizer\n\t-w [cycles per s");
+	ft_printf("econd]: Set speed of Ncurses visualizer\n\t-d: Set Debug Mode ");
+	ft_printf("for Ncurses Visualizer\n\t\tPress key to advance 1 cycle, hold");
+	ft_printf(" key to run continously\n-p flag takes no additional arguments");
+	ft_printf("\n-p and -n flags override each other such that first flag giv");
+	ft_printf("en will be ignored if both are present\n-d and -w will only wo");
+	ft_printf("rk if -n flag is present.\n\nCorewar takes 1 - 4 .cor files an");
+	ft_printf("d runs them in the Virtual Machine.\nWritten by jochang, jtash");
+	ft_printf("ako, and smonroe.\n42 Silicon Valley, September 2018\n\n\n\n\n");
+	exit(0);
+}
+
 void	exit_msg(int n, char *s)
 {
-	if (!n)
-	{
-		ft_printf("Usage: ./corewar [-p] [-m] [-n] FILE.cor\n-p to enable ");
-		ft_printf("printing to stdout\n-m to enable graphic window mode\n-");
-		ft_printf("n to enable ncurses mode\n\nThe -p -m and -n flags over");
-		ft_printf("ride each other. if multiple have been given, the last ");
-		ft_printf("one will be the output mode.\n");
-	}
-	else if (n == 1)
+	if (n == 1)
 		ft_printf("Error in file read in for champion file %s\n", s);
 	else if (n == 2)
 		ft_printf("Header got f u c k e d in %s man\n", s);
 	else if (n == 3)
-		ft_printf("Error in grabbing flags. Only p, n, and m are available.\n");
+		ft_printf("Error in grabbing flags. Only -pnwd are available.\n");
 	else if (n == 4)
-		ft_printf("Failed to malloc in %s\n");
+		ft_printf("Malloc has failed inside %s\n", s);
 	exit(0);
-}
-
-uint32_t		endian_swap32(uint32_t x)
-{
-	return ((x >> 24) | (x << 24) | ((x >> 8 ) & 0xff00) | ((x << 8) & 0xff0000));
 }
 
 t_head	file_stuff(char *cor)
@@ -141,7 +143,7 @@ int		main(int ac, char **av)
 	int		i;
 
 	if (ac == 1)
-		exit_msg(0, NULL);
+		usage();
 	ft_bzero(&file, sizeof(t_head) * MAX_PLAYERS);
 	flag = ft_setopt(ac, av);
 	ft_printf("g_optind = %d and ac = %d\n", g_optind, ac);
