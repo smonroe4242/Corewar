@@ -22,26 +22,6 @@ void	ft_memfree(uint8_t **m, size_t n)
 	}
 }
 
-uint16_t	acb_lend(uint8_t acb)
-{
-	if (acb == 0x80 || acb == 0x70 || acb == 0x50)
-		return (4);
-	if (acb == 0xd0 || acb == 0x90 || acb == 54)
-		return (5);
-	if (acb == 0xd4 || acb == 0x74)
-		return (6);
-	if (acb == 0xf4)
-		return (7);
-	if (acb == 0x94 || acb == 0x64 || acb == 0x58)
-		return (8);
-	if (acb == 0xe4 || acb == 0xb4 || acb == 78)
-		return (9);
-	if (acb == 0x94 || acb == 0x68)
-		return (11);
-	else
-		return (1);
-}
-
 uint16_t	acb_len(uint8_t acb)
 {
 	//TEA
@@ -243,7 +223,7 @@ void	op_zjmp(t_cyc *info, t_pc *pc)//imp
 	}
 	else
 	{
-		//ft_printf("whoops lol~~~\n");
+		ft_printf("whoops lol~~~\n");
 		pc->i += 3;
 	}
 	TIME("op_zjmp\t")
@@ -263,18 +243,25 @@ void	op_ldi(t_cyc *info, t_pc *pc)
 		loc += pc->r[info->mem[0][MEM(pc->i + 2)]];
 	else if ((acb >> 6) == DIR_CODE || (acb >> 6) == IND_CODE)
 		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 2)], IND_SIZE);
-	//ft_printf("%d\n", loc);
+	//ft_printf("|%d| + ", loc);
 	if ((acb & 0x30) == (REG_CODE << 4))
-		loc += pc->r[info->mem[0][(MEM(pc->i + 2 + ACB_ARG((acb & 0x30) >> 4)))]];
+	{
+		//ft_printf("pc->r[%02x]\n", info->mem[0][(MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4)))]);
+		tmp = pc->r[info->mem[0][(MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4)))]];
+	}
 	else if (((acb & 0x30) == (DIR_CODE << 4)) || ((acb & 0x30) == (IND_CODE << 4)))
-		ft_memrcpy(&tmp, &info->mem[0][MEM(pc->i + 2 + ACB_ARG((acb & 0x30) >> 4))], IND_SIZE);
+		ft_memrcpy(&tmp, &info->mem[0][MEM(pc->i + 3 + ACB_ARG((acb & 0x30) >> 4))], IND_SIZE);
 	loc += tmp;
+	//ft_printf("|%d| = |%d|\n", tmp, loc);
 	tmp = info->mem[0][MEM(pc->i + acb_len(acb) - 1)];
-	//ft_printf("%d\n", loc);
+	//ft_printf("reg[%d]\n", tmp);
 	if (REG(tmp))
-	ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + IDX((int16_t)loc))], REG_SIZE);
+		ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + IDX((int16_t)loc))], REG_SIZE);
+	//ft_printf("Result: %08x\n", pc->r[tmp]);
+	//ft_printf("IDX((int16_t)loc) == %d and loc == %d", IDX((int16_t)loc), loc);
 	pc->i += acb_len(acb);
 	pc->carry = 1;
+
 	TIME("op_ldi\t")
 }
 
@@ -321,8 +308,8 @@ void	op_fork(t_cyc *info, t_pc *pc)
 
 	ft_memrcpy(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
 	new = pc_new(-pc->r[0], MEM(pc->i + IDX(addr)), info->mem[0][MEM(pc->i + IDX(addr))]);
-	ft_memcpy(&new->r[0], &pc->r[0], sizeof(new->r));
-
+	ft_memcpy(new->r, pc->r, sizeof(new->r));
+	//ft_printf("sizeof(pc->r) == %d\n", sizeof(pc->r));
 	//ft_printf("ADDR: %#.4x : %d; pc->i: %d\n", addr, addr, pc->i);
 
 	new->carry = pc->carry;
@@ -481,12 +468,12 @@ void	wait_mod(uint16_t *wait, uint8_t op)
 	else if (op == 15)
 		*wait = 1000;
 	else
-		*wait = -1;
+		*wait = -1;//ft_printf("--------------------BAD WAIT MOD -----------------------\n");
 }
 
 void	pc_scan_op(t_cyc *info, t_pc *pc)
 {
-//	//ft_printf("at mem[%d] (%.2x) for %d more cycles\n", pc->i, info->mem[0][pc->i], pc->wait);
+	//ft_printf("at mem[%d] (%.2x) for %d more cycles\n", pc->i, info->mem[0][pc->i], pc->wait);
 	t_pc	*tmp;
 
 	tmp = pc;
@@ -496,7 +483,7 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 			tmp->i++;
 		else if (!tmp->wait)
 		{
-	//		//ft_printf("Doing function, tmp->i = %d\n", tmp->i);
+			//ft_printf("Doing function, tmp->i = %d\n", tmp->i);
 			g_op_fn[info->mem[0][tmp->i]](info, tmp);
 			if ((uint32_t)info->mem[0][MEM_SIZE] != (uint32_t)info->mem[0][0])
 			{
@@ -505,15 +492,15 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 				ft_memcpy(&info->ref[0][0], &info->ref[0][MEM_SIZE], REG_SIZE);
 			}
 			wait_mod(&tmp->wait, info->mem[0][tmp->i]);
-	//		//ft_printf("tmp->i updated to %d and given wait time of %d\n", tmp->i, tmp->wait);
-		}
-		else if (tmp->wait > 0)
 			tmp->wait--;
-		else
-		{
-			wait_mod(&tmp->wait, info->mem[0][tmp->i]);
-	//		tmp->wait--;
+			//ft_printf("tmp->i updated to %d and given wait time of %d\n", tmp->i, tmp->wait);
 		}
+//		else if (tmp->wait > 0)
+//			tmp->wait--;
+		tmp->wait--;
+		if (tmp->wait < 0)
+			if (info->mem[0][tmp->i] < 1 || info->mem[0][tmp->i] > 16)
+				wait_mod(&tmp->wait, info->mem[0][tmp->i]);
 		tmp = tmp->next;
 	}
 }
