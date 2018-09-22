@@ -61,7 +61,8 @@ void    ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS], t_flg flag)
     while (head)
     {
         attron(COLOR_PAIR(head->r[0] + 4));
-        mvprintw((head->i / 64) + 3, (head->i % 64) * 3, "%.2x", info->mem[0][head->i]);
+        if (((head->i / 64) + 3) < 63)
+            mvprintw((head->i / 64) + 3, (head->i % 64) * 3, "%.2x", info->mem[0][head->i]);
         attroff(COLOR_PAIR(head->r[0] + 4));
         head = head->next;
     }

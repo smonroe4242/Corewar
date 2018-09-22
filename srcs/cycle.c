@@ -91,6 +91,7 @@ void	op_st(t_cyc *info, t_pc *pc)//imp
 	}
 	else if (info->mem[0][MEM(pc->i + 1)] == 0x70)
 	{
+		//ft_printf("src: %hhd @ %d (%d)\n", info->mem[0][MEM(pc->i + 3)], MEM(pc->i + 3), pc->i + 3);
 		ft_memrcpy(&loc, &info->mem[0][MEM(pc->i + 3)], IND_SIZE);
 		//ft_printf("ACB:70\tloc:%d\tpc->i:%d\n", loc, pc->i);
 		//ft_printf("val %d\n", info->mem[0][MEM(pc->i + IDX(loc))]);

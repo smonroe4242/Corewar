@@ -67,7 +67,7 @@ typedef char					t_arg_type;
 # define END16(x) ((x << 8) | (x >> 8))
 # define END3(x) ((x & 0xff0000) >> 8) | ((x & 0xff00) << 8)
 # define END32(x) ((x << 24) | (x >> 24) | END3(x))
-# define MEM(x) ((x < 0) ? (MEM_SIZE + (x % MEM_SIZE)) : (x % MEM_SIZE))
+# define MEM(x) ((x < 0) ? (-(x % MEM_SIZE)) : (x % MEM_SIZE))
 //# define MEM(x, y) ((CHECK(x) < MEM_SIZE - y))
 # define IDX(x) (x % IDX_MOD)
 # define TEA //g_time = clock();
