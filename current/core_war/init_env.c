@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:31:51 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/01 19:59:21 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/01 22:18:14 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 		{
 			pc_scan_op(&info, g_head);
 			if (flag.n)
-				(void)champ;//display(&info, champ, flag);
+				display(&info, champ, flag);
 			//ft_printf("\e[35m%d\e[0m\n", info.cycle);
 			info.cycle++;
 		}

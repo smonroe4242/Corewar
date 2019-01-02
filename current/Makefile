@@ -6,7 +6,7 @@
 #    By: jochang <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/10 15:16:58 by jochang           #+#    #+#              #
-#    Updated: 2019/01/01 20:00:36 by smonroe          ###   ########.fr        #
+#    Updated: 2019/01/01 22:18:51 by smonroe          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,7 @@ CSRC = core_war/corewar.c \
 	core_war/ft_memrcpy.c \
 	core_war/ft_memfree.c \
 	core_war/acb_len.c \
+	core_war/display.c
 
 AINC = -I inc/asm.h \
 	-I inc/op.h \

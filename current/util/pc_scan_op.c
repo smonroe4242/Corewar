@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/01 19:46:50 by smonroe           #+#    #+#             */
-/*   Updated: 2019/01/01 21:53:03 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/01 22:29:45 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,4 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 }
 
 #undef ARR
-#undef WAIT_MOD(x)
+#undef WAIT_MOD

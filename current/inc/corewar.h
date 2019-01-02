@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 21:00:29 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/01 20:33:48 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/01 22:22:58 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int					init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag);
 uint16_t			acb_len(uint8_t acb);
 void				ft_memfree(uint8_t **m, size_t n);
 void				ft_memrcpy(void *dst, void *src, size_t n);
+
+void				display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flag flag);
 /*
 ** Util
 */
