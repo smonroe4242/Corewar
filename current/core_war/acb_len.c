@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pc_rem_head.c                                      :+:      :+:    :+:   */
+/*   acb_len.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/09 18:46:13 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/01 20:23:03 by smonroe          ###   ########.fr       */
+/*   Created: 2019/01/01 19:43:25 by smonroe           #+#    #+#             */
+/*   Updated: 2019/01/01 19:44:13 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/corewar.h"
 
-void	pc_rem_head(t_pc **pc)
+uint16_t	acb_len(uint8_t acb)
 {
-	t_pc	*tmp;
+	//TEA
+	uint16_t	len;
 
-	tmp = NULL;
-	if ((*pc)->next)
-		tmp = (*pc)->next;
-	ft_bzero(*pc, sizeof(*pc));
-	free(*pc);
-	*pc = tmp;
-	if (*pc)
-		(*pc)->prev = 0;
+	len = 2;
+	len += (((acb >> 6) == 3) ? 4 : (acb >> 6));
+	len += ((((acb >> 4) & 3) == 3) ? 4 : ((acb >> 4) & 3));
+	len += ((((acb >> 2) & 3) == 3) ? 4 : ((acb >> 2) & 3));
+	//TIME("acb_len\t")
+	return (len);
 }

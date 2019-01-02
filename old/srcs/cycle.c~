@@ -6,7 +6,7 @@
 /*   By: smonroe <smonroe@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/07 20:19:50 by smonroe           #+#    #+#             */
-/*   Updated: 2019/01/01 20:35:53 by smonroe          ###   ########.fr       */
+/*   Updated: 2018/09/08 14:29:57 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -450,9 +450,7 @@ void	op_aff(t_cyc *info, t_pc *pc)
 
 void	wait_mod(uint16_t *wait, uint8_t op)
 {
-	static const uint16_t tab[17] = {-1, 10, 5, 5, 10, 10, 6, 6, 6, 20, 25, 25, 800, 10, 50, 1000, 2};
-	*wait = tab[op];
-/*	if (op == 16)
+	if (op == 16)
 		*wait = 2;
 	else if (op == 2 || op == 3)
 		*wait = 5;
@@ -471,7 +469,7 @@ void	wait_mod(uint16_t *wait, uint8_t op)
 	else if (op == 15)
 		*wait = 1000;
 	else
-	*wait = -1;//ft_printf("--------------------BAD WAIT MOD -----------------------\n");*/
+		*wait = -1;//ft_printf("--------------------BAD WAIT MOD -----------------------\n");
 }
 
 void	pc_scan_op(t_cyc *info, t_pc *pc)
@@ -494,7 +492,6 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 				ft_memcpy(&info->mem[0][0], &info->mem[0][MEM_SIZE], REG_SIZE);
 				ft_memcpy(&info->ref[0][0], &info->ref[0][MEM_SIZE], REG_SIZE);
 			}
-//			tmp->wait = (uint16_t[]){-1, 10, 5, 5, 10, 10, 6, 6, 6, 20, 25, 25, 800, 10, 50, 1000, 2}[info->mem[0][tmp->i]];
 			wait_mod(&tmp->wait, info->mem[0][tmp->i]);
 			tmp->wait--;
 			//ft_printf("tmp->i updated to %d and given wait time of %d\n", tmp->i, tmp->wait);

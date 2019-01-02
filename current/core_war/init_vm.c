@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 00:06:50 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/24 00:06:52 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/01 19:26:07 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,9 @@ static void	init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS],
 		n++;
 	pc = pc_new(champ[0].pnum, 0, mem[0][0]);
 	i = 0;
-	if (n > 1)
-		while (++i < n)
-			pc_app(&pc,
-			pc_new(champ[i].pnum, MEM_SIZE / n * i, mem[0][MEM_SIZE / n * i]));
+	while (++i < n)
+		pc_app(&pc,
+		pc_new(champ[i].pnum, MEM_SIZE / n * i, mem[0][MEM_SIZE / n * i]));
 	info = init_t_cyc(mem, ref, pc);
 	if (!(winner = init_env(info, champ, flag)))
 		ft_printf("There has been a tie!\n", champ[0].pnum, champ[0].name);

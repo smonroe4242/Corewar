@@ -6,11 +6,23 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:31:51 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/24 01:31:53 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/01 19:59:21 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/corewar.h"
+
+static int		live_sum(uint32_t p[MAX_PLAYERS])
+{
+	uint32_t	total;
+	uint32_t		i;
+
+	total = 0;
+	i = -1;
+	while (++i < MAX_PLAYERS)
+		total += p[i];
+	return (total);
+}
 
 int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 {
@@ -33,7 +45,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 		{
 			pc_scan_op(&info, g_head);
 			if (flag.n)
-				display(&info, champ, flag);
+				(void)champ;//display(&info, champ, flag);
 			//ft_printf("\e[35m%d\e[0m\n", info.cycle);
 			info.cycle++;
 		}

@@ -6,7 +6,7 @@
 #    By: jochang <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/10 15:16:58 by jochang           #+#    #+#              #
-#    Updated: 2018/09/10 15:17:00 by jochang          ###   ########.fr        #
+#    Updated: 2019/01/01 20:00:36 by smonroe          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ UTIL = util/pc_app.c \
 	util/pc_rem_head.c \
 	util/pc_rem.c \
 	util/pc_scan_rem.c \
+	util/pc_scan_op.c \
 
 OP = op/op_add.c \
 	op/op_aff.c \
@@ -54,6 +55,8 @@ CSRC = core_war/corewar.c \
 	core_war/op_fn.c \
 	core_war/init_env.c \
 	core_war/ft_memrcpy.c \
+	core_war/ft_memfree.c \
+	core_war/acb_len.c \
 
 AINC = -I inc/asm.h \
 	-I inc/op.h \
@@ -62,6 +65,7 @@ AINC = -I inc/asm.h \
 CINC = -I inc/corewar.h \
 	-I inc/op.h \
 	-I inc/err.h \
+	-lncurses
 
 ERR = err/err_invarg.c \
 	err/err_invfile.c \
@@ -86,7 +90,7 @@ $(COREWAR):
 	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) \
 	$(AINC) $(LFT) $(LFP)
 	@echo "\033[32mmaking corewar...\033[0m"
-	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UITL) $(OP) \
+	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UTIL) $(OP) \
 	$(CINC) $(LFT) $(LFP)
 
 clean:

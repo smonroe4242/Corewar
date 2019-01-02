@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2018/09/06 05:39:50 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/01 19:13:44 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@
 
 # define COMMENT_CHAR			'#'
 # define LABEL_CHAR				':'
-# define DIRECT_CHAR				'%'
+# define DIRECT_CHAR			'%'
 # define SEPARATOR_CHAR			','
 
-# define LABEL_CHARS				"abcdefghijklmnopqrstuvwxyz_0123456789"
+# define LABEL_CHARS			"abcdefghijklmnopqrstuvwxyz_0123456789"
 
-# define NAME_CMD_STRING			".name"
+# define NAME_CMD_STRING		".name"
 # define COMMENT_CMD_STRING		".comment"
 
 # define REG_NUMBER				16
 
 # define CYCLE_TO_DIE			1536
-# define CYCLE_DELTA				50
+# define CYCLE_DELTA			50
 # define NBR_LIVE				21
 # define MAX_CHECKS				10
 
@@ -55,8 +55,8 @@ typedef char	t_arg_type;
 # define COMMENT_LENGTH			(2048 + 8)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
-# define END16(x) ((x << 8) | (x >> 8))
-# define END3(x) ((x & 0xff0000) >> 8) | ((x & 0xff00) << 8)
-# define END32(x) ((x << 24) | (x >> 24) | END3(x))
+# define END16(x) (((x) << 8) | ((x) >> 8))
+# define END3(x) (((x) & 0xff0000) >> 8) | (((x) & 0xff00) << 8)
+# define END32(x) (((x) << 24) | ((x) >> 24) | END3(x))
 
 #endif

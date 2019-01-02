@@ -6,18 +6,18 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/09 18:03:24 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/12 14:38:52 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/01 19:22:47 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/corewar.h"
 
-void	pc_app(t_pc *lst, t_pc *node)
+void	pc_app(t_pc **lst, t_pc *node)
 {
-	if (lst)
+	if (lst && *lst)
 	{
-		node->next = lst;
-		lst->prev = node;
+		node->next = *lst;
+		(*lst)->prev = node;
 	}
-	lst = node;
+	*lst = node;
 }

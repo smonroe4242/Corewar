@@ -1,0 +1,3 @@
+1/1/19 8:37pm smonroe:
+	Cleared jochang's current copy of all compiler errors. Everything present except ncurses/display module.
+	Testing needs to be done to ensure current iterations of pc* functions are handling links correctly w/o mem err.
