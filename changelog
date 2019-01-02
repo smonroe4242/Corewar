@@ -2,3 +2,4 @@
 	Cleared jochang's current copy of all compiler errors. Everything present except ncurses/display module.
 	Testing needs to be done to ensure current iterations of pc* functions are handling links correctly w/o mem err.
 	As of current tests, no fsan errors and no leaks on exit with .cor's in /current/ dir.
+	Cleaning all files and making push 8:44pm.
