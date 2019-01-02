@@ -1,126 +1,72 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
+#    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jochang <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: smonroe <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/04/19 01:31:43 by jochang           #+#    #+#              #
-#    Updated: 2018/09/24 02:11:37 by jochang          ###   ########.fr        #
+#    Created: 2018/04/16 06:21:48 by smonroe           #+#    #+#              #
+#    Updated: 2019/01/02 10:09:37 by smonroe          ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 NAME = libft.a
 
-CHK = chk/ft_isalnum.c \
-	  chk/ft_isalpha.c \
-	  chk/ft_isascii.c \
-	  chk/ft_isdigit.c \
-	  chk/ft_isprint.c \
-	  chk/ft_isspace.c \
-	  chk/ft_placevalue.c \
-	  chk/ft_wordcount.c \
-	  chk/ft_wordlen.c \
+SRC = ft_bzero.c ft_memset.c ft_memcpy.c ft_memccpy.c\
+	ft_memmove.c ft_memchr.c ft_memcmp.c ft_strlen.c\
+	ft_strdup.c ft_strcpy.c ft_strncpy.c ft_strcat.c\
+	ft_strncat.c ft_strlcat.c ft_strchr.c ft_strrchr.c\
+	ft_strstr.c	ft_strnstr.c ft_strcmp.c ft_strncmp.c\
+	ft_atoi.c ft_isalpha.c ft_isdigit.c ft_isalnum.c\
+	ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c\
+	ft_memalloc.c ft_memdel.c ft_strnew.c ft_strdel.c\
+	ft_strclr.c ft_striter.c ft_striteri.c ft_strmap.c\
+	ft_strmapi.c ft_strequ.c ft_strnequ.c ft_strsub.c\
+	ft_strjoin.c ft_strtrim.c ft_strsplit.c ft_itoa.c\
+	ft_putchar.c ft_putstr.c ft_putendl.c ft_putnbr.c\
+	ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c\
+	ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c\
+	ft_lstiter.c ft_lstmap.c ft_isspace.c ft_malloc_2d.c\
+	ft_strrev.c ft_isprime.c ft_strjoinfr.c ft_rand.c\
+	ft_frand.c get_next_line.c ft_intlen.c ft_itoa_base.c\
+	ft_strappfr.c ft_printf.c ft_printf_handle.c ft_print_util.c\
+	ft_printf_spare.c ft_strndup.c ft_strmrg.c ft_itoa_base_big.c\
+	ft_itoa_base_ubig.c ft_printf_parse.c ft_strsplitwsp.c ft_putwchar.c\
+	ft_getopt.c
 
-CNV = cnv/ft_atoi.c \
-	  cnv/ft_itoa.c \
-
-BIT = bit/ft_swapendian.c \
-	  bit/ft_swapnendian.c \
-	  bit/ft_swapendian64.c \
-	  bit/ft_swapnendian64.c \
-
-GET = get/ft_getopt.c \
-	  get/ft_getstdin.c \
-	  get/ft_getnstdin.c \
-	  get/get_next_line.c \
-
-LST = lst/ft_lstadd.c \
-	  lst/ft_lstdel.c \
-	  lst/ft_lstdelone.c \
-	  lst/ft_lstiter.c \
-	  lst/ft_lstmap.c \
-	  lst/ft_lstnew.c \
-
-MEM = mem/ft_bzero.c \
-	  mem/ft_memalloc.c \
-	  mem/ft_memccpy.c \
-	  mem/ft_memchr.c \
-	  mem/ft_memcmp.c \
-	  mem/ft_memcpy.c \
-	  mem/ft_memdel.c \
-	  mem/ft_memmove.c \
-	  mem/ft_memset.c \
-	  mem/ft_realloc.c \
-
-PUT = put/ft_putchar.c \
-	  put/ft_putchar_fd.c \
-	  put/ft_putwchar.c \
-	  put/ft_putendl.c \
-	  put/ft_putendl_fd.c \
-	  put/ft_putnbr.c \
-	  put/ft_putnbr_fd.c \
-	  put/ft_putstr.c \
-	  put/ft_putstr_fd.c \
-	  put/ft_printmemory.c \
-
-STR = str/ft_strcat.c \
-	  str/ft_strccpy.c \
-	  str/ft_strcpy.c \
-	  str/ft_strchr.c \
-	  str/ft_strclr.c \
-	  str/ft_strcmp.c \
-	  str/ft_strdel.c \
-	  str/ft_strdup.c \
-	  str/ft_strequ.c \
-	  str/ft_striter.c \
-	  str/ft_striteri.c \
-	  str/ft_strjoin.c \
-	  str/ft_strlcat.c \
-	  str/ft_strlen.c \
-	  str/ft_strlower.c \
-	  str/ft_strmap.c \
-	  str/ft_strmapi.c \
-	  str/ft_strncat.c \
-	  str/ft_strncmp.c \
-	  str/ft_strncpy.c \
-	  str/ft_strndup.c \
-	  str/ft_strnequ.c \
-	  str/ft_strnew.c \
-	  str/ft_strnstr.c \
-	  str/ft_strrchr.c \
-	  str/ft_strrev.c \
-	  str/ft_strsplit.c \
-	  str/ft_strsplitwsp.c \
-	  str/ft_strstr.c \
-	  str/ft_strsub.c \
-	  str/ft_strtrim.c \
-	  str/ft_strupper.c \
-	  str/ft_tolower.c \
-	  str/ft_toupper.c \
-
-SRC = $(CHK) $(CNV) $(BIT) $(GET) $(LST) $(MEM) $(PUT) $(STR)
-
-OBJ = *.o
-
-INC = inc
-
-CFLAGS = -Wall -Wextra -Werror
+OBJ = ft_bzero.o ft_memset.o ft_memcpy.o ft_memccpy.o\
+	ft_memmove.o ft_memchr.o ft_memcmp.o ft_strlen.o\
+	ft_strdup.o ft_strcpy.o ft_strncpy.o ft_strcat.o\
+	ft_strncat.o ft_strlcat.o ft_strchr.o ft_strrchr.o\
+	ft_strstr.o ft_strnstr.o ft_strcmp.o ft_strncmp.o\
+	ft_atoi.o ft_isalpha.o ft_isdigit.o ft_isalnum.o\
+	ft_isascii.o ft_isprint.o ft_toupper.o ft_tolower.o\
+	ft_memalloc.o ft_memdel.o ft_strnew.o ft_strdel.o\
+	ft_strclr.o ft_striter.o ft_striteri.o ft_strmap.o\
+	ft_strmapi.o ft_strequ.o ft_strnequ.o ft_strsub.o\
+	ft_strjoin.o ft_strtrim.o ft_strsplit.o ft_itoa.o\
+	ft_putchar.o ft_putstr.o ft_putendl.o ft_putnbr.o\
+	ft_putchar_fd.o ft_putstr_fd.o ft_putendl_fd.o ft_putnbr_fd.o\
+	ft_lstnew.o ft_lstdelone.o ft_lstdel.o ft_lstadd.o\
+	ft_lstiter.o ft_lstmap.o ft_isspace.o ft_malloc_2d.o\
+	ft_strrev.o ft_isprime.o ft_strjoinfr.o ft_rand.o\
+	ft_frand.o get_next_line.o ft_intlen.o ft_itoa_base.o\
+	ft_strappfr.o ft_printf.o ft_printf_handle.o ft_print_util.o\
+	ft_printf_spare.o ft_strndup.o ft_strmrg.o ft_itoa_base_big.o\
+	ft_itoa_base_ubig.o ft_printf_parse.o ft_strsplitwsp.o ft_putwchar.o\
+	ft_getopt.o
 
 all: $(NAME)
 
 $(NAME):
-	@echo "\033[32mmaking libft...\033[0m"
-	@gcc $(CFLAGS) -c $(SRC) -I $(INC)
+	@gcc -c -Wall -Werror -Wextra $(SRC)
 	@ar rc $(NAME) $(OBJ)
-	@ranlib $(NAME)
+	ranlib $(NAME)
 
 clean:
-	@echo "\033[33mcleaning libft repository...\033[0m"
-	@/bin/rm -f $(OBJ)
+	@rm -rf *~ \#*\# $(OBJ)
 
 fclean: clean
-	@echo "\033[33mremoving libft library file...\033[0m"
-	@/bin/rm -f $(NAME)
+	@rm -rf $(NAME)
 
-re: fclean all
+re: fclean $(NAME) clean

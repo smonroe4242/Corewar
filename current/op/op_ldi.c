@@ -6,12 +6,13 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:59:44 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/24 01:59:44 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/02 12:35:55 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/corewar.h"
-
+// needs work, rain.cor and Gangant.cor as examples. Gagnant better. Step 2800.
+// seems to work in rain, Gagnant still not loading, need to check neighboring ops.
 void	op_ldi(t_cyc *info, t_pc *pc)
 {
 	int32_t		loc;

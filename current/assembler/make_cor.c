@@ -6,11 +6,22 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/09 20:30:41 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/09 20:30:41 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/02 09:44:27 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/asm.h"
+
+char	*ft_strccpy(char *dst, const char *src, char c)
+{
+	int		i;
+
+	i = -1;
+	while (src[++i] && (src[i] != c))
+		dst[i] = src[i];
+	dst[i] = '\0';
+	return (dst);
+}
 
 static void	new_cor(char *fn, t_header s, t_byte file)
 {

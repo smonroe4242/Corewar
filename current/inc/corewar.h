@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 21:00:29 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/02 07:24:37 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/02 09:54:30 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 # define COREWAR_H
 
 # include <curses.h>
+# include <time.h>
 # include "op.h"
 # include "err.h"
-# include "../libft/inc/libft.h"
-# include "../ft_printf/inc/ft_printf.h"
+# include "../libft/libft.h"
+//# include "../ft_printf/inc/ft_printf.h"
 
 /*
 ** Macros

@@ -6,15 +6,16 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/09 20:35:53 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/09 20:40:20 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/02 09:39:52 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ERR_H
 # define ERR_H
 
-# include "../libft/inc/libft.h"
-# include "../ft_printf/inc/ft_printf.h"
+# include "../libft/libft.h"
+# define RETURN_CHECK(x) if (x) return
+//# include "../ft_printf/inc/ft_printf.h"
 
 void	err_nofile(char *prog, int n);
 void	err_invfile(char *prog, char *file);

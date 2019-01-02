@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/09 20:32:10 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/09 20:42:01 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/02 09:32:55 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "op.h"
 # include "err.h"
-# include "../libft/inc/libft.h"
-# include "../ft_printf/inc/ft_printf.h"
+# include "../libft/libft.h"
+//# include "../ft_printf/inc/ft_printf.h"
 
 # define HEADER_SIZE	PROG_NAME_LENGTH + COMMENT_LENGTH + 8
 

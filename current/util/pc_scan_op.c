@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/01 19:46:50 by smonroe           #+#    #+#             */
-/*   Updated: 2019/01/02 05:57:12 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/02 10:23:27 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 			}
 			tmp->wait = WAIT_MOD(info->mem[0][tmp->i]);
 		}
-		else
-			tmp->wait--;
+		tmp->wait--;
 		if (tmp->wait < 0)
 			if (info->mem[0][tmp->i] < 1 || info->mem[0][tmp->i] > 16)
 				tmp->wait = WAIT_MOD(info->mem[0][tmp->i]);
