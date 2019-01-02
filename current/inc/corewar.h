@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 21:00:29 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/01 22:22:58 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/02 07:24:37 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,20 @@
 # include "../libft/inc/libft.h"
 # include "../ft_printf/inc/ft_printf.h"
 
-# define MEM(x) ((x < 0) ? (-(x % MEM_SIZE)) : (x % MEM_SIZE))
-# define ACB_ARG(x) ((x == 3) ? 4 : x)
-# define REG(r) (r > 0 && r <= REG_NUMBER)
+/*
+** Macros
+*/
+
+# define MEM(x) (((x) < 0) ? (MEM_SIZE + ((x) % MEM_SIZE)) : ((x) % MEM_SIZE))
+# define ACB_ARG(x) (((x) == 3) ? 4 : (x))
+# define REG(r) ((r) > 0 && (r) <= REG_NUMBER)
 # define TEA //g_time = clock()
-# define TIME(s) //printf("%s: %8lu\n", s, clock() - g_time)
-# define IDX(x) (x % IDX_MOD)
+# define TIME(s) //ft_printf("%s: %8lu\n", (s), clock() - g_time)
+# define IDX(x) ((x) % IDX_MOD)
+
+/*
+** Structs
+*/
 
 typedef struct		s_flag
 {
@@ -88,9 +96,11 @@ void				op_aff(t_cyc *info, t_pc *pc);
 
 typedef void		(*t_fn)(t_cyc *, t_pc *);
 extern const t_fn	g_op_fn[];
+
 /*
 ** Globals
 */
+
 clock_t				g_time;
 t_pc				*g_head;
 
@@ -104,9 +114,11 @@ void				ft_memfree(uint8_t **m, size_t n);
 void				ft_memrcpy(void *dst, void *src, size_t n);
 
 void				display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flag flag);
+
 /*
 ** Util
 */
+
 void				pc_app(t_pc **lst, t_pc *node);
 void				pc_free(t_pc *pc);
 t_pc				*pc_new(uint32_t pnum, uint16_t loc, uint8_t op);

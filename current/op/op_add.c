@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:58:58 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/24 01:58:59 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/02 03:53:31 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	op_add(t_cyc *info, t_pc *pc)
 	{
 		pc->r[argc] = pc->r[argb] + pc->r[arga];
 		pc->i += 5;
-		pc->carry = 1;
+		pc->carry = (pc->r[argc]) ? 0 : 1;
 	}
 	else
 		pc->i++;

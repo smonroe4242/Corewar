@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:59:13 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/24 01:59:14 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/02 04:19:49 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	op_and(t_cyc *info, t_pc *pc)//imp
 	loc = acb_len(acb);
 	if (REG(info->mem[0][MEM(pc->i + loc - 1)]))
 		pc->r[info->mem[0][MEM(pc->i + loc - 1)]] = d1 & d2;
-	pc->carry = (!(d1 & d2)) ? 1 : 0;
+	pc->carry = (d1 & d2) ? 0 : 1;
 	pc->i += loc;
 	TIME("op_and\t");
 }

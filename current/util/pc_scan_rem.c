@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/09 18:48:09 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/01 20:29:35 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/02 06:05:03 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	pc_scan_rem(t_pc **pc)
 			pc_rem(&tmp);
 		tmp = tmp->next;
 	}
-	if (!(*pc)->alive)
-		pc_rem_head(pc);
+//	if (!(*pc)->alive)
+//		pc_rem_head(pc);
+
 }

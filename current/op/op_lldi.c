@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 02:00:14 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/24 02:00:15 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/02 04:22:06 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,6 @@ void	op_lldi(t_cyc *info, t_pc *pc)
 	if (REG(tmp))
 		ft_memrcpy(&pc->r[tmp], &info->mem[0][MEM(pc->i + (int16_t)loc)], REG_SIZE);
 	pc->i += acb_len(acb);
-	pc->carry = 1;
+	pc->carry = (pc->r[tmp]) ? 0 : 1;
 	TIME("op_lld\t");
 }

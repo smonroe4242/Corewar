@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:59:35 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/24 01:59:37 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/02 04:18:46 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	op_ld(t_cyc *info, t_pc *pc)
 		if (REG(reg))
 			ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + 2)], REG_SIZE);
 		pc->i += 7;
-		pc->carry = 1;
+		pc->carry = (pc->r[reg]) ? 0 : 1;
 	}
 	else if (info->mem[0][MEM(pc->i + 1)] == 0xd0)
 	{
@@ -37,7 +37,7 @@ void	op_ld(t_cyc *info, t_pc *pc)
 			ft_memrcpy(&pc->r[reg], &info->mem[0][MEM(pc->i + IDX(loc))],
 						REG_SIZE);
 		pc->i += 5;
-		pc->carry = 1;
+		pc->carry = (pc->r[reg]) ? 0 : 1;
 	}
 	else
 		pc->i++;

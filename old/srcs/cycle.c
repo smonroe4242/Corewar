@@ -6,7 +6,7 @@
 /*   By: smonroe <smonroe@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/07 20:19:50 by smonroe           #+#    #+#             */
-/*   Updated: 2019/01/01 20:35:53 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/02 04:24:29 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -494,9 +494,7 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 				ft_memcpy(&info->mem[0][0], &info->mem[0][MEM_SIZE], REG_SIZE);
 				ft_memcpy(&info->ref[0][0], &info->ref[0][MEM_SIZE], REG_SIZE);
 			}
-//			tmp->wait = (uint16_t[]){-1, 10, 5, 5, 10, 10, 6, 6, 6, 20, 25, 25, 800, 10, 50, 1000, 2}[info->mem[0][tmp->i]];
-			wait_mod(&tmp->wait, info->mem[0][tmp->i]);
-			tmp->wait--;
+			tmp->wait = (uint16_t[]){-1, 10, 5, 5, 10, 10, 6, 6, 6, 20, 25, 25, 800, 10, 50, 1000, 2}[info->mem[0][tmp->i]];
 			//ft_printf("tmp->i updated to %d and given wait time of %d\n", tmp->i, tmp->wait);
 		}
 //		else if (tmp->wait > 0)

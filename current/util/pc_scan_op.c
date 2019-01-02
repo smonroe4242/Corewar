@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/01 19:46:50 by smonroe           #+#    #+#             */
-/*   Updated: 2019/01/01 22:29:45 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/02 05:57:12 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 	{
 		if (info->mem[0][tmp->i] < 1 || info->mem[0][tmp->i] > 16)
 			tmp->i++;
-		else if (!tmp->wait)
+		else if (tmp->wait <= 0)
 		{
 			//ft_printf("Doing function, tmp->i = %d\n", tmp->i);
 			g_op_fn[info->mem[0][tmp->i]](info, tmp);
@@ -34,13 +34,10 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 				ft_memcpy(&info->mem[0][0], &info->mem[0][MEM_SIZE], REG_SIZE);
 				ft_memcpy(&info->ref[0][0], &info->ref[0][MEM_SIZE], REG_SIZE);
 			}
-			tmp->wait = WAIT_MOD(info->mem[0][tmp->i]) - 1; /// check one-off error ---
-//			^ replaces : // wait_mod(&tmp->wait, info->mem[0][tmp->i]);
-			//ft_printf("tmp->i updated to %d and given wait time of %d\n", tmp->i, tmp->wait);
+			tmp->wait = WAIT_MOD(info->mem[0][tmp->i]);
 		}
-//		else if (tmp->wait > 0)
-//			tmp->wait--;
-		tmp->wait--;
+		else
+			tmp->wait--;
 		if (tmp->wait < 0)
 			if (info->mem[0][tmp->i] < 1 || info->mem[0][tmp->i] > 16)
 				tmp->wait = WAIT_MOD(info->mem[0][tmp->i]);

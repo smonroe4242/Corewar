@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:31:51 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/01 22:18:14 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/02 05:59:02 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 		}
 		total = live_sum(info.pcount);
 		ft_memset(&info.pcount, 0, sizeof(info.pcount));
-		pc_scan_rem(&(g_head));
+		pc_scan_rem(&g_head);
 		if (!g_head)
 			break ;
 		if (total >= NBR_LIVE)
