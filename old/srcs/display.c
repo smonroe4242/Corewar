@@ -6,12 +6,11 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/09 02:50:12 by smonroe           #+#    #+#             */
-/*   Updated: 2019/01/01 19:14:17 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/01 21:43:18 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
-#define DUMP 4096
 
 void    ft_dump_info(t_cyc *info, int fd)
 {
