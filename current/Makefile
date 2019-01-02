@@ -6,7 +6,7 @@
 #    By: jochang <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/10 15:16:58 by jochang           #+#    #+#              #
-#    Updated: 2019/01/02 09:33:37 by smonroe          ###   ########.fr        #
+#    Updated: 2019/01/02 14:18:56 by smonroe          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,30 +79,26 @@ ERR = err/err_invarg.c \
 GCC = gcc
 CFLAGS = -Wall -Wextra -Werror
 LFT = libft/libft.a
-LFP = #ft_printf/libftprintf.a
 
 .PHONY: all clean fclean re lldb fsan
 all: $(COREWAR)
 
 $(COREWAR):
 	@make -C libft
-	#@make -C ft_printf
 	@echo "\033[32mmaking assembler...\033[0m"
 	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) \
-	$(AINC) $(LFT) $(LFP)
+	$(AINC) $(LFT)
 	@echo "\033[32mmaking corewar...\033[0m"
 	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UTIL) $(OP) \
-	$(CINC) $(LFT) $(LFP)
+	$(CINC) $(LFT)
 
 clean:
 	@make -C libft clean
-	#@make -C ft_printf clean
 	@echo "\033[33mcleaning repository...\033[0m"
 	@rm -f inc/*.gch
 
 fclean: clean
 	@make -C libft fclean
-	#@make -C ft_printf fclean
 	@echo "\033[33mremoving executables...\033[0m"
 	@rm -f $(ASSEMBLER)
 	@rm -f $(COREWAR)
@@ -111,14 +107,12 @@ re: fclean all
 
 lldb:
 	@make -C libft
-	#@make -C ft_printf
 	@echo "\033[32mmaking lldb executable...\033[0m"
 	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) \
-	$(INC) $(LFT) $(LFP) -g
+	$(INC) $(LFT) -g
 
 fsan:
 	@make -C libft
-	#@make -C ft_printf
 	@echo "\033[32mmaking fsan executable...\033[0m"
 	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) \
-	$(INC) $(LFT) $(LFP) -g -fsanitize=address
+	$(INC) $(LFT) -g -fsanitize=address
