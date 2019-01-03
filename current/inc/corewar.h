@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 21:00:29 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/02 09:54:30 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/02 17:07:49 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@
 */
 
 # define MEM(x) (((x) < 0) ? (MEM_SIZE + ((x) % MEM_SIZE)) : ((x) % MEM_SIZE))
+
 # define ACB_ARG(x) (((x) == 3) ? 4 : (x))
 # define REG(r) ((r) > 0 && (r) <= REG_NUMBER)
 # define TEA //g_time = clock()
 # define TIME(s) //ft_printf("%s: %8lu\n", (s), clock() - g_time)
+
 # define IDX(x) ((x) % IDX_MOD)
 
 /*
