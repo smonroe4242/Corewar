@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 02:00:06 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/02 04:20:32 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/02 20:56:25 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	op_lld(t_cyc *info, t_pc *pc)
 {
 	uint8_t		reg;
-	uint16_t	loc;
+	int16_t	loc;
 
 	TEA;
 	//ft_printf("%d-------------[LLD]\n", pc->r[0]);

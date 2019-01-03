@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:59:13 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/02 04:19:49 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/02 20:55:44 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 void	op_and(t_cyc *info, t_pc *pc)//imp
 {
 	TEA;
-	uint32_t	d1;
-	uint32_t	d2;
-	uint16_t	loc;
+	int32_t	d1;
+	int32_t	d2;
+	int16_t	loc;
 	uint8_t		acb;
 	//ft_printf("%d------[AND]\n", pc->r[0]);
 	d1 = 0;
