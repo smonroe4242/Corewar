@@ -6,11 +6,25 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 22:23:39 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/02 05:09:37 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/04 01:51:55 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/corewar.h"
+
+uint32_t	name(void)
+{
+	static int		names[] = {0xDEADC0DE, 0x42BADA55, 0x1CEB00DA, 0xC0DED00D, 0xD15EA5E, 0xDEADBEEF};
+	static uint8_t	cache;
+	int 			r;
+
+	r = ft_rand(sizeof(names) >> 2);
+	ft_printf("%#8X : [%b]\n", names[r], cache);
+	if (cache & (1 << r))
+		return (name());
+	cache |= (1 << r);
+	return (names[r]);
+}
 
 t_head	parse_file(char *cor)
 {

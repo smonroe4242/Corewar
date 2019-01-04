@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 21:00:29 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/02 17:07:49 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/04 01:50:27 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,23 @@
 
 # define IDX(x) ((x) % IDX_MOD)
 
+// for pc_scan_op && pc_new
+#define ARR -1, 10, 5, 5, 10, 10, 6, 6, 6, 20, 25, 25, 800, 10, 50, 1000, 2
+#define WAIT_MOD(x) (uint16_t[]){ARR}[(x)]
+
 /*
 ** Structs
+*/
+
+typedef struct	s_mem
+{
+	uint8_t		byte; // content
+	int			pnum; // pnum last modified
+	uint8_t		timer; // decrement each cycle after mem modification
+}				t_mem;
+
+/*
+** Mem struct for array
 */
 
 typedef struct		s_flag
@@ -49,6 +64,7 @@ typedef struct		s_flag
 typedef struct		s_head
 {
 	int				pnum;
+	int				live;
 	char			name[PROG_NAME_LENGTH];
 	char			comment[COMMENT_LENGTH];
 	int				size;

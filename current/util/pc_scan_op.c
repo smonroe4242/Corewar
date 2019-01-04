@@ -6,13 +6,11 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/01 19:46:50 by smonroe           #+#    #+#             */
-/*   Updated: 2019/01/02 17:08:10 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/03 23:22:03 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/corewar.h"
-#define ARR -1, 10, 5, 5, 10, 10, 6, 6, 6, 20, 25, 25, 800, 10, 50, 1000, 2
-#define WAIT_MOD(x) (uint16_t[]){ARR}[(x)]
 
 void	pc_scan_op(t_cyc *info, t_pc *pc)
 {
