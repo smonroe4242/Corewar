@@ -30,12 +30,16 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 	int32_t		step;
 	uint32_t	total;
 	uint32_t	kill;
+	t_ncrs		ncrs;
 	
 	die = CYCLE_TO_DIE;
 	kill = 0;
 	cw_memcp(&info.mem[0][MEM_SIZE], &info.mem[0][0], REG_SIZE);
+	//init visualizer here
+	ncrs = init_gui(info, champ, flag);
 	while (die > 0)
 	{
+		//insert pause check here
 		step = 0;
 		if (!g_head)
 			break ;
@@ -43,7 +47,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 		{
 			pc_scan_op(&info, g_head);
 			if (flag.n)
-				display(&info, champ, flag);
+				display(&info, champ, flag); //display runs update gui
 			//ft_printf("\e[35m%d\e[0m\n", info.cycle);
 			info.cycle++;
 		}

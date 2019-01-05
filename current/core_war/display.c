@@ -67,8 +67,6 @@ void	ncurse(t_cyc *info, t_pc *pc, t_head ch[MAX_PLAYERS], t_flag flag)
 
 void	display(t_cyc *info, t_head champ[MAX_PLAYERS], t_flag flag)
 {
-	if (flag.p)
-		;//ft_dump_mem(info, flag.fd);
-	if (flag.n)
+	if (flag.n) //update_gui
 		ncurse(info, g_head, champ, flag);//ncurses function
 }

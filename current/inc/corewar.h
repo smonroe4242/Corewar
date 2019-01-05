@@ -17,6 +17,7 @@
 # include <time.h>
 # include "op.h"
 # include "err.h"
+# include "gui.h"
 # include "../libft/libft.h"
 
 /*

@@ -77,9 +77,14 @@ ERR = err/err_invarg.c \
 	err/err_malloc.c \
 	err/err_nofile.c \
 
+GUI = gui/init_gui.c \
+	gui/update_memblock.c \
+	gui/init_infoblock.c \
+
 GCC = gcc
 CFLAGS = -Wall -Wextra -Werror
 LFT = libft/libft.a
+NCR = -lncurses
 
 .PHONY: all clean fclean re lldb fsan
 all: $(COREWAR)
@@ -90,8 +95,8 @@ $(COREWAR):
 	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) \
 	$(AINC) $(LFT)
 	@echo "\033[32mmaking corewar...\033[0m"
-	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UTIL) $(OP) \
-	$(CINC) $(LFT)
+	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UTIL) $(OP) $(GUI)\
+	$(CINC) $(LFT) $(NCR)
 
 clean:
 	@make -C libft clean
