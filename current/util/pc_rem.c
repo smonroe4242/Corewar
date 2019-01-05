@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/09 18:09:26 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/02 16:20:48 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 02:10:17 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	pc_rem(t_pc **pc)
 		//prove(*pc);
 		(*pc)->next->prev = (*pc)->prev;
 		(*pc)->prev->next = (*pc)->next;
-		ft_bzero(*pc, sizeof(t_pc));
+		ft_bzero(*pc, sizeof(**pc));
 		free(*pc);
 		pc = NULL;
 	}
@@ -30,7 +30,7 @@ void	pc_rem(t_pc **pc)
 		//ft_printf("Removing Link : Prev && !Next\n");
 		//prove(*pc);
 		(*pc)->prev->next = NULL;
-		ft_bzero(*pc, sizeof(t_pc));
+		ft_bzero(*pc, sizeof(**pc));
 		free(*pc);
 		pc = NULL;
 	}

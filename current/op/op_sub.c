@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 02:01:02 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/02 03:53:54 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 00:50:21 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	op_sub(t_cyc *info, t_pc *pc)
 
 	TEA;
 	//ft_printf("%d-----[SUB]\n", pc->r[0]);
-	argc = info->mem[0][MEM(pc->i + 4)];
-	argb = info->mem[0][MEM(pc->i + 3)];
-	arga = info->mem[0][MEM(pc->i + 2)];
-	if (info->mem[0][MEM(pc->i + 1)] == 0x54 && REG(arga) &&
+	argc = info->mem[0][MEM(pc->i + 4)].byte;
+	argb = info->mem[0][MEM(pc->i + 3)].byte;
+	arga = info->mem[0][MEM(pc->i + 2)].byte;
+	if (info->mem[0][MEM(pc->i + 1)].byte == 0x54 && REG(arga) &&
 		REG(argb) && REG(argc))
 	{
 		pc->r[argc] = pc->r[arga] - pc->r[argb];

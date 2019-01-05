@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 21:44:39 by jochang           #+#    #+#             */
-/*   Updated: 2018/09/23 21:44:41 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/04 21:32:09 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_flag init_flags(void)
 	flags.p = 0;
 	flags.n = 0;
 	flags.d = 0;
-	flags.w = 0;
+	flags.w = 50;
 	flags.fd = 0;
 	return (flags);
 }

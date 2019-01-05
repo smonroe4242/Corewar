@@ -6,27 +6,26 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 00:06:50 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/01 19:26:07 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 02:06:11 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/corewar.h"
 
-static t_cyc	init_t_cyc(uint8_t **mem, uint8_t **ref, t_pc *pc)
+static t_cyc	init_t_cyc(t_mem **mem, int num_champs)
 {
 	t_cyc	info;
 
 	info.cycle = 0;
 	info.last = 0;
+	info.num_champs = num_champs;
+	ft_bzero(info.last_live, sizeof(info.last_live));
 	ft_bzero(info.pcount, sizeof(info.pcount));
 	info.mem = mem;
-	info.ref = ref;
-	info.pc = pc;
 	return (info);
 }
 
-static void	init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS],
-				t_flag flag)
+static void	init_proc(t_mem *mem, t_head champ[MAX_PLAYERS], t_flag flag)
 {
 	t_cyc	info;
 	t_pc	*pc;
@@ -35,14 +34,15 @@ static void	init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS],
 	int		n;
 
 	n = 0;
-	while (champ[n].pnum && n < MAX_PLAYERS)
+	while (n < MAX_PLAYERS && champ[n].pnum)
 		n++;
-	pc = pc_new(champ[0].pnum, 0, mem[0][0]);
+	pc = pc_new(champ[0].pnum, 0, mem[0].byte);
 	i = 0;
 	while (++i < n)
 		pc_app(&pc,
-		pc_new(champ[i].pnum, MEM_SIZE / n * i, mem[0][MEM_SIZE / n * i]));
-	info = init_t_cyc(mem, ref, pc);
+		pc_new(champ[i].pnum, MEM_SIZE / n * i, mem[MEM_SIZE / n * i].byte));
+	info = init_t_cyc(&mem, n);
+	g_head = pc;
 	if (!(winner = init_env(info, champ, flag)))
 		ft_printf("There has been a tie!\n", champ[0].pnum, champ[0].name);
 	else
@@ -56,29 +56,19 @@ static void	init_proc(uint8_t **mem, uint8_t **ref, t_head champ[MAX_PLAYERS],
 
 void	init_vm(t_head champ[MAX_PLAYERS], t_flag flag)
 {
-	uint8_t		*mem;
-	uint8_t		*ref;
+	t_mem		mem[MEM_SIZE + 4];
 	int			i;
 	int			n;
 
-	RETURN_CHECK(!(mem = ft_memalloc(MEM_SIZE + REG_SIZE)));
-	RETURN_CHECK(!(ref = ft_memalloc(MEM_SIZE + REG_SIZE)));
 	n = 0;
-	while (champ[n].pnum && n < MAX_PLAYERS)
+	while (n < MAX_PLAYERS && champ[n].pnum)
 	{
 		ft_printf("Fighter #%d: %s (\"%s\"), at %d bytes long!\n",
 		n + 1, champ[n].name, champ[n].comment, champ[n].size);
 		n++;
 	}
-	if (!n) //when would this ever fail?
-		err_nofile("cw", 1);
 	i = -1;
 	while (++i < n)
-	{
-		ft_memcpy(&mem[MEM_SIZE / n * i], champ[i].code, champ[i].size);
-		ft_memset(&ref[MEM_SIZE / n * i], -champ[i].pnum, champ[i].size);
-	}
-	init_proc(&mem, &ref, champ, flag);
-	ft_memfree(&mem, MEM_SIZE);
-	ft_memfree(&ref, MEM_SIZE);
+		cw_memw(mem, champ[i].code, champ[i].size, -champ[i].pnum);
+	init_proc(&(*mem), champ, flag);
 }

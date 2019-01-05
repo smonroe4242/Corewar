@@ -12,3 +12,9 @@
 	Please help fix these ops <3
 	cleaning and pushing changes
 	
+1/4/19 2:47am smonroe:
+	Switched from array to struct memory stuff
+	No visualizer as of yet
+	Unknown if internals of vm are functional until we have sight
+	Added half implementation for live tracking and last cycle live call stuff yada yada
+	Jo is about to merge visualizer and pop to official repo

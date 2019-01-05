@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 21:00:29 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/04 01:50:27 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/04 20:07:36 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,21 @@
 # include "op.h"
 # include "err.h"
 # include "../libft/libft.h"
-//# include "../ft_printf/inc/ft_printf.h"
 
 /*
 ** Macros
 */
 
 # define MEM(x) (((x) < 0) ? (MEM_SIZE + ((x) % MEM_SIZE)) : ((x) % MEM_SIZE))
+# define IDX(x) ((x) % IDX_MOD)
 
 # define ACB_ARG(x) (((x) == 3) ? 4 : (x))
 # define REG(r) ((r) > 0 && (r) <= REG_NUMBER)
+
 # define TEA //g_time = clock()
 # define TIME(s) //ft_printf("%s: %8lu\n", (s), clock() - g_time)
 
-# define IDX(x) ((x) % IDX_MOD)
+# define FLASH_LEN 10
 
 // for pc_scan_op && pc_new
 #define ARR -1, 10, 5, 5, 10, 10, 6, 6, 6, 20, 25, 25, 800, 10, 50, 1000, 2
@@ -41,15 +42,19 @@
 ** Structs
 */
 
-typedef struct	s_mem
+typedef struct		s_mem
 {
-	uint8_t		byte; // content
-	int			pnum; // pnum last modified
-	uint8_t		timer; // decrement each cycle after mem modification
-}				t_mem;
+	uint8_t			byte; // content
+	int				pnum; // pnum last modified
+	uint8_t			timer; // decrement each cycle after mem modification
+	uint16_t		active;
+}					t_mem;
 
+void				cw_memw(t_mem *mem, void *src, size_t n, int pnum);
+void				cw_memr(void *dst, t_mem *mem, size_t n);
+void				cw_memcp(t_mem *dst, t_mem *src, size_t n);
 /*
-** Mem struct for array
+** Mem struct for array above, all stuff here for findability, needs organizing touch.
 */
 
 typedef struct		s_flag
@@ -86,10 +91,10 @@ typedef struct		s_cyc
 {
 	int				cycle;
 	int				last;
+	uint8_t			num_champs;
+	uint32_t		last_live[MAX_PLAYERS];
 	uint32_t		pcount[MAX_PLAYERS];
-	uint8_t			**mem;
-	uint8_t			**ref;
-	t_pc			*pc;
+	t_mem			**mem;
 }					t_cyc;
 
 /*

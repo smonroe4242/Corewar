@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:58:58 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/02 03:53:31 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 00:42:18 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	op_add(t_cyc *info, t_pc *pc)
 	uint8_t	argc;
 
 	TEA;
-	arga = info->mem[0][MEM(pc->i + 2)];
-	argb = info->mem[0][MEM(pc->i + 3)];
-	argc = info->mem[0][MEM(pc->i + 4)];
-	if (info->mem[0][MEM(pc->i + 1)] == 0x54 &&
+	arga = info->mem[0][MEM(pc->i + 2)].byte;
+	argb = info->mem[0][MEM(pc->i + 3)].byte;
+	argc = info->mem[0][MEM(pc->i + 4)].byte;
+	if (info->mem[0][MEM(pc->i + 1)].byte == 0x54 &&
 		REG(arga) && REG(argb) && REG(argc))
 	{
 		pc->r[argc] = pc->r[argb] + pc->r[arga];

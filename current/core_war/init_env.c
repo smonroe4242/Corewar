@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:31:51 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/02 05:59:02 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 01:42:52 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 	
 	die = CYCLE_TO_DIE;
 	kill = 0;
-	g_head = info.pc;
-	ft_memcpy(&info.mem[0][MEM_SIZE], &info.mem[0][0], REG_SIZE);
-	ft_memcpy(&info.ref[0][MEM_SIZE], &info.ref[0][0], REG_SIZE);
+	cw_memcp(&info.mem[0][MEM_SIZE], &info.mem[0][0], REG_SIZE);
 	while (die > 0)
 	{
 		step = 0;

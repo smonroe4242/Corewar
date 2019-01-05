@@ -6,7 +6,7 @@
 #    By: jochang <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/10 15:16:58 by jochang           #+#    #+#              #
-#    Updated: 2019/01/02 14:18:56 by smonroe          ###   ########.fr        #
+#    Updated: 2019/01/05 01:44:26 by smonroe          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,8 @@ CSRC = core_war/corewar.c \
 	core_war/ft_memrcpy.c \
 	core_war/ft_memfree.c \
 	core_war/acb_len.c \
-	core_war/display.c
+	core_war/display.c \
+	core_war/mem_func.c
 
 AINC = -I inc/asm.h \
 	-I inc/op.h \
@@ -108,11 +109,11 @@ re: fclean all
 lldb:
 	@make -C libft
 	@echo "\033[32mmaking lldb executable...\033[0m"
-	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) \
-	$(INC) $(LFT) -g
+	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) $(INC) $(LFT) -g
+	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UTIL) $(OP) $(CINC) $(LFT) -g
 
 fsan:
-	@make -C libft
-	@echo "\033[32mmaking fsan executable...\033[0m"
-	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) \
-	$(INC) $(LFT) -g -fsanitize=address
+	make -C libft
+	echo "\033[32mmaking fsan executable...\033[0m"
+	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) $(INC) $(LFT) -g -fsanitize=address
+	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UTIL) $(OP) $(CINC) $(LFT) -g -fsanitize=address
