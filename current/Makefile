@@ -6,7 +6,7 @@
 #    By: jochang <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/10 15:16:58 by jochang           #+#    #+#              #
-#    Updated: 2019/01/05 01:44:26 by smonroe          ###   ########.fr        #
+#    Updated: 2019/01/05 03:39:51 by smonroe          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -115,10 +115,10 @@ lldb:
 	@make -C libft
 	@echo "\033[32mmaking lldb executable...\033[0m"
 	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) $(INC) $(LFT) -g
-	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UTIL) $(OP) $(CINC) $(LFT) -g
+	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UTIL) $(OP) $(CINC) $(LFT) $(GUI) -g
 
 fsan:
 	make -C libft
 	echo "\033[32mmaking fsan executable...\033[0m"
 	@$(GCC) $(CFLAGS) -o $(ASSEMBLER) $(ASRC) $(ERR) $(INC) $(LFT) -g -fsanitize=address
-	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UTIL) $(OP) $(CINC) $(LFT) -g -fsanitize=address
+	@$(GCC) $(CFLAGS) -o $(COREWAR) $(CSRC) $(ERR) $(UTIL) $(OP) $(CINC) $(LFT) $(GUI) -g -fsanitize=address

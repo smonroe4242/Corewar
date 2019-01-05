@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/04 15:32:30 by smonroe           #+#    #+#             */
-/*   Updated: 2019/01/05 01:37:57 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 04:40:09 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	cw_memw(t_mem *mem, void *src, size_t n, int pnum)
 	i = -1;
 	while ((size_t)(++i) < n)
 	{
-		mem[i].byte = s[n - i - 1];
+		mem[i].byte = s[i];//s[n - i - 1];
 		mem[i].pnum = pnum;
 		mem[i].timer = FLASH_LEN;
 	}
@@ -35,7 +35,7 @@ void	cw_memr(void *dst, t_mem *mem, size_t n)
 	d = dst;
 	i = -1;
 	while ((size_t)(++i) < n)
-		d[i] = mem[n - i - 1].byte;
+		d[i] = mem[i].byte;//mem[n - i - 1].byte;
 }
 
 void	cw_memcp(t_mem *dst, t_mem *src, size_t n)
@@ -44,9 +44,10 @@ void	cw_memcp(t_mem *dst, t_mem *src, size_t n)
 
 	i = -1;
 	while ((size_t)(++i) < n)
-	{
+		dst[i] = src[i];
+/*	{
 		dst[i].byte = src[i].byte;
 		dst[i].pnum = src[i].pnum;
 		dst[i].timer = src[i].timer;
-	}
+		}*/
 }

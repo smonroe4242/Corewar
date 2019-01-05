@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:31:51 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/05 01:42:52 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 04:44:03 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,16 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 	uint32_t	total;
 	uint32_t	kill;
 	t_ncrs		ncrs;
+
+	char c; // remove
 	
 	die = CYCLE_TO_DIE;
 	kill = 0;
 	cw_memcp(&info.mem[0][MEM_SIZE], &info.mem[0][0], REG_SIZE);
 	//init visualizer here
+	scanf("%c", &c);
 	ncrs = init_gui(info, champ, flag);
+	scanf("%c", &c);
 	while (die > 0)
 	{
 		//insert pause check here
