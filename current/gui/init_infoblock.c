@@ -6,13 +6,13 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 03:28:52 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/05 03:28:54 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/05 16:33:39 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/corewar.h"
+#include "../inc/gui.h"
 
-static t_ncrs	init_upper(t_ncrs ncrs, t_cyc cyc, t_flag flag)
+static t_ncrs	init_upper(t_ncrs ncrs, t_cyc *cyc, t_flag flag)
 {
 	int		temp_num;
 
@@ -21,17 +21,17 @@ static t_ncrs	init_upper(t_ncrs ncrs, t_cyc cyc, t_flag flag)
 	ncrs.init_y += 2;
 	PRINT_INFO("              Cycle : 0");
 	ncrs.init_y += 2;
-	PRINT_INFO_N("          Processes : %d", cyc.num_champs);
+	PRINT_INFO_N("          Processes : %d", cyc->num_champs);
 	ncrs.init_y += 2;
 	return (ncrs);
 }
 
-static t_ncrs	init_players(t_ncrs ncrs, t_cyc cyc, t_head *head)
+static t_ncrs	init_players(t_ncrs ncrs, t_cyc *cyc, t_head *head)
 {
 	int		i;
 
 	i = -1;
-	while (++i < cyc.num_champs)
+	while (++i < cyc->num_champs)
 	{
 		PRINT_INFO_N("Player %d :", -(i + 1));
 		wattron(ncrs.infowin, COLOR_PAIR(i + 1));
@@ -81,7 +81,7 @@ static t_ncrs	init_lower(t_ncrs ncrs)
 }
 
 //just needs cycle to die: everything else is hard coded and will be changed in update functions
-void		init_infoblock(t_ncrs ncrs, t_cyc cyc, t_head *head, t_flag flag)
+void		init_infoblock(t_ncrs ncrs, t_cyc *cyc, t_head *head, t_flag flag)
 {
 	int		temp_num;
 

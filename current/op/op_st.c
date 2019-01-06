@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 02:00:46 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/05 01:02:55 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 17:20:55 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	op_st(t_cyc *info, t_pc *pc)//imp
 	}
 	else if (info->mem[0][MEM(pc->i + 1)].byte == 0x70)
 	{
-		cw_memr(&loc, &info->mem[0][MEM(pc->i + 3)], IND_SIZE);
-		cw_memw(&info->mem[0][MEM(pc->i + IDX(loc))], &pc->r[info->mem[0][MEM(pc->i + 2)].byte], REG_SIZE, pc->r[0]);
+		cw_memren(&loc, &info->mem[0][MEM(pc->i + 3)], IND_SIZE);
+		cw_memwen(&info->mem[0][MEM(pc->i + IDX(loc))], &pc->r[info->mem[0][MEM(pc->i + 2)].byte], REG_SIZE, pc->r[0]);
 		pc->i += 5;
 	}
 	else

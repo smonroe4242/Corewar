@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 03:22:13 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/05 03:22:14 by jochang          ###   ########.fr       */
+/*   Updated: 2019/01/05 16:33:15 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 //Final Includes
 #include <curses.h>
-
+#include "corewar.h"
 //NEW
 # define MEMWIN_HEIGHT 68
 # define MEMWIN_WIDTH 197
@@ -47,13 +47,13 @@ typedef struct	s_ncrs
 	uint8_t		init_x;
 	uint8_t		init_y;
 }				t_ncrs;
-
+/*
 typedef struct s_cyc	t_cyc;
 typedef struct s_head	t_head;
 typedef struct s_flag	t_flag;
-
-t_ncrs			init_gui(t_cyc cyc, t_head *head, t_flag flag);
-void			update_memblock(t_ncrs ncrs, t_cyc cyc);
-void			init_infoblock(t_ncrs ncrs, t_cyc cyc, t_head *head, t_flag flag);
+*/
+t_ncrs			init_gui(t_cyc *cyc, t_head *head, t_flag flag);
+void			update_memblock(t_ncrs ncrs, t_cyc *cyc);
+void			init_infoblock(t_ncrs ncrs, t_cyc *cyc, t_head *head, t_flag flag);
 
 #endif

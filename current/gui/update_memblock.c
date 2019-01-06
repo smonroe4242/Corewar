@@ -6,17 +6,16 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 03:28:10 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/05 04:37:17 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 16:49:17 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/corewar.h"
+#include "../inc/gui.h"
 
 void		select_color(t_ncrs ncrs, t_mem mem)
 {
 	if (mem.pnum)
 	{
-		mem.pnum = -mem.pnum;
 		if (mem.active)
 		{
 			if (mem.active == 1)
@@ -41,7 +40,7 @@ void		deselect_color(t_ncrs ncrs)
 	wattrset(ncrs.memwin, GRAY_TEXT);
 }
 
-void		update_memblock(t_ncrs ncrs, t_cyc cyc)
+void		update_memblock(t_ncrs ncrs, t_cyc *cyc)
 {
 	int		i;
 	int		x;
@@ -56,8 +55,8 @@ void		update_memblock(t_ncrs ncrs, t_cyc cyc)
 		x = (i & 63) ? x + 3 : WINDOWS_OFFSET_LEFT;
 		y += (i & 63) ? 0 : 1;
 		//initialize color set based on pnum, timer, and existing process cursor
-		select_color(ncrs, cyc.mem[0][i]);
-		mvwprintw(ncrs.memwin, y, x, "%.2x", cyc.mem[0][i].byte);
+		select_color(ncrs, cyc->mem[0][i]);
+		mvwprintw(ncrs.memwin, y, x, "%.2x", cyc->mem[0][i].byte);
 		//uninitialize color if it was set
 		deselect_color(ncrs);
 		//decrement timer if it is > 0, maybe bit shift + mask?

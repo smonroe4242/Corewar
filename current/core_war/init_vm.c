@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 00:06:50 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/05 04:28:37 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 18:11:40 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ static void	init_proc(t_mem *mem, t_head champ[MAX_PLAYERS], t_flag flag)
 
 void	init_vm(t_head champ[MAX_PLAYERS], t_flag flag)
 {
-	t_mem		mem[MEM_SIZE + 4];
+	t_mem		*mem;
 	int			i;
 	int			n;
 
-	ft_memset(mem, 0, sizeof(mem));
+	mem = ft_memalloc(sizeof(*mem) * (MEM_SIZE + 4));
 	n = 0;
 	while (n < MAX_PLAYERS && champ[n].pnum)
 	{
@@ -70,19 +70,6 @@ void	init_vm(t_head champ[MAX_PLAYERS], t_flag flag)
 	}
 	i = -1;
 	while (++i < n)
-	{
-		ft_printf("%d : %d\n", champ[i].pnum, champ[i].size);
 		cw_memw(&mem[MEM_SIZE / n * i], champ[i].code, champ[i].size, -champ[i].pnum);
-	}
-
-	for (int i = 0; i < 64; i++)
-	{
-		for (int j = 0; j < 64; j++)
-		{
-			printf("%.2x ", mem[(i << 6) + j].byte);
-		}
-		printf("\n");
-	}
-	printf("\n");
-	init_proc(&mem[0], champ, flag);
+	init_proc(mem, champ, flag);
 }

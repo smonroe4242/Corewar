@@ -6,7 +6,7 @@
 /*   By: smonroe <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/01 19:46:50 by smonroe           #+#    #+#             */
-/*   Updated: 2019/01/05 04:43:41 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 17:43:38 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,13 @@ void	pc_scan_op(t_cyc *info, t_pc *pc)
 				cw_memcp(&info->mem[0][MEM_SIZE], &info->mem[0][0], REG_SIZE);
 			if (ft_memcmp(back, &info->mem[0][MEM_SIZE], sizeof(back)))
 				cw_memcp(&info->mem[0][0], &info->mem[0][MEM_SIZE], REG_SIZE);
-			tmp->wait = WAIT_MOD(info->mem[0][tmp->i].byte);
+			//		tmp->wait = WAIT_MOD(info->mem[0][tmp->i].byte);
 		}
 		tmp->wait--;
 		if (tmp->wait < 0)
 			if (info->mem[0][tmp->i].byte < 1 || info->mem[0][tmp->i].byte > 16)
 				tmp->wait = WAIT_MOD(info->mem[0][tmp->i].byte);
-		info->mem[0][tmp->i].active = 1;
+//		info->mem[0][tmp->i].active = 1;
 		tmp = tmp->next;
 	}
 }
-
-#undef ARR
-#undef WAIT_MOD

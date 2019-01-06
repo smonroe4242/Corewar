@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 02:01:15 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/05 01:03:21 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 17:24:50 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	op_zjmp(t_cyc *info, t_pc *pc)//imp
 	//ft_printf("%d---------[ZJMP]\n", pc->r[0]);
 	if (pc->carry)
 	{
-		cw_memr(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
+		cw_memren(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
 		pc->i = MEM(pc->i + IDX(addr));
 		//ft_printf("Jumped to %d:%.2x\n", pc->i, info->mem[0][pc->i]);
 	}

@@ -6,11 +6,11 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/05 03:26:48 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/05 13:19:16 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 17:46:03 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/corewar.h"
+#include "../inc/gui.h"
 
 static void		init_colors(t_ncrs ncrs)
 {
@@ -42,7 +42,7 @@ static void		init_windows(t_ncrs ncrs)
 	wattroff(ncrs.infowin, BORDER_COLOR);
 }
 
-t_ncrs			init_gui(t_cyc cyc, t_head *head, t_flag flag)
+t_ncrs			init_gui(t_cyc *cyc, t_head *head, t_flag flag)
 {
 	t_ncrs	ncrs;
 

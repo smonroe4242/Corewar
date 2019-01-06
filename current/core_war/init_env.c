@@ -6,11 +6,12 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:31:51 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/05 04:44:03 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 18:18:21 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/corewar.h"
+#include "../inc/gui.h"
 
 static int		live_sum(uint32_t p[MAX_PLAYERS])
 {
@@ -38,8 +39,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 	kill = 0;
 	cw_memcp(&info.mem[0][MEM_SIZE], &info.mem[0][0], REG_SIZE);
 	//init visualizer here
-	scanf("%c", &c);
-	ncrs = init_gui(info, champ, flag);
+	ncrs = init_gui(&info, champ, flag);
 	scanf("%c", &c);
 	while (die > 0)
 	{
@@ -50,8 +50,9 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 		while (step++ < die)
 		{
 			pc_scan_op(&info, g_head);
-			if (flag.n)
-				display(&info, champ, flag); //display runs update gui
+//			scanf("%c", &c);
+//			if (flag.n)
+//				display(&info, champ, flag); //display runs update gui
 			//ft_printf("\e[35m%d\e[0m\n", info.cycle);
 			info.cycle++;
 		}
@@ -72,6 +73,7 @@ int		init_env(t_cyc info, t_head champ[MAX_PLAYERS], t_flag flag)
 			kill = 0;
 			die -= CYCLE_DELTA;
 		}
+		update_memblock(ncrs, &info);
 	}
 	if (g_head)
 		pc_free(g_head);

@@ -6,7 +6,7 @@
 #    By: jochang <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/10 15:16:58 by jochang           #+#    #+#              #
-#    Updated: 2019/01/05 03:39:51 by smonroe          ###   ########.fr        #
+#    Updated: 2019/01/05 18:10:12 by smonroe          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,7 +101,7 @@ $(COREWAR):
 clean:
 	@make -C libft clean
 	@echo "\033[33mcleaning repository...\033[0m"
-	@rm -f inc/*.gch
+	@rm -rf *.gch *~ \#*\# *.dSYM
 
 fclean: clean
 	@make -C libft fclean

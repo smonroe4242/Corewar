@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/24 01:59:20 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/05 00:49:52 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 17:26:46 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	op_fork(t_cyc *info, t_pc *pc)
 	t_pc	*new;
 
 	TEA;
-	cw_memr(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
+	cw_memren(&addr, &info->mem[0][MEM(pc->i + 1)], IND_SIZE);
 	new = pc_new(-(pc->r[0]), MEM(pc->i + IDX(addr)),
 				info->mem[0][MEM(pc->i + IDX(addr))].byte);
 	ft_memcpy(new->r, pc->r, sizeof(new->r));

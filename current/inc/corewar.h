@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 21:00:29 by jochang           #+#    #+#             */
-/*   Updated: 2019/01/04 20:07:36 by smonroe          ###   ########.fr       */
+/*   Updated: 2019/01/05 17:07:13 by smonroe          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <time.h>
 # include "op.h"
 # include "err.h"
-# include "gui.h"
+//# include "gui.h"
 # include "../libft/libft.h"
 
 /*
@@ -53,6 +53,8 @@ typedef struct		s_mem
 
 void				cw_memw(t_mem *mem, void *src, size_t n, int pnum);
 void				cw_memr(void *dst, t_mem *mem, size_t n);
+void				cw_memwen(t_mem *mem, void *src, size_t n, int pnum);
+void				cw_memren(void *dst, t_mem *mem, size_t n);
 void				cw_memcp(t_mem *dst, t_mem *src, size_t n);
 /*
 ** Mem struct for array above, all stuff here for findability, needs organizing touch.
